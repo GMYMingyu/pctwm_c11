@@ -1,32 +1,15 @@
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
+# generic types
 *.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
+*.swp
+*.swo
 *.so
-*.dylib
-*.dll
+*~
+*.dot
+.*.d
+*.pdf
 
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+# files in this directory
+/tags
+/doc/docs
+/benchmarks
+/README.html
