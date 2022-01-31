@@ -54,6 +54,8 @@ private:
 
 	/** The currently-running Thread */
 	Thread *current;
+
+	int bugdepth;
 };
 
 #endif	/* __SCHEDULE_H__ */

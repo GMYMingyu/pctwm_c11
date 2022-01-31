@@ -40,7 +40,8 @@ Scheduler::Scheduler() :
 	enabled(NULL),
 	enabled_len(0),
 	curr_thread_index(0),
-	current(NULL)
+	current(NULL),
+	bugdepth(5)
 {
 }
 
