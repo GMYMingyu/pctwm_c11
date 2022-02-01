@@ -56,6 +56,8 @@ private:
 	Thread *current;
 
 	int bugdepth;
+	int num_instr;
+	int curr_sche_len;
 };
 
 #endif	/* __SCHEDULE_H__ */
