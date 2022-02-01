@@ -235,14 +235,14 @@ Thread * Scheduler::select_next_thread()
 		}
 	} else {
 		// Some threads are available
-		incScheLen();
-		if(getScheLen() <= 1000){
-			thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
-		}
-		else{
-			thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
-		}
-		//thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
+		// incScheLen();
+		// if(getScheLen() <= 1000){
+		// 	thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
+		// }
+		// else{
+		// 	thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
+		// }
+		thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 	}
 
 	//curr_thread_index = id_to_int(thread->get_id());
