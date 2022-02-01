@@ -25,7 +25,7 @@ void param_defaults(struct model_params *params)
 	params->checkthreshold = 500000;
 	params->removevisible = false;
 	params->nofork = false;
-	params->maxshceduler = 1000;
+	params->maxscheduler = 1000;
 }
 
 static void print_usage(struct model_params *params)
@@ -67,7 +67,7 @@ static void print_usage(struct model_params *params)
 		params->maxexecutions,
 		params->traceminsize,
 		params->checkthreshold,
-		params->maxshceduler);
+		params->maxscheduler);
 	model_print("Analysis plugins:\n");
 	for(unsigned int i=0;i<registeredanalysis->size();i++) {
 		TraceAnalysis * analysis=(*registeredanalysis)[i];
@@ -102,7 +102,7 @@ void parse_options(struct model_params *params) {
 		{"verbose", optional_argument, NULL, 'v'},
 		{"minsize", required_argument, NULL, 'm'},
 		{"freqfree", required_argument, NULL, 'f'},
-		{"maxshceduler", required_argument, NULL, 'l'},
+		{"maxscheduler", required_argument, NULL, 'l'},
 		{0, 0, 0, 0}	/* Terminator */
 	};
 	int opt, longindex;
