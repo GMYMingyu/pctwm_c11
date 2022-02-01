@@ -88,11 +88,13 @@ void print_params(struct model_params *params)
 		"-x, --maxexec=NUM           		Maximum number of executions.	Default: 1.  Now: %u\n"
 		"                            		-o help for a list of options\n"
 		"-m, --minsize=NUM           		Minimum number of actions to keep	Now: %u\n"
-		"-f, --freqfree=NUM          		Frequency to free actions	Now: %u\n",
+		"-f, --freqfree=NUM          		Frequency to free actions	Now: %u\n"
+		"-l, --maxscheduler=NUM          	Limitation of the scheduler length	Now: %u\n",
 		params->verbose,
 		params->maxexecutions,
 		params->traceminsize,
-		params->checkthreshold);
+		params->checkthreshold,
+		params->maxscheduler);
 }
 
 /** @brief Constructor */
