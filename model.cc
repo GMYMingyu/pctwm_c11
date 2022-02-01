@@ -74,6 +74,27 @@ void createModelIfNotExist() {
 	}
 }
 
+
+/* ---	PCT passing parameters	---*/
+void print_params(struct model_params *params)
+{
+	model_print(
+		
+		"----	PCT	----:\n"
+		"-v[NUM], --verbose[=NUM]    		Print verbose execution information. NUM is optional:\n"
+		"                              		0 is quiet; 1 shows valid executions; 2 is noisy;\n"
+		"                              		3 is noisier.\n"
+		"                              		Default: %d\n"
+		"-x, --maxexec=NUM           		Maximum number of executions.	Default: 1.  Now: %u\n"
+		"                            		-o help for a list of options\n"
+		"-m, --minsize=NUM           		Minimum number of actions to keep	Now: %u\n"
+		"-f, --freqfree=NUM          		Frequency to free actions	Now: %u\n",
+		params->verbose,
+		params->maxexecutions,
+		params->traceminsize,
+		params->checkthreshold);
+}
+
 /** @brief Constructor */
 ModelChecker::ModelChecker() :
 	/* Initialize default scheduler */
@@ -104,6 +125,7 @@ ModelChecker::ModelChecker() :
 	initRaceDetector();
 	/* Configure output redirection for the model-checker */
 	install_handler();
+	print_params(&params);
 }
 
 /** @brief Destructor */
