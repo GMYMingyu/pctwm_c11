@@ -235,6 +235,7 @@ Thread * Scheduler::select_next_thread()
 		}
 	} else {
 		// Some threads are available
+		incScheLen();
 		thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 	}
 

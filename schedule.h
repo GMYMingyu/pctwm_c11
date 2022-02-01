@@ -43,6 +43,10 @@ public:
 	bool all_threads_sleeping() const;
 	void set_scheduler_thread(thread_id_t tid);
 
+	////PCT - scheduler length
+	void incScheLen(){curr_sche_len++;}
+	int getScheLen(){return curr_sche_len;}
+
 	SNAPSHOTALLOC
 private:
 	ModelExecution *execution;
