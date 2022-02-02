@@ -25,7 +25,7 @@ void param_defaults(struct model_params *params)
 	params->checkthreshold = 500000;
 	params->removevisible = false;
 	params->nofork = false;
-	//params->maxscheduler = 1000;
+	params->maxscheduler = 1000;
 }
 
 static void print_usage(struct model_params *params)
@@ -61,14 +61,14 @@ static void print_usage(struct model_params *params)
 		"                            Default: %u\n"
 		"-f, --freqfree=NUM          Frequency to free actions\n"
 		"                            Default: %u\n"
-		"-r, --removevisible         Free visible writes\n",
-		//"-l, --maxshceduler         maximum for the scheduler length\n"
-		//"                            Default: %u\n"
+		"-r, --removevisible         Free visible writes\n"
+		"-l, --maxshceduler         maximum for the scheduler length\n"
+		"                            Default: %u\n",
 		params->verbose,
 		params->maxexecutions,
 		params->traceminsize,
 		params->checkthreshold);
-		//params->maxscheduler,
+		params->maxscheduler,
 	model_print("Analysis plugins:\n");
 	for(unsigned int i=0;i<registeredanalysis->size();i++) {
 		TraceAnalysis * analysis=(*registeredanalysis)[i];
@@ -93,8 +93,8 @@ bool install_plugin(char * name) {
 }
 
 void parse_options(struct model_params *params) {
-	//const char *shortopts = "hrnt:o:x:v:m:f:l:";
-	const char *shortopts = "hrnt:o:x:v:m:f:";
+	const char *shortopts = "hrnt:o:x:v:m:f:l:";
+	//const char *shortopts = "hrnt:o:x:v:m:f:";
 	const struct option longopts[] = {
 		{"help", no_argument, NULL, 'h'},
 		{"removevisible", no_argument, NULL, 'r'},
@@ -104,7 +104,7 @@ void parse_options(struct model_params *params) {
 		{"verbose", optional_argument, NULL, 'v'},
 		{"minsize", required_argument, NULL, 'm'},
 		{"freqfree", required_argument, NULL, 'f'},
-		//{"maxscheduler", required_argument, NULL, 'l'},
+		{"maxscheduler", required_argument, NULL, 'l'},
 		{0, 0, 0, 0}	/* Terminator */
 	};
 	int opt, longindex;
@@ -157,9 +157,9 @@ void parse_options(struct model_params *params) {
 		case 'f':
 			params->checkthreshold = atoi(optarg);
 			break;
-		// case 'l':
-		// 	params->maxscheduler = atoi(optarg);
-		// 	break;
+		case 'l':
+			params->maxscheduler = atoi(optarg);
+			break;
 		case 'r':
 			params->removevisible = true;
 			break;
