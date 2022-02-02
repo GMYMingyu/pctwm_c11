@@ -44,8 +44,8 @@ public:
 	void set_scheduler_thread(thread_id_t tid);
 
 	////PCT - scheduler length
-	void incScheLen(){curr_sche_len++;}
-	int getScheLen(){return curr_sche_len;}
+	// void incScheLen(){curr_sche_len++;}
+	// int getScheLen(){return curr_sche_len;}
 
 
 	////PCT params
@@ -62,9 +62,9 @@ private:
 	/** The currently-running Thread */
 	Thread *current;
 
-	int bugdepth;
-	int num_instr;
-	int curr_sche_len;
+	// int bugdepth;
+	// int num_instr;
+	// int curr_sche_len;
 
 	//PCT
 	//struct model_params * params;

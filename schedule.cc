@@ -40,12 +40,12 @@ Scheduler::Scheduler() :
 	enabled(NULL),
 	enabled_len(0),
 	curr_thread_index(0),
-	current(NULL),
+	current(NULL)
 	////PCT params
 	//params(NULL),
-	bugdepth(5),
-	num_instr(50),
-	curr_sche_len(0)
+	// bugdepth(5),
+	// num_instr(50),
+	// curr_sche_len(0)
 {
 }
 
