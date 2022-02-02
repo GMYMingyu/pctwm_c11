@@ -122,6 +122,7 @@ ModelChecker::ModelChecker() :
 	scheduler->set_current_thread(init_thread);
 	register_plugins();
 	execution->setParams(&params);
+	print_params(&params);
 	////PCT params
 	//scheduler->setParams(&params);
 	param_defaults(&params);
@@ -129,7 +130,7 @@ ModelChecker::ModelChecker() :
 	initRaceDetector();
 	/* Configure output redirection for the model-checker */
 	install_handler();
-	print_params(&params);
+	
 }
 
 /** @brief Destructor */
