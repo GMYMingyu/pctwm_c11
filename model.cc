@@ -78,7 +78,7 @@ void createModelIfNotExist() {
 /* ---	PCT passing parameters	---*/
 void print_params(struct model_params *params)
 {
-	param_defaults(&params);
+	param_defaults(params);
 	model_print(
 		
 		
