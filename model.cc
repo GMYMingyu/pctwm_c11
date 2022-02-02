@@ -122,6 +122,8 @@ ModelChecker::ModelChecker() :
 	scheduler->set_current_thread(init_thread);
 	register_plugins();
 	execution->setParams(&params);
+	////PCT params
+	//scheduler->setParams(&params);
 	param_defaults(&params);
 	parse_options(&params);
 	initRaceDetector();

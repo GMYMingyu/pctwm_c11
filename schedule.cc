@@ -41,6 +41,8 @@ Scheduler::Scheduler() :
 	enabled_len(0),
 	curr_thread_index(0),
 	current(NULL),
+	////PCT params
+	//params(NULL),
 	bugdepth(5),
 	num_instr(50),
 	curr_sche_len(0)
@@ -242,7 +244,15 @@ Thread * Scheduler::select_next_thread()
 		// else{
 		// 	thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 		// }
+		// if(params->maxscheduler < 5000){
+		// 	thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
+		// }
+		// else{
+		// 	thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
+		// }
 		thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
+
+		
 	}
 
 	//curr_thread_index = id_to_int(thread->get_id());

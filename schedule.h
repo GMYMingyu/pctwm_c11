@@ -47,6 +47,9 @@ public:
 	void incScheLen(){curr_sche_len++;}
 	int getScheLen(){return curr_sche_len;}
 
+
+	////PCT params
+	//void setParams(struct model_params * _params) {params = _params;}
 	SNAPSHOTALLOC
 private:
 	ModelExecution *execution;
@@ -62,6 +65,10 @@ private:
 	int bugdepth;
 	int num_instr;
 	int curr_sche_len;
+
+	//PCT
+	//struct model_params * params;
+	
 };
 
 #endif	/* __SCHEDULE_H__ */
