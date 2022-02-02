@@ -80,7 +80,7 @@ void print_params(struct model_params *params)
 {
 	model_print(
 		
-		"----	PCT	----:\n"
+		"----	PCT:print_params	----:\n"
 		"-v[NUM], --verbose[=NUM]    		Print verbose execution information. NUM is optional:\n"
 		"                              		0 is quiet; 1 shows valid executions; 2 is noisy;\n"
 		"                              		3 is noisier.\n"

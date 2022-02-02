@@ -35,6 +35,7 @@ static void print_usage(struct model_params *params)
 	param_defaults(params);
 
 	model_print(
+		"print usage\n"
 		"Copyright (c) 2013 Regents of the University of California. All rights reserved.\n"
 		"Distributed under the GPLv2\n"
 		"Written by Brian Norris and Brian Demsky\n"
