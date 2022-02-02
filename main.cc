@@ -20,7 +20,7 @@
 void param_defaults(struct model_params *params)
 {
 	params->verbose = !!DBG_ENABLED();
-	params->maxexecutions = 10;
+	params->maxexecutions = 1;
 	params->traceminsize = 0;
 	params->checkthreshold = 500000;
 	params->removevisible = false;
@@ -61,14 +61,15 @@ static void print_usage(struct model_params *params)
 		"                            Default: %u\n"
 		"-f, --freqfree=NUM          Frequency to free actions\n"
 		"                            Default: %u\n"
-		"-r, --removevisible         Free visible writes\n"
 		"-l, --maxshceduler         maximum for the scheduler length\n"
-		"                            Default: %u\n",
+		"                            Default: %u\n"
+		"-r, --removevisible         Free visible writes\n",
 		params->verbose,
 		params->maxexecutions,
 		params->traceminsize,
-		params->checkthreshold),
-		params->maxscheduler;
+		params->maxscheduler,
+		params->checkthreshold);
+		
 	model_print("Analysis plugins:\n");
 	for(unsigned int i=0;i<registeredanalysis->size();i++) {
 		TraceAnalysis * analysis=(*registeredanalysis)[i];
