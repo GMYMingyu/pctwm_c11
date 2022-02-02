@@ -67,8 +67,8 @@ static void print_usage(struct model_params *params)
 		params->verbose,
 		params->maxexecutions,
 		params->traceminsize,
-		params->checkthreshold);
-		params->maxscheduler,
+		params->checkthreshold),
+		params->maxscheduler;
 	model_print("Analysis plugins:\n");
 	for(unsigned int i=0;i<registeredanalysis->size();i++) {
 		TraceAnalysis * analysis=(*registeredanalysis)[i];
