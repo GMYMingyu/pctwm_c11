@@ -79,6 +79,7 @@ void createModelIfNotExist() {
 void print_params(struct model_params *params)
 {
 	model_print(
+		param_defaults(&params);
 		
 		"----	PCT:print_params	----:\n"
 		"-v[NUM], --verbose[=NUM]    		Print verbose execution information. NUM is optional:\n"

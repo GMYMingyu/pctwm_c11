@@ -1822,8 +1822,8 @@ void ModelExecution::collectActions() {
 	if (priv->used_sequence_numbers < params->traceminsize) return;
 	
 	////PCT randomly use maxscheduler
-	if(params.maxscheduler == 0) {
-			params.maxscheduler = 10;
+	if(params->maxscheduler == 0) {
+			params->maxscheduler = 10;
 	}
 		
 
