@@ -7,6 +7,7 @@
  */
 struct model_params {
 	int maxexecutions;
+	int maxscheduler;
 	bool nofork;
 	modelclock_t traceminsize;
 	modelclock_t checkthreshold;
@@ -14,7 +15,7 @@ struct model_params {
 
 	/** @brief Verbosity (0 = quiet; 1 = noisy; 2 = noisier) */
 	int verbose;
-	int maxscheduler;
+	
 };
 
 void param_defaults(struct model_params *params);
