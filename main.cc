@@ -69,7 +69,7 @@ static void print_usage(struct model_params *params)
 		params->verbose,
 		params->maxexecutions,
 		params->traceminsize,
-		params->checkthreshold
+		params->checkthreshold,
 		params->maxscheduler,
 		params->bugdepth,
 		params->removevisible);
