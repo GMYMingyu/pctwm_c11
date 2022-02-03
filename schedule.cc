@@ -255,6 +255,7 @@ Thread * Scheduler::select_next_thread()
 			thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 		}
 		model_print("---maxscheduler in scheduler: %u \n",params->maxscheduler);
+		model_print("---maxexecutions in scheduler: %u \n",params->maxexecutions);
 		thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 
 		
