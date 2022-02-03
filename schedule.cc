@@ -254,6 +254,7 @@ Thread * Scheduler::select_next_thread()
 		if(params->maxscheduler > 5000){
 			thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 		}
+		model_print("---maxscheduler in scheduler: %u \n",params->maxscheduler);
 		thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 
 		
