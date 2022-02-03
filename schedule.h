@@ -8,6 +8,7 @@
 #include "mymemory.h"
 #include "modeltypes.h"
 #include "classlist.h"
+#include "params.h"
 
 typedef enum enabled_type {
 	THREAD_DISABLED,
@@ -44,8 +45,7 @@ public:
 	void set_scheduler_thread(thread_id_t tid);
 
 
-	//struct model_params * get_params() const { return params; }
-	//void setParams(struct model_params * _params) {params = _params;}
+	void setParams(struct model_params * _params) {params = _params;}
 	////PCT - scheduler length
 	// void incScheLen(){curr_sche_len++;}
 	// int getScheLen(){return curr_sche_len;}
@@ -72,7 +72,7 @@ private:
 	// int curr_sche_len;
 
 	//PCT
-	//struct model_params * params;
+	struct model_params * params;
 	
 };
 
