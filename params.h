@@ -8,7 +8,7 @@
 struct model_params {
 	int maxexecutions;
 	int maxscheduler;
-	int bugdepth;
+	//int bugdepth;
 	bool nofork;
 	modelclock_t traceminsize;
 	modelclock_t checkthreshold;
