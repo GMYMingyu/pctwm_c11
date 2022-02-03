@@ -1821,10 +1821,10 @@ void ModelExecution::fixupLastAct(ModelAction *act) {
 void ModelExecution::collectActions() {
 	if (priv->used_sequence_numbers < params->traceminsize) return;
 	
-	//PCT randomly use maxscheduler
-	if(params->maxscheduler == 0) {
-			params->maxscheduler = 10;
-	}
+	// //PCT randomly use maxscheduler
+	// if(params->maxscheduler == 0) {
+	// 		params->maxscheduler = 10;
+	// }
 		
 
 	//Compute minimal clock vector for all live threads

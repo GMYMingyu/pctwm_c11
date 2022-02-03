@@ -25,7 +25,7 @@ void param_defaults(struct model_params *params)
 	params->checkthreshold = 500000;
 	params->removevisible = false;
 	params->nofork = false;
-	params->maxscheduler = 1000;
+	//params->maxscheduler = 1000;
 	params->bugdepth = 5;
 }
 
@@ -62,15 +62,15 @@ static void print_usage(struct model_params *params)
 		"                            Default: %u\n"
 		"-f, --freqfree=NUM          Frequency to free actions\n"
 		"                            Default: %u\n"
-		"-l, --maxshceduler          maximum for the scheduler length\n"
-		"                            Default: %u\n"
+		// "-l, --maxshceduler          maximum for the scheduler length\n"
+		// "                            Default: %u\n"
 		"-b, --bugdepth              bugdepth Default: %u\n"
 		"-r, --removevisible         Free visible writes\n",
 		params->verbose,
 		params->maxexecutions,
 		params->traceminsize,
 		params->checkthreshold,
-		params->maxscheduler,
+		//params->maxscheduler,
 		params->bugdepth);
 		
 	model_print("Analysis plugins:\n");
@@ -109,7 +109,7 @@ void parse_options(struct model_params *params) {
 		{"verbose", optional_argument, NULL, 'v'},
 		{"minsize", required_argument, NULL, 'm'},
 		{"freqfree", required_argument, NULL, 'f'},
-		{"maxscheduler", required_argument, NULL, 'l'},
+		//{"maxscheduler", required_argument, NULL, 'l'},
 		{"bugdepth", required_argument, NULL, 'b'},
 		{0, 0, 0, 0}	/* Terminator */
 	};
@@ -163,9 +163,9 @@ void parse_options(struct model_params *params) {
 		case 'f':
 			params->checkthreshold = atoi(optarg);
 			break;
-		case 'l':
-			params->maxscheduler = atoi(optarg);
-			break;
+		// case 'l':
+		// 	params->maxscheduler = atoi(optarg);
+		// 	break;
 		case 'b':
 			params->bugdepth = atoi(optarg);
 			break;
