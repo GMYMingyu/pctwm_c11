@@ -83,10 +83,7 @@ void print_params(struct model_params *params)
 		
 		
 		"----	PCT:print_params	----:\n"
-		"-v[NUM], --verbose[=NUM]    		Print verbose execution information. NUM is optional:\n"
-		"                              		0 is quiet; 1 shows valid executions; 2 is noisy;\n"
-		"                              		3 is noisier.\n"
-		"                              		Default: 0 - !!DBG_ENABLED(). | Now: %d\n"
+		"-v[NUM], --verbose[=NUM]    		Default: 0 - !!DBG_ENABLED(). | Now: %d\n"
 		"-x, --maxexec=NUM           		Maximum number of executions. Default: 1. | Now: %u\n"
 		"                            		-o help for a list of options\n"
 		"-m, --minsize=NUM           		Minimum number of actions to keep. Default:0 | Now: %u\n"
