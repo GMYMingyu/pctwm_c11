@@ -251,9 +251,9 @@ Thread * Scheduler::select_next_thread()
 		// else{
 		// 	thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 		// }
-		if(params->maxscheduler > 5000){
-			thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
-		}
+		// if(params->maxscheduler > 5000){
+		// 	thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
+		// }
 		//model_print("---maxscheduler in scheduler: %u \n",params->maxscheduler);
 		//model_print("---maxexecutions in scheduler: %u \n",params->maxexecutions);
 		// model_print("---bugdepth in scheduler: %u \n",params->bugdepth);
