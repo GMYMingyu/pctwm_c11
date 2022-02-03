@@ -43,6 +43,9 @@ public:
 	bool all_threads_sleeping() const;
 	void set_scheduler_thread(thread_id_t tid);
 
+
+	//struct model_params * get_params() const { return params; }
+	//void setParams(struct model_params * _params) {params = _params;}
 	////PCT - scheduler length
 	// void incScheLen(){curr_sche_len++;}
 	// int getScheLen(){return curr_sche_len;}
@@ -52,6 +55,8 @@ public:
 	//void setParams(struct model_params * _params) {params = _params;}
 	SNAPSHOTALLOC
 private:
+
+	//struct model_params * params;
 	ModelExecution *execution;
 	/** The list of available Threads that are not currently running */
 	enabled_type_t *enabled;

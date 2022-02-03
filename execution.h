@@ -40,7 +40,7 @@ public:
 	ModelExecution(ModelChecker *m, Scheduler *scheduler);
 	~ModelExecution();
 
-	struct model_params * get_params() const { return params; }
+	//struct model_params * get_params() const { return params; }
 	void setParams(struct model_params * _params) {params = _params;}
 
 	Thread * take_step(ModelAction *curr);
