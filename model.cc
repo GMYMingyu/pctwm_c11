@@ -86,12 +86,12 @@ void print_params(struct model_params *params)
 		"-v[NUM], --verbose[=NUM]    		Print verbose execution information. NUM is optional:\n"
 		"                              		0 is quiet; 1 shows valid executions; 2 is noisy;\n"
 		"                              		3 is noisier.\n"
-		"                              		Default: 0 - !!DBG_ENABLED() \n	Now: %d\n"
-		"-x, --maxexec=NUM           		Maximum number of executions.	Default: 1.	Now: %u\n"
+		"                              		Default: 0 - !!DBG_ENABLED() \n | Now: %d\n"
+		"-x, --maxexec=NUM           		Maximum number of executions. Default: 1. | Now: %u\n"
 		"                            		-o help for a list of options\n"
-		"-m, --minsize=NUM           		Minimum number of actions to keep	Default:0	Now: %u\n"
+		"-m, --minsize=NUM           		Minimum number of actions to keep Default:0 | Now: %u\n"
 		//"-l, --maxscheduler=NUM          	Limitation of the scheduler length	Now: %u\n"
-		"-f, --freqfree=NUM          		Frequency to free actions	Default:500000	Now: %u\n",
+		"-f, --freqfree=NUM          		Frequency to free actions Default:500000 | Now: %u\n",
 
 		params->verbose,
 		params->maxexecutions,
