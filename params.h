@@ -7,7 +7,7 @@
  */
 struct model_params {
 	int maxexecutions;
-	//int maxscheduler;
+	int maxscheduler;
 	bool nofork;
 	modelclock_t traceminsize;
 	modelclock_t checkthreshold;
