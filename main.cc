@@ -26,6 +26,7 @@ void param_defaults(struct model_params *params)
 	params->removevisible = false;
 	params->nofork = false;
 	params->maxscheduler = 1000;
+	params->bugdepth = 5;
 }
 
 static void print_usage(struct model_params *params)
@@ -61,14 +62,17 @@ static void print_usage(struct model_params *params)
 		"                            Default: %u\n"
 		"-f, --freqfree=NUM          Frequency to free actions\n"
 		"                            Default: %u\n"
-		"-l, --maxshceduler         maximum for the scheduler length\n"
+		"-l, --maxshceduler          maximum for the scheduler length\n"
 		"                            Default: %u\n"
-		"-r, --removevisible         Free visible writes\n",
+		"-b, --bugdepth              bugdepth Default: %u\n"
+		"-r, --removevisible         Free visible writes Default: %u\n",
 		params->verbose,
 		params->maxexecutions,
 		params->traceminsize,
+		params->checkthreshold
 		params->maxscheduler,
-		params->checkthreshold);
+		params->bugdepth,
+		params->removevisible);
 		
 	model_print("Analysis plugins:\n");
 	for(unsigned int i=0;i<registeredanalysis->size();i++) {
@@ -94,7 +98,7 @@ bool install_plugin(char * name) {
 }
 
 void parse_options(struct model_params *params) {
-	const char *shortopts = "hrnt:o:x:v:m:f:l:";
+	const char *shortopts = "hrnt:o:x:v:m:f:l:b:";
 	//const char *shortopts = "hrnt:o:x:v:m:f:";
 	const struct option longopts[] = {
 		{"help", no_argument, NULL, 'h'},
@@ -106,6 +110,7 @@ void parse_options(struct model_params *params) {
 		{"minsize", required_argument, NULL, 'm'},
 		{"freqfree", required_argument, NULL, 'f'},
 		{"maxscheduler", required_argument, NULL, 'l'},
+		{"bugdepth", required_argument, NULL, 'b'},
 		{0, 0, 0, 0}	/* Terminator */
 	};
 	int opt, longindex;
@@ -160,6 +165,9 @@ void parse_options(struct model_params *params) {
 			break;
 		case 'l':
 			params->maxscheduler = atoi(optarg);
+			break;
+		case 'b':
+			params->bugdepth = atoi(optarg);
 			break;
 		case 'r':
 			params->removevisible = true;
