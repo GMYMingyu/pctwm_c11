@@ -169,9 +169,9 @@ void parse_options(struct model_params *params) {
 		case 'b':
 			params->bugdepth = atoi(optarg);
 			break;
-		case 'r':
-			params->removevisible = true;
-			break;
+		// case 'r':
+		// 	params->removevisible = true;
+		// 	break;
 		case 'o':
 		{
 			ModelVector<TraceAnalysis *> * analyses = getInstalledTraceAnalysis();
