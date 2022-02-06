@@ -12,7 +12,7 @@ struct model_params {
 	bool nofork;
 	modelclock_t traceminsize;
 	modelclock_t checkthreshold;
-	bool removevisible;
+	//bool removevisible;
 
 	/** @brief Verbosity (0 = quiet; 1 = noisy; 2 = noisier) */
 	int verbose;

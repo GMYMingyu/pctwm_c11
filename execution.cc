@@ -1849,7 +1849,8 @@ void ModelExecution::collectActions() {
 		modelclock_t tid_clock = cvmin->getClock(act_tid);
 
 		//Free if it is invisible or we have set a flag to remove visible actions.
-		if (actseq <= tid_clock || params->removevisible) {
+		//if (actseq <= tid_clock || params->removevisible) {
+		if (actseq <= tid_clock) {
 			ModelAction * write;
 			if (act->is_write()) {
 				write = act;

@@ -23,7 +23,7 @@ void param_defaults(struct model_params *params)
 	params->maxexecutions = 1;
 	params->traceminsize = 0;
 	params->checkthreshold = 500000;
-	params->removevisible = false;
+	//params->removevisible = false;
 	params->nofork = false;
 	params->maxscheduler = 1000;
 	params->bugdepth = 5;
@@ -64,8 +64,8 @@ static void print_usage(struct model_params *params)
 		"                            Default: %u\n"
 		"-l, --maxshceduler          maximum for the scheduler length\n"
 		"                            Default: %u\n"
-		"-b, --bugdepth              bugdepth Default: %u\n"
-		"-r, --removevisible         Free visible writes\n",
+		"-b, --bugdepth              bugdepth Default: %u\n",
+		//"-r, --removevisible         Free visible writes\n",
 		params->verbose,
 		params->maxexecutions,
 		params->traceminsize,
@@ -98,11 +98,11 @@ bool install_plugin(char * name) {
 
 void parse_options(struct model_params *params) {
 	//const char *shortopts = "hrnt:o:x:v:m:f:l:";
-	const char *shortopts = "hrnt:o:x:v:m:f:l:b:";
+	const char *shortopts = "hnt:o:x:v:m:f:l:b:";
 	//const char *shortopts = "hrnt:o:x:v:m:f:";
 	const struct option longopts[] = {
 		{"help", no_argument, NULL, 'h'},
-		{"removevisible", no_argument, NULL, 'r'},
+		//{"removevisible", no_argument, NULL, 'r'},
 		{"analysis", required_argument, NULL, 't'},
 		{"options", required_argument, NULL, 'o'},
 		{"maxexecutions", required_argument, NULL, 'x'},
