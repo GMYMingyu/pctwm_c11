@@ -58,6 +58,14 @@ public:
 		
 	}
 
+	// void set_chg_pts(int bugdepth){
+	// 	if(bugdepth > 1){
+	// 		lowvec.resize(bugdepth - 1,-1);
+	// 	}
+	// 	else lowvec.resize(1);
+		
+	// }
+
 	void print_lowvec(){
 		for(uint64_t i = 0; i < lowvec.size(); i ++){
 			model_print("%u: %d  ", i, lowvec[i]);
@@ -93,6 +101,7 @@ private:
 	struct model_params * params;
 
 	SnapVector<int> lowvec;
+	//SnapVector<int> chg_pts;
 	
 };
 

@@ -496,6 +496,21 @@ public:
 		_size = psize;
 	}
 
+	void resize(uint psize,type item) {
+		if (psize <= _size) {
+			_size = psize;
+			return;
+		} else if (psize > capacity) {
+			array = (type *)snapshot_realloc(array, (psize <<1 )* sizeof(type));
+			capacity = psize << 1;
+		}
+		bzero(&array[_size], (psize - _size) * sizeof(type));
+		_size = psize;
+		for(int i = 0; i < size; i++){
+			array[i] = item;
+		}
+	}
+
 	void push_back(type item) {
 		if (_size >= capacity) {
 			uint newcap = capacity << 1;
