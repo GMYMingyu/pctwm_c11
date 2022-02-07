@@ -49,12 +49,20 @@ public:
 		params = _params;
 		setlowvec(_params->bugdepth);
 		}
+
 	void setlowvec(int bugdepth){
 		if(bugdepth > 1){
-			low_prio.resize(bugdepth - 1);
+			lowvec.resize(bugdepth - 1,-1);
 		}
-		else low_prio.resize(1);
+		else lowvec.resize(1);
 		
+	}
+
+	void print_lowvec(){
+		for(int i = 0; i < lowvec.size(); i ++){
+			model_print("%d: %d  ", i, lowvec[i]);
+		}
+
 	}
 	////PCT - scheduler length
 	// void incScheLen(){curr_sche_len++;}
@@ -84,7 +92,7 @@ private:
 	//PCT
 	struct model_params * params;
 
-	SnapVector<int> low_prio;
+	SnapVector<int> lowvec;
 	
 };
 
