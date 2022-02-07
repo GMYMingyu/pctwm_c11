@@ -59,8 +59,8 @@ public:
 	}
 
 	void print_lowvec(){
-		for(int i = 0; i < lowvec.size(); i ++){
-			model_print("%d: %d  ", i, lowvec[i]);
+		for(uint64_t i = 0; i < lowvec.size(); i ++){
+			model_print("%u: %d  ", i, lowvec[i]);
 		}
 
 	}
