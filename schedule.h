@@ -106,8 +106,8 @@ public:
 
 	int find_chgidx(int schelen){
 		int res = -1;
-		for(uint i = 0; i < lowvec.size(); i++){
-			if(schelen == lowvec[i]) res = i;
+		for(uint i = 0; i < chg_pts.size(); i++){
+			if(schelen == chg_pts[i]) res = i;
 		}
 		return res;
 	}
