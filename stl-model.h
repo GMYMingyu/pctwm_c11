@@ -506,7 +506,7 @@ public:
 		}
 		bzero(&array[_size], (psize - _size) * sizeof(type));
 		_size = psize;
-		for(int i = 0; i < _size; i++){
+		for(uint i = 0; i < _size; i++){
 			array[i] = item;
 		}
 	}
