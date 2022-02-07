@@ -259,6 +259,7 @@ Thread * Scheduler::select_next_thread()
 		//model_print("---maxexecutions in scheduler: %u \n",params->maxexecutions);
 		// model_print("---bugdepth in scheduler: %u \n",params->bugdepth);
 		incSchelen();
+		model_print("find in the low vector: %d \n", find_chgidx());
 		model_print("current length: %d \n", getSchelen());
 		print_lowvec();
 		print_chg();

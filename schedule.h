@@ -103,6 +103,14 @@ public:
 	int getSchelen(){
 		return schelen;
 	}
+
+	int find_chgidx(int schelen){
+		int res = -1;
+		for(uint i = 0; i < lowvec.size(); i++){
+			if(schelen == lowvec[i]) res = i;
+		}
+		return res;
+	}
 	////PCT - scheduler length
 	// void incScheLen(){curr_sche_len++;}
 	// int getScheLen(){return curr_sche_len;}
