@@ -45,7 +45,17 @@ public:
 	void set_scheduler_thread(thread_id_t tid);
 
 
-	void setParams(struct model_params * _params) {params = _params;}
+	void setParams(struct model_params * _params) {
+		params = _params;
+		setlowvec(_params->bugdepth);
+		}
+	void setlowvec(int bugdepth){
+		if(bugdepth > 1){
+			low_prio.resize(bugdepth - 1);
+		}
+		else low_prio.resize(1);
+		
+	}
 	////PCT - scheduler length
 	// void incScheLen(){curr_sche_len++;}
 	// int getScheLen(){return curr_sche_len;}
@@ -67,12 +77,14 @@ private:
 	/** The currently-running Thread */
 	Thread *current;
 
-	// int bugdepth;
+
 	// int num_instr;
 	// int curr_sche_len;
 
 	//PCT
 	struct model_params * params;
+
+	SnapVector<int> low_prio;
 	
 };
 
