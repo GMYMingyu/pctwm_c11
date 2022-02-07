@@ -48,7 +48,7 @@ public:
 	void setParams(struct model_params * _params) {
 		params = _params;
 		setlowvec(_params->bugdepth);
-		set_chg_pts(_params->bugdepth, _params->maxscheduler)
+		set_chg_pts(_params->bugdepth, _params->maxscheduler);
 		}
 
 	void setlowvec(int bugdepth){
