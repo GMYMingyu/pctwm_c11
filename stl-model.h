@@ -496,6 +496,13 @@ public:
 		_size = psize;
 	}
 
+	bool find(type item){
+		for(uint i = 0; i < _size; i++){
+			if(array[i] == item) return true;
+		}
+		return false;
+	}
+
 	void resize(uint psize,type item) {
 		if (psize <= _size) {
 			_size = psize;

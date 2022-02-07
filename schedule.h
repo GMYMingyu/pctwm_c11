@@ -48,6 +48,7 @@ public:
 	void setParams(struct model_params * _params) {
 		params = _params;
 		setlowvec(_params->bugdepth);
+		set_chg_pts(_params->bugdepth, _params->maxscheduler)
 		}
 
 	void setlowvec(int bugdepth){
@@ -58,18 +59,37 @@ public:
 		
 	}
 
-	// void set_chg_pts(int bugdepth){
-	// 	if(bugdepth > 1){
-	// 		lowvec.resize(bugdepth - 1,-1);
-	// 	}
-	// 	else lowvec.resize(1);
+	void set_chg_pts(int bugdepth, int maxscheduler){
+		if(bugdepth <= 1){
+			chg_pts.resize(1, rand() % maxscheduler);
+		}
+		else{
+			chg_pts.resize(bugdepth - 1);
+			for(int i = 0; i < bugdepth - 1; i++){
+				int tmp = rand() % maxscheduler;
+				if(!chg_pts.find(tmp)){
+					chg_pts[i] = tmp;
+				}
+
+			}
+		}
 		
-	// }
+	}
+
+	void print_chg(){
+		model_print("Change Priority Points:  ");
+		for(uint64_t i = 0; i < chg_pts.size(); i++){
+			model_print("[%u]: %d  ", i, chg_pts[i]);
+		}
+		model_print("\n");
+
+	}
+
 
 	void print_lowvec(){
 		model_print("Low priority threads:  ");
-		for(uint64_t i = 0; i < lowvec.size(); i ++){
-			model_print("%u: %d  ", i, lowvec[i]);
+		for(uint64_t i = 0; i < lowvec.size(); i++){
+			model_print("[%u]: %d  ", i, lowvec[i]);
 		}
 		model_print("\n");
 
@@ -103,7 +123,7 @@ private:
 	struct model_params * params;
 
 	SnapVector<int> lowvec;
-	//SnapVector<int> chg_pts;
+	SnapVector<int> chg_pts;
 	
 };
 
