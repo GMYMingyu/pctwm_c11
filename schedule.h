@@ -67,9 +67,11 @@ public:
 	// }
 
 	void print_lowvec(){
+		model_print("Low priority threads:  ");
 		for(uint64_t i = 0; i < lowvec.size(); i ++){
 			model_print("%u: %d  ", i, lowvec[i]);
 		}
+		model_print("\n");
 
 	}
 	////PCT - scheduler length
