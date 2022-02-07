@@ -41,7 +41,8 @@ Scheduler::Scheduler() :
 	enabled_len(0),
 	curr_thread_index(0),
 	current(NULL),
-	params(NULL)
+	params(NULL),
+	schelen(0)
 	////PCT params
 	//params(NULL),
 	// bugdepth(5),
@@ -257,6 +258,8 @@ Thread * Scheduler::select_next_thread()
 		//model_print("---maxscheduler in scheduler: %u \n",params->maxscheduler);
 		//model_print("---maxexecutions in scheduler: %u \n",params->maxexecutions);
 		// model_print("---bugdepth in scheduler: %u \n",params->bugdepth);
+		incSchelen();
+		model_print("current length: %d \n", getSchelen());
 		print_lowvec();
 		print_chg();
 		thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);

@@ -95,6 +95,14 @@ public:
 		model_print("\n");
 
 	}
+
+	void incSchelen(){
+		schelen++;
+	}
+
+	int getSchelen(){
+		return schelen;
+	}
 	////PCT - scheduler length
 	// void incScheLen(){curr_sche_len++;}
 	// int getScheLen(){return curr_sche_len;}
@@ -125,6 +133,7 @@ private:
 
 	SnapVector<int> lowvec;
 	SnapVector<int> chg_pts;
+	int schelen;
 	
 };
 
