@@ -67,9 +67,10 @@ public:
 			chg_pts.resize(bugdepth - 1);
 			for(int i = 0; i < bugdepth - 1; i++){
 				int tmp = rand() % maxscheduler;
-				if(!chg_pts.find(tmp)){
-					chg_pts[i] = tmp;
+				while(chg_pts.find(tmp)){
+					tmp = rand() % maxscheduler;
 				}
+				chg_pts[i] = tmp;
 
 			}
 		}
