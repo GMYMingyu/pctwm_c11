@@ -85,6 +85,46 @@ void Scheduler::highvec_addthread(Thread *t){
 		
 	};
 
+void Scheduler::movethread(int lowvec_idx, int* availthreads, int availnum){
+	//first:get the highest prio thread
+	int moveid = 0;
+	bool highvec_flag = false;
+	bool lowvec_flag = false;
+
+	int findhigh = 0;
+	while(findhigh < highsize && !highvec_flag){
+		for(int i = 0; i < availnum; i++){
+			if(availthreads[i] == highvec[findhigh]){
+				highvec_flag = true; // highvec has thread available
+				moveid = highvec[findhigh];
+				highvec[findhigh] = -1; //step2: update high vector
+			}
+		}
+		findhigh++;
+
+	}
+
+
+	if(!highvec_flag){//highvec has no available thread
+		uint findlow = 0;
+		while(findlow < lowvec.size() && !lowvec_flag){
+			for(int i = 0; i < availnum; i++){
+				if(availthreads[i] == lowvec[findlow]){
+					lowvec_flag = true; // highvec has thread available
+					moveid = lowvec[findlow];
+			}
+		}
+		findlow++;
+		}
+	}
+	model_print("move_highest to lowvec: %d \n\n", moveid);
+
+	//step3: update low vector
+	lowvec[lowvec_idx] = moveid;
+
+
+}
+
 
 int Scheduler::find_highest(int* availthreads, int availnum){
 	int resid = 0;

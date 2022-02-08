@@ -127,7 +127,7 @@ public:
 	// }
 
 	int find_highest(int* availthreads, int availnum);
-
+	void movethread(int lowvec_idx, int* availthreads, int availnum);
 	////PCT - scheduler length
 	// void incScheLen(){curr_sche_len++;}
 	// int getScheLen(){return curr_sche_len;}
