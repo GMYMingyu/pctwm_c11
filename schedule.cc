@@ -85,6 +85,40 @@ void Scheduler::highvec_addthread(Thread *t){
 		
 	};
 
+
+void Scheduler::find_highest(int* availthreads, int availnum){
+	int resid = 0;
+	bool highvec_flag = false;
+	bool lowvec_flag = false;
+
+	int findhigh = 0;
+	while(findhigh < highsize && !highvec_flag){
+		for(int i = 0; i < availnum; i++){
+			if(availthreads[i] == highvec[findhigh]){
+				highvec_flag = true; // highvec has thread available
+				resid = highvec[findhigh];
+			}
+		}
+		findhigh++;
+
+	}
+
+
+	if(!highvec_flag){//highvec has no available thread
+		uint findlow = 0;
+		while(findlow < lowvec.size() && !lowvec_flag){
+			for(int i = 0; i < availnum; i++){
+				if(availthreads[i] == lowvec[findlow]){
+					lowvec_flag = true; // highvec has thread available
+					resid = lowvec[findlow];
+			}
+		}
+		findlow++;
+		}
+	}
+	model_print("find_highest: %d \n\n", resid);
+	return resid;
+}
 /**
  * @brief Register the ModelExecution engine
  * @param execution The ModelExecution which is controlling execution
@@ -297,6 +331,7 @@ Thread * Scheduler::select_next_thread()
 		incSchelen();
 		model_print("find in the low vector: %d \n", find_chgidx(getSchelen()));
 		model_print("current length: %d \n", getSchelen());
+		find_highest(thread_list, avail_threads);
 		print_lowvec();
 		print_highvec();
 		print_chg();
