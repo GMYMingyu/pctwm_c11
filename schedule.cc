@@ -44,13 +44,13 @@ Scheduler::Scheduler() :
 	params(NULL),
 	schelen(0),
 	highsize(0),
-	highvec(NULL)
 	////PCT params
 	//params(NULL),
 	// bugdepth(5),
 	// num_instr(50),
 	// curr_sche_len(0)
 {
+	highvec.resize(0);
 }
 
 /**
