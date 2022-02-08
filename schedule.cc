@@ -53,6 +53,10 @@ Scheduler::Scheduler() :
 	highvec.resize(10);
 }
 
+void Scheduler::addinit(Thread* t){
+		highvec[0] = id_to_int(t->get_id());
+		highsize++;
+	}
 
 void Scheduler::highvec_addthread(Thread *t){
 		int threadid = id_to_int(t->get_id());	
