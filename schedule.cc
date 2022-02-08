@@ -56,7 +56,10 @@ Scheduler::Scheduler() :
 
 void Scheduler::highvec_addthread(Thread *t){
 		int threadid = id_to_int(t->get_id());	
-		SnapVector<int> oldhigh = highvec;
+		SnapVector<int> oldhigh;
+		for(int i = 0; i < highsize; i++){
+			oldhigh[i] = highvec[i];
+		}
 		highsize++;	
 		highvec.resize(highsize);
 		for(int i = 0; i < highsize - 1; i++){
