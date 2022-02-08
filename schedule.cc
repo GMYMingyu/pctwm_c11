@@ -156,7 +156,7 @@ int Scheduler::find_highest(int* availthreads, int availnum){
 		findlow++;
 		}
 	}
-	model_print("find_highest: %d \n\n", resid);
+	model_print("find_highest: %d \n", resid);
 	return resid;
 }
 /**
@@ -380,6 +380,7 @@ Thread * Scheduler::select_next_thread()
 		find_highest(thread_list, avail_threads);
 		print_lowvec();
 		print_highvec();
+		model_print("\n\n");
 		
 		thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 
