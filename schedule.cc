@@ -86,7 +86,7 @@ void Scheduler::highvec_addthread(Thread *t){
 	};
 
 
-void Scheduler::find_highest(int* availthreads, int availnum){
+int Scheduler::find_highest(int* availthreads, int availnum){
 	int resid = 0;
 	bool highvec_flag = false;
 	bool lowvec_flag = false;
