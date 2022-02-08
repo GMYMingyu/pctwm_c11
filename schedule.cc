@@ -60,11 +60,13 @@ void Scheduler::highvec_addthread(Thread *t){
 		for(int i = 0; i < highsize; i++){
 			oldhigh[i] = highvec[i];
 		}
-		int tmp = rand() % highsize;//range [0, highsize]
+
 		highsize++;	
 		
 		highvec.resize(highsize);
-		if(tmp == highsize - 1){
+		
+		int tmp = rand() % highsize;
+		if(tmp >= highsize - 1){
 			for(int i = 0; i < highsize - 1; i++){
 				highvec[i] = oldhigh[i];
 			}
