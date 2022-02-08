@@ -120,6 +120,7 @@ ModelChecker::ModelChecker() :
 	init_thread = new Thread(execution->get_next_id(), (thrd_t *) model_malloc(sizeof(thrd_t)), &placeholder, NULL, NULL);
 #ifdef TLS
 	init_thread->setTLS((char *)get_tls_addr());
+	model_print("init thread id: %d \n", id_to_int(init_thread->get_id()));
 #endif
 	scheduler->addinit(init_thread);
 	execution->add_thread(init_thread);
