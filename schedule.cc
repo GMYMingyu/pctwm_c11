@@ -53,6 +53,14 @@ Scheduler::Scheduler() :
 	highvec.resize(1);
 }
 
+
+void Scheduler::highvec_addthread(Thread *t){
+		int threadid = id_to_int(t->get_id());
+		highsize++;
+		highvec.resize(highsize);
+		highvec[threadid] = threadid;	
+	};
+
 /**
  * @brief Register the ModelExecution engine
  * @param execution The ModelExecution which is controlling execution
