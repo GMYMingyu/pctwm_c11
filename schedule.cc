@@ -43,7 +43,7 @@ Scheduler::Scheduler() :
 	current(NULL),
 	params(NULL),
 	schelen(0),
-	highsize(0),
+	highsize(0)
 	////PCT params
 	//params(NULL),
 	// bugdepth(5),
