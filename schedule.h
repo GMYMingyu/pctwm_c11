@@ -115,7 +115,7 @@ public:
 	void highvec_addthread(Thread *t);
 
 	void print_highvec(){
-		model_print("high priority vector: ")
+		model_print("high priority vector: ");
 		for(int i = 0; i < highsize; i++){
 			model_print("[%d] : %d", i, highvec[i]);
 		}
