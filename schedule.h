@@ -122,7 +122,6 @@ public:
 		model_print("\n");
 	}
 
-	void addinit(Thread* t);
 	////PCT - scheduler length
 	// void incScheLen(){curr_sche_len++;}
 	// int getScheLen(){return curr_sche_len;}
