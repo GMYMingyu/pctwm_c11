@@ -121,6 +121,11 @@ public:
 		}
 		model_print("\n");
 	}
+
+	void addinit(Thread* t){
+		highvec[0] = id_to_int(t->get_id());
+		highsize++;
+	}
 	////PCT - scheduler length
 	// void incScheLen(){curr_sche_len++;}
 	// int getScheLen(){return curr_sche_len;}

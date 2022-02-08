@@ -121,6 +121,7 @@ ModelChecker::ModelChecker() :
 #ifdef TLS
 	init_thread->setTLS((char *)get_tls_addr());
 #endif
+	scheduler->addinit(init_thread);
 	execution->add_thread(init_thread);
 	scheduler->set_current_thread(init_thread);
 	register_plugins();
