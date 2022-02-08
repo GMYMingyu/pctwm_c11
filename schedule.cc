@@ -370,6 +370,9 @@ Thread * Scheduler::select_next_thread()
 		// model_print("---bugdepth in scheduler: %u \n",params->bugdepth);
 		incSchelen();
 		model_print("find in the low vector: %d \n", find_chgidx(getSchelen()));
+		if(find_chgidx(getSchelen()) != -1){
+			movethread(find_chgidx(getSchelen()), thread_list, avail_threads);
+		}
 		model_print("current length: %d \n", getSchelen());
 		find_highest(thread_list, avail_threads);
 		print_lowvec();
