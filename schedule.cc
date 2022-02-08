@@ -117,7 +117,7 @@ void Scheduler::movethread(int lowvec_idx, int* availthreads, int availnum){
 		findlow++;
 		}
 	}
-	model_print("move_highest to lowvec: %d \n\n", moveid);
+	model_print("move_highest thread %d to lowvec %d \n", moveid, lowvec_idx);
 
 	//step3: update low vector
 	lowvec[lowvec_idx] = moveid;
@@ -369,15 +369,18 @@ Thread * Scheduler::select_next_thread()
 		//model_print("---maxexecutions in scheduler: %u \n",params->maxexecutions);
 		// model_print("---bugdepth in scheduler: %u \n",params->bugdepth);
 		incSchelen();
-		model_print("find in the low vector: %d \n", find_chgidx(getSchelen()));
+		
+		model_print("current length: %d \n", getSchelen());
+		print_chg();
+		model_print("find change priority == scheduler length: %d \n", find_chgidx(getSchelen()));
 		if(find_chgidx(getSchelen()) != -1){
 			movethread(find_chgidx(getSchelen()), thread_list, avail_threads);
 		}
-		model_print("current length: %d \n", getSchelen());
+		
 		find_highest(thread_list, avail_threads);
 		print_lowvec();
 		print_highvec();
-		print_chg();
+		
 		thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 
 		
