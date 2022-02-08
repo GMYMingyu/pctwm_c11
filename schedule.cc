@@ -50,15 +50,15 @@ Scheduler::Scheduler() :
 	// num_instr(50),
 	// curr_sche_len(0)
 {
-	highvec.resize(1);
+	highvec.resize(10);
 }
 
 
 void Scheduler::highvec_addthread(Thread *t){
-		int threadid = id_to_int(t->get_id());
+		int threadid = id_to_int(t->get_id());		
+		//highvec.resize(highsize);
+		highvec[highsize] = threadid;	
 		highsize++;
-		highvec.resize(highsize);
-		highvec[threadid] = threadid;	
 	};
 
 /**
