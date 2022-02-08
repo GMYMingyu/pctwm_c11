@@ -112,6 +112,7 @@ void Scheduler::movethread(int lowvec_idx, int* availthreads, int availnum){
 				if(availthreads[i] == lowvec[findlow]){
 					lowvec_flag = true; // highvec has thread available
 					moveid = lowvec[findlow];
+					lowvec[findlow] = -1;//step3: update low vector - the thread found by prio
 			}
 		}
 		findlow++;
@@ -119,7 +120,7 @@ void Scheduler::movethread(int lowvec_idx, int* availthreads, int availnum){
 	}
 	model_print("move_highest thread %d to lowvec %d \n", moveid, lowvec_idx);
 
-	//step3: update low vector
+	//step4: update low vector
 	lowvec[lowvec_idx] = moveid;
 
 
