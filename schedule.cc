@@ -75,6 +75,13 @@ void Scheduler::set_enabled(Thread *t, enabled_type_t enabled_status) {
 	enabled[threadid] = enabled_status;
 }
 
+
+void highvec_addthread(Thread* t){
+	int threadid = id_to_int(t->get_id());
+	highsize++;
+	highvec.resize(highsize);
+	highvec[threadid] = threadid;
+}
 /**
  * @brief Check if a Thread is currently enabled
  *
@@ -173,6 +180,7 @@ void Scheduler::add_thread(Thread *t)
 	DEBUG("thread %d\n", id_to_int(t->get_id()));
 	ASSERT(!t->is_model_thread());
 	set_enabled(t, THREAD_ENABLED);
+	highvec_addthread(t);
 }
 
 /**
@@ -262,6 +270,7 @@ Thread * Scheduler::select_next_thread()
 		model_print("find in the low vector: %d \n", find_chgidx(getSchelen()));
 		model_print("current length: %d \n", getSchelen());
 		print_lowvec();
+		print_highvec();
 		print_chg();
 		thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 

@@ -111,6 +111,16 @@ public:
 		}
 		return res;
 	}
+
+	void highvec_addthread(Thread *t);
+
+	void print_highvec(){
+		model_print("high priority vector: ")
+		for(int i = 0; i < highsize; i++){
+			model_print("[%d] : %d", i, highvec[i]);
+		}
+		model_print("\n");
+	}
 	////PCT - scheduler length
 	// void incScheLen(){curr_sche_len++;}
 	// int getScheLen(){return curr_sche_len;}
@@ -142,6 +152,9 @@ private:
 	SnapVector<int> lowvec;
 	SnapVector<int> chg_pts;
 	int schelen;
+
+	SnapVector<int> highvec;
+	int highsize;
 	
 };
 
