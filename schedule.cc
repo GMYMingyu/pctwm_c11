@@ -373,16 +373,23 @@ Thread * Scheduler::select_next_thread()
 		model_print("current length: %d \n", getSchelen());
 		print_chg();
 		model_print("find change priority == scheduler length: %d \n", find_chgidx(getSchelen()));
-		if(find_chgidx(getSchelen()) != -1){
+		if(find_chgidx(getSchelen()) != -1 && getSchelen() <= 1000){
+			int threadpct = find_highest(thread_list, avail_threads);
+			thread = execution->getFuzzer()->selectThreadbyid(threadpct);
+
 			movethread(find_chgidx(getSchelen()), thread_list, avail_threads);
+			
+		}
+		else{
+			thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 		}
 		
-		find_highest(thread_list, avail_threads);
+		
 		print_lowvec();
 		print_highvec();
 		model_print("\n\n");
 		
-		thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
+		//thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 
 		
 	}
