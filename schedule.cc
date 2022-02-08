@@ -50,7 +50,7 @@ Scheduler::Scheduler() :
 	// num_instr(50),
 	// curr_sche_len(0)
 {
-	highvec.resize(0);
+	highvec.resize(1);
 }
 
 /**
@@ -78,12 +78,6 @@ void Scheduler::set_enabled(Thread *t, enabled_type_t enabled_status) {
 }
 
 
-void highvec_addthread(Thread* t){
-	int threadid = id_to_int(t->get_id());
-	highsize++;
-	highvec.resize(highsize);
-	highvec[threadid] = threadid;
-}
 /**
  * @brief Check if a Thread is currently enabled
  *

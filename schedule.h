@@ -112,7 +112,12 @@ public:
 		return res;
 	}
 
-	void highvec_addthread(Thread *t);
+	void highvec_addthread(Thread *t){
+		int threadid = id_to_int(t->get_id());
+		highsize++;
+		highvec.resize(highsize);
+		highvec[threadid] = threadid;	
+	};
 
 	void print_highvec(){
 		model_print("high priority vector: ");
