@@ -119,7 +119,7 @@ void Scheduler::movethread(int lowvec_idx, int* availthreads, int availnum){
 		findlow++;
 		}
 	}
-	model_print("move_highest thread %d to lowvec %d \n", moveid, lowvec_idx);
+	//model_print("move_highest thread %d to lowvec %d \n", moveid, lowvec_idx);
 
 	//step4: update low vector
 	lowvec[lowvec_idx] = moveid;
@@ -158,7 +158,7 @@ int Scheduler::find_highest(int* availthreads, int availnum){
 		findlow++;
 		}
 	}
-	model_print("find_highest: %d \n", resid);
+	//model_print("find_highest: %d \n", resid);
 	return resid;
 }
 /**
@@ -351,30 +351,12 @@ Thread * Scheduler::select_next_thread()
 		}
 	} else {
 		// Some threads are available
-		// incScheLen();
-		// if(getScheLen() <= 1000){
-		// 	thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
-		// }
-		// else{
-		// 	thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
-		// }
-		// if(params->maxscheduler < 5000){
-		// 	thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
-		// }
-		// else{
-		// 	thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
-		// }
-		// if(params->maxscheduler > 5000){
-		// 	thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
-		// }
-		//model_print("---maxscheduler in scheduler: %u \n",params->maxscheduler);
-		//model_print("---maxexecutions in scheduler: %u \n",params->maxexecutions);
-		// model_print("---bugdepth in scheduler: %u \n",params->bugdepth);
+
 		incSchelen();
-		model_print("limitation for shcelen: %d - prevent live lock \n", schelen_limit);
-		model_print("current length: %d \n", getSchelen());
-		print_chg();
-		model_print("find change priority == scheduler length: %d \n", find_chgidx(getSchelen()));
+		// model_print("limitation for shcelen: %d - prevent live lock \n", schelen_limit);
+		// model_print("current length: %d \n", getSchelen());
+		//print_chg();
+		//model_print("find change priority == scheduler length: %d \n", find_chgidx(getSchelen()));
 		if(find_chgidx(getSchelen()) != -1 && getSchelen() <= schelen_limit){
 			int threadpct = find_highest(thread_list, avail_threads);
 			thread = execution->getFuzzer()->selectThreadbyid(threadpct);
@@ -387,9 +369,9 @@ Thread * Scheduler::select_next_thread()
 		}
 		
 		
-		print_lowvec();
-		print_highvec();
-		model_print("\n\n");
+		// print_lowvec();
+		// print_highvec();
+		// model_print("\n\n");
 		
 		//thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 
