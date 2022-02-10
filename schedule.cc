@@ -43,7 +43,8 @@ Scheduler::Scheduler() :
 	current(NULL),
 	params(NULL),
 	schelen(0),
-	highsize(0)
+	highsize(0),
+	schelen_limit(0)
 	////PCT params
 	//params(NULL),
 	// bugdepth(5),
@@ -370,11 +371,11 @@ Thread * Scheduler::select_next_thread()
 		//model_print("---maxexecutions in scheduler: %u \n",params->maxexecutions);
 		// model_print("---bugdepth in scheduler: %u \n",params->bugdepth);
 		incSchelen();
-		
+		model_print("limitation for shcelen: %d - prevent live lock \n", schelen_limit);
 		model_print("current length: %d \n", getSchelen());
 		print_chg();
 		model_print("find change priority == scheduler length: %d \n", find_chgidx(getSchelen()));
-		if(find_chgidx(getSchelen()) != -1 && getSchelen() <= 1000){
+		if(find_chgidx(getSchelen()) != -1 && getSchelen() <= schelen_limit){
 			int threadpct = find_highest(thread_list, avail_threads);
 			thread = execution->getFuzzer()->selectThreadbyid(threadpct);
 
