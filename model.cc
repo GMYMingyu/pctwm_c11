@@ -576,7 +576,7 @@ void ModelChecker::startChecker() {
 	//setstate(random_state);
 
 	// not reproduce 
-	seed = get_nanotime();//equation 
+	seed = 10;//get_nanotime();//equation 
 	srandom(seed);
 
 	install_trace_analyses(get_execution());
