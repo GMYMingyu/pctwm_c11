@@ -111,10 +111,11 @@ ModelChecker::ModelChecker() :
 	trace_analyses(),
 	inspect_plugin(NULL)
 {
-	model_print("C11Tester\n"
-							"Copyright (c) 2013 and 2019 Regents of the University of California. All rights reserved.\n"
-							"Distributed under the GPLv2\n"
-							"Written by Weiyu Luo, Brian Norris, and Brian Demsky\n\n");
+	// model_print("C11Tester\n"
+	// 						"Copyright (c) 2013 and 2019 Regents of the University of California. All rights reserved.\n"
+	// 						"Distributed under the GPLv2\n"
+	// 						"Written by Weiyu Luo, Brian Norris, and Brian Demsky\n\n");
+	model_print("C11tester using PCT in thread selection\n");
 	init_memory_ops();
 	real_memset(&stats,0,sizeof(struct execution_stats));
 	init_thread = new Thread(execution->get_next_id(), (thrd_t *) model_malloc(sizeof(thrd_t)), &placeholder, NULL, NULL);
@@ -130,7 +131,7 @@ ModelChecker::ModelChecker() :
 	//scheduler->setParams(&params);
 	param_defaults(&params);
 	parse_options(&params);
-	print_params(&params);
+	//print_params(&params);
 
 	execution->setParams(&params);
 	scheduler->setParams(&params);
