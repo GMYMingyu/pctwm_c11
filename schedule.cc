@@ -100,13 +100,6 @@ void Scheduler::movethread(int lowvec_idx, int* availthreads, int availnum){
 			highvec[findhigh] = -1;
 
 		}
-		// for(int i = 0; i < availnum; i++){
-		// 	if(availthreads[i] == highvec[findhigh]){
-		// 		highvec_flag = true; // highvec has thread available
-		// 		moveid = highvec[findhigh];
-		// 		highvec[findhigh] = -1; //step2: update high vector
-		// 	}
-		// }
 		findhigh++;
 
 	}
@@ -120,13 +113,6 @@ void Scheduler::movethread(int lowvec_idx, int* availthreads, int availnum){
 				moveid = lowvec[findlow];
 				lowvec[findlow] = -1;
 			}
-			// for(int i = 0; i < availnum; i++){
-			// 	if(availthreads[i] == lowvec[findlow]){
-			// 		lowvec_flag = true; // highvec has thread available
-			// 		moveid = lowvec[findlow];
-			// 		lowvec[findlow] = -1;//step3: update low vector - the thread found by prio
-			// }
-		// }
 		findlow++;
 		}
 	}
