@@ -369,7 +369,7 @@ Thread * Scheduler::select_next_thread()
 			thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 		}
 		
-		model_print("Scheduler picks thread: %d", id_to_int(thread->get_id()));
+		model_print("Scheduler picks thread: %d\n", id_to_int(thread->get_id()));
 		print_lowvec();
 		print_highvec();
 		model_print("\n\n");
