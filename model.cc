@@ -567,8 +567,9 @@ void ModelChecker::startChecker() {
 	startExecution();
 	//Need to initial random number generator state to avoid resets on rollback
 	//initstate(423121, random_state, sizeof(random_state));
-	uint64_t seed = get_nanotime();
-	srandom(seed);
+	//uint64_t seed = get_nanotime();
+	uint64_t seed = 673*627;
+	//srandom(seed);
 
 	snapshot = take_snapshot();
 
@@ -576,7 +577,7 @@ void ModelChecker::startChecker() {
 	//setstate(random_state);
 
 	// not reproduce 
-	seed = 576;//get_nanotime();//equation 
+	//seed = get_nanotime();//equation 
 	srandom(seed);
 
 	install_trace_analyses(get_execution());
