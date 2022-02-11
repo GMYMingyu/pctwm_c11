@@ -574,7 +574,9 @@ void ModelChecker::startChecker() {
 
 	//reset random number generator state
 	//setstate(random_state);
-	seed = get_nanotime();
+
+	// not reproduce 
+	seed = get_nanotime();//equation 
 	srandom(seed);
 
 	install_trace_analyses(get_execution());

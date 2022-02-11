@@ -94,28 +94,39 @@ void Scheduler::movethread(int lowvec_idx, int* availthreads, int availnum){
 
 	int findhigh = 0;
 	while(findhigh < highsize && !highvec_flag){
-		for(int i = 0; i < availnum; i++){
-			if(availthreads[i] == highvec[findhigh]){
-				highvec_flag = true; // highvec has thread available
-				moveid = highvec[findhigh];
-				highvec[findhigh] = -1; //step2: update high vector
-			}
+		if(highvec[findhigh] != -1){
+			highvec_flag = true; // highvec has thread
+			moveid = highvec[findhigh];
+			highvec[findhigh] = -1;
+
 		}
+		// for(int i = 0; i < availnum; i++){
+		// 	if(availthreads[i] == highvec[findhigh]){
+		// 		highvec_flag = true; // highvec has thread available
+		// 		moveid = highvec[findhigh];
+		// 		highvec[findhigh] = -1; //step2: update high vector
+		// 	}
+		// }
 		findhigh++;
 
 	}
 
 
-	if(!highvec_flag){//highvec has no available thread
+	if(!highvec_flag){//highvec has no thread now
 		uint findlow = 0;
 		while(findlow < lowvec.size() && !lowvec_flag){
-			for(int i = 0; i < availnum; i++){
-				if(availthreads[i] == lowvec[findlow]){
-					lowvec_flag = true; // highvec has thread available
-					moveid = lowvec[findlow];
-					lowvec[findlow] = -1;//step3: update low vector - the thread found by prio
+			if(lowvec[findlow] != -1){
+				lowvec_flag = true;
+				moveid = lowvec[findlow];
+				lowvec[findlow] = -1;
 			}
-		}
+			// for(int i = 0; i < availnum; i++){
+			// 	if(availthreads[i] == lowvec[findlow]){
+			// 		lowvec_flag = true; // highvec has thread available
+			// 		moveid = lowvec[findlow];
+			// 		lowvec[findlow] = -1;//step3: update low vector - the thread found by prio
+			// }
+		// }
 		findlow++;
 		}
 	}
