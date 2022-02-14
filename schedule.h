@@ -78,6 +78,8 @@ public:
 		
 	}
 
+	print_avails(int* availthreads, int availnum);
+
 	void print_chg(){
 		model_print("Change Priority Points:  ");
 		for(uint64_t i = 0; i < chg_pts.size(); i++){

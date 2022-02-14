@@ -125,6 +125,14 @@ void Scheduler::movethread(int lowvec_idx, int* availthreads, int availnum){
 }
 
 
+void Scheduler::print_avails(int* availthreads, int availnum){
+	model_print("Currently avail threads: ");
+	for(int i = 0; i < availnum; i++){
+		model_print("[%d]: %d", i, availthreads[i]);
+	}
+	model_print("\n");
+}
+
 int Scheduler::find_highest(int* availthreads, int availnum){
 	int resid = 0;
 	bool highvec_flag = false;
@@ -352,6 +360,7 @@ Thread * Scheduler::select_next_thread()
 		incSchelen();
 		model_print("limitation for shcelen: %d - prevent live lock \n", schelen_limit);
 		model_print("current length: %d \n", getSchelen());
+		print_avails(thread_list, avail_threads);
 		print_chg();
 		model_print("find change priority == scheduler length: %d \n", find_chgidx(getSchelen()));
 
