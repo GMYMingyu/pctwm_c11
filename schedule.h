@@ -49,7 +49,7 @@ public:
 		params = _params;
 		setlowvec(_params->bugdepth);
 		set_chg_pts(_params->bugdepth, _params->maxscheduler);
-		schelen_limit = 5 * _params->maxscheduler;
+		schelen_limit = 3 * _params->maxscheduler;
 		}
 
 	void setlowvec(int bugdepth){
