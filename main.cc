@@ -20,13 +20,13 @@
 void param_defaults(struct model_params *params)
 {
 	params->verbose = !!DBG_ENABLED();
-	params->maxexecutions = 2;
+	params->maxexecutions = 1;
 	params->traceminsize = 0;
 	params->checkthreshold = 500000;
 	//params->removevisible = false;
 	params->nofork = false;
 	params->maxscheduler = 20;
-	params->bugdepth = 15;
+	params->bugdepth = 5;
 }
 
 static void print_usage(struct model_params *params)
