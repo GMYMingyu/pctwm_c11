@@ -130,7 +130,7 @@ ModelChecker::ModelChecker() :
 	////PCT params
 	//scheduler->setParams(&params);
 	param_defaults(&params);
-	//parse_options(&params);
+	parse_options(&params);
 	print_params(&params);
 
 	execution->setParams(&params);
