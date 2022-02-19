@@ -376,7 +376,7 @@ Thread * Scheduler::select_next_thread()
 		}
 		
 		// model_print("Scheduler picks thread: %d\n", id_to_int(thread->get_id()));
-		// print_lowvec();
+		print_lowvec();
 		// print_highvec();
 		// model_print("\n\n");
 		
