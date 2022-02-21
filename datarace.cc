@@ -213,7 +213,7 @@ void assert_race(struct DataRace *race)
 {
 	model_print("Race detected at location: \n");
 	backtrace_symbols_fd(race->backtrace, race->numframes, model_out);
-	model_print("\nData race detected @ address %p:\n"
+	model_print("\n catching! Data race detected @ address %p:\n"
 							"    Access 1: %5s in thread %2d @ clock %3u\n"
 							"    Access 2: %5s in thread %2d @ clock %3u\n\n",
 							race->address,
