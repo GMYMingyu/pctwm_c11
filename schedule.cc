@@ -44,7 +44,8 @@ Scheduler::Scheduler() :
 	params(NULL),
 	schelen(0),
 	highsize(0),
-	schelen_limit(0)
+	schelen_limit(0),
+	livelock(false)
 	////PCT params
 	//params(NULL),
 	// bugdepth(5),
@@ -372,7 +373,10 @@ Thread * Scheduler::select_next_thread()
 			}	
 		}
 		else{
-			model_print("Reaching livelock! \n");
+			if(!livelock){
+				model_print("Reaching livelock! \n");
+				livelock = true;
+			}
 			thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 		}
 		

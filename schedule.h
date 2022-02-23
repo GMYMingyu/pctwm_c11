@@ -167,6 +167,7 @@ private:
 	SnapVector<int> highvec;
 	int highsize;
 	int schelen_limit;
+	bool livelock;
 	
 };
 
