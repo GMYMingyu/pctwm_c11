@@ -44,8 +44,7 @@ Scheduler::Scheduler() :
 	params(NULL),
 	schelen(0),
 	highsize(0),
-	schelen_limit(0),
-	livelock(false)
+	schelen_limit(0)
 	////PCT params
 	//params(NULL),
 	// bugdepth(5),
