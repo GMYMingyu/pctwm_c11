@@ -135,6 +135,15 @@ public:
 	// void incScheLen(){curr_sche_len++;}
 	// int getScheLen(){return curr_sche_len;}
 
+	bool getlivelock(){
+		return livelock;
+	}
+
+
+	bool changelivelock(){
+		livelock = false;
+	}
+
 
 	////PCT params
 	//void setParams(struct model_params * _params) {params = _params;}
@@ -166,6 +175,7 @@ private:
 	SnapVector<int> highvec;
 	int highsize;
 	int schelen_limit;
+	bool livelock;
 	
 };
 
