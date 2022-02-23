@@ -372,7 +372,6 @@ Thread * Scheduler::select_next_thread()
 			}	
 		}
 		else{
-			changelivelock();
 			model_print("Reaching livelock! \n");
 			thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 		}
