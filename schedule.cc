@@ -372,11 +372,21 @@ Thread * Scheduler::select_next_thread()
 				movethread(find_chgidx(getSchelen()), thread_list, avail_threads);
 			}	
 		}
-		else{
+		else if(getSchelen() == schelen_limit + 1 || getSchelen() == schelen_limit + 2){
 			if(!livelock){
 				model_print("Reaching livelock! \n");
 				livelock = true;
 			}
+			thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
+		}
+		else if(getSchelen() >= schelen_limit + 3 && getSchelen() <= 2 * schelen_limit){
+			int threadpct = find_highest(thread_list, avail_threads);
+			thread = execution->getFuzzer()->selectThreadbyid(threadpct);
+			if(find_chgidx(getSchelen()) != -1){
+				movethread(find_chgidx(getSchelen()), thread_list, avail_threads);
+			}	
+		}
+		else{
 			thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 		}
 		
