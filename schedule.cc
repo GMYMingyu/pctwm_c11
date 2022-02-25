@@ -373,10 +373,6 @@ Thread * Scheduler::select_next_thread()
 			}	
 		}
 		else if(getSchelen() == schelen_limit + 1 || getSchelen() == schelen_limit + 2){
-			if(!livelock){
-				model_print("Reaching livelock! \n");
-				livelock = true;
-			}
 			thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 		}
 		else if(getSchelen() >= schelen_limit + 3 && getSchelen() <= 2 * schelen_limit){
@@ -387,6 +383,10 @@ Thread * Scheduler::select_next_thread()
 			}	
 		}
 		else{
+			if(!livelock){
+				model_print("Reaching livelock! \n");
+				livelock = true;
+			}
 			thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 		}
 		
