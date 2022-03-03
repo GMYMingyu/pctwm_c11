@@ -86,15 +86,15 @@ void print_params(struct model_params *params)
 		"-v[NUM], --verbose[=NUM]    		Default: 0 - !!DBG_ENABLED(). | Now: %d\n"
 		"-x, --maxexec=NUM           		Maximum number of executions. Default: 1. | Now: %u\n"
 		"                            		-o help for a list of options\n"
-		"-m, --minsize=NUM           		Minimum number of actions to keep. Default:0 | Now: %u\n"
+		//"-m, --minsize=NUM           		Minimum number of actions to keep. Default:0 | Now: %u\n"
 		"-l, --maxscheduler=NUM          	Limitation of the scheduler length. Default:1000 | Now: %u\n"
 		"-b, --bugdepth=NUM             	Bugdepth. Default:5 | Now: %u\n"
-		"-p, --usepct=true/false            Using pct now. Default:false | Now: %u\n"
+		"-p, --usepct=0/1                   Using pct now. Default:false | Now: %u\n"
 		"-f, --freqfree=NUM          		Frequency to free actions. Default:500000 | Now: %u\n",
 
 		params->verbose,
 		params->maxexecutions,
-		params->traceminsize,
+		//params->traceminsize,
 		params->maxscheduler,
 		params->bugdepth,
 		params->usepct,
@@ -391,11 +391,12 @@ Thread * ModelChecker::get_thread(const ModelAction *act) const
 
 void ModelChecker::startRunExecution(Thread *old) {
 	while (true) {
-		if (params.traceminsize != 0 &&
-				execution->get_curr_seq_num() > checkfree) {
-			checkfree += params.checkthreshold;
-			execution->collectActions();
-		}
+		//traceminsize always 0
+		// if (params.traceminsize != 0 &&
+		// 		execution->get_curr_seq_num() > checkfree) {
+		// 	checkfree += params.checkthreshold;
+		// 	execution->collectActions();
+		// }
 
 		curr_thread_num = MAIN_THREAD_ID;
 		Thread *thr = getNextThread(old);

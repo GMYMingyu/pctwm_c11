@@ -21,7 +21,7 @@ void param_defaults(struct model_params *params)
 {
 	params->verbose = !!DBG_ENABLED();
 	params->maxexecutions = 1;
-	params->traceminsize = 0;
+	//params->traceminsize = 0;
 	params->checkthreshold = 500000;
 	//params->removevisible = false;
 	params->nofork = false;
@@ -59,8 +59,8 @@ static void print_usage(struct model_params *params)
 		"                            Default: %u\n"
 		"                            -o help for a list of options\n"
 		"-n                          No fork\n"
-		"-m, --minsize=NUM           Minimum number of actions to keep\n"
-		"                            Default: %u\n"
+		// "-m, --minsize=NUM           Minimum number of actions to keep\n"
+		// "                            Default: %u\n"
 		"-f, --freqfree=NUM          Frequency to free actions\n"
 		"                            Default: %u\n"
 		"-l, --maxshceduler          maximum for the scheduler length\n"
@@ -70,7 +70,7 @@ static void print_usage(struct model_params *params)
 		//"-r, --removevisible         Free visible writes\n",
 		params->verbose,
 		params->maxexecutions,
-		params->traceminsize,
+		//params->traceminsize,
 		params->checkthreshold,
 		params->maxscheduler,
 		params->bugdepth,
@@ -161,9 +161,9 @@ void parse_options(struct model_params *params) {
 			if (install_plugin(optarg))
 				error = true;
 			break;
-		case 'm':
-			params->traceminsize = atoi(optarg);
-			break;
+		// case 'm':
+		// 	params->traceminsize = atoi(optarg);
+		// 	break;
 		case 'f':
 			params->checkthreshold = atoi(optarg);
 			break;

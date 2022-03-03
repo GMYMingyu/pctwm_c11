@@ -1819,7 +1819,8 @@ void ModelExecution::fixupLastAct(ModelAction *act) {
 /** Compute which actions to free.  */
 
 void ModelExecution::collectActions() {
-	if (priv->used_sequence_numbers < params->traceminsize) return;
+	if (priv->used_sequence_numbers < 0) return;
+	//if (priv->used_sequence_numbers < params->traceminsize) return;
 	
 	// //PCT randomly use maxscheduler
 	// if(params->maxscheduler == 0) {
@@ -1830,7 +1831,8 @@ void ModelExecution::collectActions() {
 	//Compute minimal clock vector for all live threads
 	ClockVector *cvmin = computeMinimalCV();
 	SnapVector<CycleNode *> * queue = new SnapVector<CycleNode *>();
-	modelclock_t maxtofree = priv->used_sequence_numbers - params->traceminsize;
+	modelclock_t maxtofree = priv->used_sequence_numbers;
+	//modelclock_t maxtofree = priv->used_sequence_numbers - params->traceminsize;
 
 	//Next walk action trace...  When we hit an action, see if it is
 	//invisible (e.g., earlier than the first before the minimum

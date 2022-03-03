@@ -11,7 +11,7 @@ struct model_params {
 	int bugdepth;
 	bool nofork;
 	int usepct;
-	modelclock_t traceminsize;
+	//modelclock_t traceminsize;
 	modelclock_t checkthreshold;
 	//bool removevisible;
 
