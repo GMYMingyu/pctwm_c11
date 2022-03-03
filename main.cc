@@ -101,7 +101,7 @@ bool install_plugin(char * name) {
 
 void parse_options(struct model_params *params) {
 	//const char *shortopts = "hrnt:o:x:v:m:f:l:";
-	const char *shortopts = "hnt:o:x:v:m:f:l:b:";
+	const char *shortopts = "hnt:o:x:v:m:f:l:b:p:";
 	//const char *shortopts = "hrnt:o:x:v:m:f:";
 	const struct option longopts[] = {
 		{"help", no_argument, NULL, 'h'},
