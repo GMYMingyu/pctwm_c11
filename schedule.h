@@ -173,7 +173,7 @@ private:
 	int highsize;
 	int schelen_limit;
 	bool livelock;
-	bool usingpct;
+	int usingpct;
 	
 };
 
