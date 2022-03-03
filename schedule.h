@@ -50,7 +50,9 @@ public:
 		setlowvec(_params->bugdepth);
 		set_chg_pts(_params->bugdepth, _params->maxscheduler);
 		schelen_limit = 5 * _params->maxscheduler;
-		}
+		if(_params->usepct) pctactive();
+	}
+
 
 	void setlowvec(int bugdepth){
 		if(bugdepth > 1){
@@ -131,6 +133,9 @@ public:
 	void print_avails(int* availthreads, int availnum);
 	int find_highest(int* availthreads, int availnum);
 	void movethread(int lowvec_idx, int* availthreads, int availnum);
+	void pctactive(){
+		usingpct = true;
+	}
 	////PCT - scheduler length
 	// void incScheLen(){curr_sche_len++;}
 	// int getScheLen(){return curr_sche_len;}
@@ -168,6 +173,7 @@ private:
 	int highsize;
 	int schelen_limit;
 	bool livelock;
+	bool usingpct;
 	
 };
 

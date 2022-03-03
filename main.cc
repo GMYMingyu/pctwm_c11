@@ -27,6 +27,7 @@ void param_defaults(struct model_params *params)
 	params->nofork = false;
 	params->maxscheduler = 20;
 	params->bugdepth = 5;
+	params->usepct = false;
 }
 
 static void print_usage(struct model_params *params)
@@ -64,14 +65,16 @@ static void print_usage(struct model_params *params)
 		"                            Default: %u\n"
 		"-l, --maxshceduler          maximum for the scheduler length\n"
 		"                            Default: %u\n"
-		"-b, --bugdepth              bugdepth Default: %u\n",
+		"-b, --bugdepth              bugdepth Default: %u\n"
+		"-p, --usepct                using pct Default: %u\n",
 		//"-r, --removevisible         Free visible writes\n",
 		params->verbose,
 		params->maxexecutions,
 		params->traceminsize,
 		params->checkthreshold,
 		params->maxscheduler,
-		params->bugdepth);
+		params->bugdepth,
+		params->usepct);
 		
 	model_print("Analysis plugins:\n");
 	for(unsigned int i=0;i<registeredanalysis->size();i++) {
@@ -111,6 +114,7 @@ void parse_options(struct model_params *params) {
 		{"freqfree", required_argument, NULL, 'f'},
 		{"maxscheduler", required_argument, NULL, 'l'},
 		{"bugdepth", required_argument, NULL, 'b'},
+		{"usepct", required_argument, NULL, 'p'},
 		{0, 0, 0, 0}	/* Terminator */
 	};
 	int opt, longindex;
@@ -168,6 +172,9 @@ void parse_options(struct model_params *params) {
 			break;
 		case 'b':
 			params->bugdepth = atoi(optarg);
+			break;
+		case 'p':
+			params->usepct = atoi(optarg);
 			break;
 		// case 'r':
 		// 	params->removevisible = true;

@@ -89,6 +89,7 @@ void print_params(struct model_params *params)
 		"-m, --minsize=NUM           		Minimum number of actions to keep. Default:0 | Now: %u\n"
 		"-l, --maxscheduler=NUM          	Limitation of the scheduler length. Default:1000 | Now: %u\n"
 		"-b, --bugdepth=NUM             	Bugdepth. Default:5 | Now: %u\n"
+		"-p, --usepct=true/false            Using pct now. Default:false | Now: %u\n"
 		"-f, --freqfree=NUM          		Frequency to free actions. Default:500000 | Now: %u\n",
 
 		params->verbose,
@@ -96,6 +97,7 @@ void print_params(struct model_params *params)
 		params->traceminsize,
 		params->maxscheduler,
 		params->bugdepth,
+		params->usepct,
 		params->checkthreshold);
 		
 }

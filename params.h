@@ -10,6 +10,7 @@ struct model_params {
 	int maxscheduler; // current represents the num of instructions
 	int bugdepth;
 	bool nofork;
+	bool usepct;
 	modelclock_t traceminsize;
 	modelclock_t checkthreshold;
 	//bool removevisible;
