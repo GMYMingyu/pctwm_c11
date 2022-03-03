@@ -364,7 +364,7 @@ Thread * Scheduler::select_next_thread()
 		// print_avails(thread_list, avail_threads);
 		// print_chg();
 		// model_print("find change priority == scheduler length: %d \n", find_chgidx(getSchelen()));
-		model_print("the state of using pct is : %u \n", usingpct);
+		// model_print("the state of using pct is : %u \n", usingpct);
 
 		if(usingpct == 1){//pct
 			if(getSchelen() <= schelen_limit){
