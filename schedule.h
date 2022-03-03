@@ -50,7 +50,11 @@ public:
 		setlowvec(_params->bugdepth);
 		set_chg_pts(_params->bugdepth, _params->maxscheduler);
 		schelen_limit = 5 * _params->maxscheduler;
-		if(_params->usepct) pctactive();
+		if(_params->usepct == 1) {
+			model_print("using pct version now. \n");
+			pctactive();
+		}
+		else model_print("using c11tester original version now. \n");
 	}
 
 
@@ -134,7 +138,7 @@ public:
 	int find_highest(int* availthreads, int availnum);
 	void movethread(int lowvec_idx, int* availthreads, int availnum);
 	void pctactive(){
-		usingpct = true;
+		usingpct = 1;
 	}
 	////PCT - scheduler length
 	// void incScheLen(){curr_sche_len++;}

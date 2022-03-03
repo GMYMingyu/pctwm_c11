@@ -366,20 +366,27 @@ Thread * Scheduler::select_next_thread()
 		// model_print("find change priority == scheduler length: %d \n", find_chgidx(getSchelen()));
 		model_print("the state of using pct is : %u \n", usingpct);
 
-		if(getSchelen() <= schelen_limit){
-			int threadpct = find_highest(thread_list, avail_threads);
-			thread = execution->getFuzzer()->selectThreadbyid(threadpct);
-			if(find_chgidx(getSchelen()) != -1){
-				movethread(find_chgidx(getSchelen()), thread_list, avail_threads);
-			}	
-		}
-		else{
-			if(!livelock){
-				model_print("Reaching livelock! \n");
-				livelock = true;
+		if(usingpct == 1){//pct
+			if(getSchelen() <= schelen_limit){
+				int threadpct = find_highest(thread_list, avail_threads);
+				thread = execution->getFuzzer()->selectThreadbyid(threadpct);
+				if(find_chgidx(getSchelen()) != -1){
+					movethread(find_chgidx(getSchelen()), thread_list, avail_threads);
+				}	
 			}
-			thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
+			else{
+				if(!livelock){
+					model_print("Reaching livelock! \n");
+					livelock = true;
+				}
+				thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
+			}
 		}
+		if(usingpct == 0){
+			thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
+		} 
+
+
 		
 		 //model_print("Scheduler picks thread: %d\n", id_to_int(thread->get_id()));
 		// print_lowvec();
