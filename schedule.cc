@@ -382,7 +382,7 @@ Thread * Scheduler::select_next_thread()
 				thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 			}
 		}
-		if(usingpct == 0){
+		else{ //usingpct = 0; original pct
 			thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 		} 
 
