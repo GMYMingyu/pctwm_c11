@@ -73,7 +73,7 @@ public:
 		else{
 			chg_pts.resize(bugdepth - 1);
 			for(int i = 0; i < bugdepth - 1; i++){
-				int tmp = rand() % maxscheduler;
+				int tmp = max(1, rand() % maxscheduler);
 				while(chg_pts.find(tmp)){
 					tmp = rand() % maxscheduler;
 				}
