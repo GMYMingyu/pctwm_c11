@@ -55,6 +55,7 @@ public:
 			pctactive();
 		}
 		else model_print("using c11tester original version now. \n");
+		print_chg();
 	}
 
 
@@ -73,15 +74,22 @@ public:
 		else{
 			chg_pts.resize(bugdepth - 1);
 			for(int i = 0; i < bugdepth - 1; i++){
-				int tmp = min(max(1, rand() % maxscheduler), maxscheduler - 1); // [1, MAXSCHEDULER - 1]
+				int tmp = getRandom(maxscheduler); // [1, MAXSCHEDULER - 1]
 				while(chg_pts.find(tmp)){
-					tmp = min(max(1, rand() % maxscheduler), maxscheduler - 1);
+					tmp = getRandom(maxscheduler);
 				}
 				chg_pts[i] = tmp;
 
 			}
 		}
 		
+	}
+
+	int getRandom(int range){
+		int res = rand() % range;
+		res = res < 1 ? 1 : res;
+		res = res > range - 1 ? range - 1 : res;
+		return res;
 	}
 
 
