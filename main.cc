@@ -27,7 +27,7 @@ void param_defaults(struct model_params *params)
 	params->nofork = false;
 	params->maxscheduler = 20;
 	params->bugdepth = 5;
-	params->usepct = false;
+	params->usepct = 0;
 }
 
 static void print_usage(struct model_params *params)
