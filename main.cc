@@ -20,7 +20,7 @@
 void param_defaults(struct model_params *params)
 {
 	params->verbose = !!DBG_ENABLED();
-	params->maxexecutions = 5;
+	params->maxexecutions = 1;
 	//params->traceminsize = 0;
 	params->checkthreshold = 500000;
 	//params->removevisible = false;
