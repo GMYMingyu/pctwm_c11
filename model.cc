@@ -549,6 +549,7 @@ bool ModelChecker::handleChosenThread(Thread *old)
 		chosen_thread = get_next_thread();
 	}
 	if (!chosen_thread) {
+		model_print("have bug: finished scheduler length is %d \n", scheduler->getSchelen());
 		finishRunExecution(old);
 		return false;
 	}
@@ -566,6 +567,7 @@ bool ModelChecker::handleChosenThread(Thread *old)
 	chosen_thread = execution->take_step(curr);
 
 	if (should_terminate_execution()) {
+		model_print("have bug: finished scheduler length is %d \n", scheduler->getSchelen());
 		finishRunExecution(old);
 		return false;
 	} else {
