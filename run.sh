@@ -14,8 +14,7 @@
 # Get the directory in which this script and the binaries are located
 BINDIR="${0%/*}"
 
-#BIN=${BINDIR}/test/userprog.o
-BIN=../c11tester-benchmarks/tsan11-missingbug/a.out
+BIN=${BINDIR}/test/userprog.o
 PREFIX=
 
 export LD_LIBRARY_PATH=${BINDIR}

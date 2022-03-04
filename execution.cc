@@ -1819,13 +1819,8 @@ void ModelExecution::fixupLastAct(ModelAction *act) {
 /** Compute which actions to free.  */
 
 void ModelExecution::collectActions() {
-	if (priv->used_sequence_numbers < params->traceminsize) return;
-	
-	// //PCT randomly use maxscheduler
-	// if(params->maxscheduler == 0) {
-	// 		params->maxscheduler = 10;
-	// }
-		
+	if (priv->used_sequence_numbers < params->traceminsize)
+		return;
 
 	//Compute minimal clock vector for all live threads
 	ClockVector *cvmin = computeMinimalCV();
@@ -1849,8 +1844,7 @@ void ModelExecution::collectActions() {
 		modelclock_t tid_clock = cvmin->getClock(act_tid);
 
 		//Free if it is invisible or we have set a flag to remove visible actions.
-		//if (actseq <= tid_clock || params->removevisible) {
-		if (actseq <= tid_clock) {
+		if (actseq <= tid_clock || params->removevisible) {
 			ModelAction * write;
 			if (act->is_write()) {
 				write = act;

@@ -7,16 +7,13 @@
  */
 struct model_params {
 	int maxexecutions;
-	int maxscheduler; // current represents the num of instructions
-	int bugdepth;
 	bool nofork;
 	modelclock_t traceminsize;
 	modelclock_t checkthreshold;
-	//bool removevisible;
+	bool removevisible;
 
 	/** @brief Verbosity (0 = quiet; 1 = noisy; 2 = noisier) */
 	int verbose;
-	
 };
 
 void param_defaults(struct model_params *params);

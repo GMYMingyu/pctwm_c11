@@ -484,18 +484,7 @@ public:
 		return array[_size - 1];
 	}
 
-	void resize(uint psize) {
-		if (psize <= _size) {
-			_size = psize;
-			return;
-		} else if (psize > capacity) {
-			array = (type *)snapshot_realloc(array, (psize <<1 )* sizeof(type));
-			capacity = psize << 1;
-		}
-		bzero(&array[_size], (psize - _size) * sizeof(type));
-		_size = psize;
-	}
-
+	// function: find item in the vector
 	bool find(type item){
 		for(uint i = 0; i < _size; i++){
 			if(array[i] == item) return true;
@@ -503,6 +492,8 @@ public:
 		return false;
 	}
 
+
+	// add resize with item
 	void resize(uint psize,type item) {
 		if (psize <= _size) {
 			_size = psize;
@@ -516,6 +507,19 @@ public:
 		for(uint i = 0; i < _size; i++){
 			array[i] = item;
 		}
+	}
+
+
+	void resize(uint psize) {
+		if (psize <= _size) {
+			_size = psize;
+			return;
+		} else if (psize > capacity) {
+			array = (type *)snapshot_realloc(array, (psize <<1 )* sizeof(type));
+			capacity = psize << 1;
+		}
+		bzero(&array[_size], (psize - _size) * sizeof(type));
+		_size = psize;
 	}
 
 	void push_back(type item) {

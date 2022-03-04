@@ -20,13 +20,11 @@
 void param_defaults(struct model_params *params)
 {
 	params->verbose = !!DBG_ENABLED();
-	params->maxexecutions = 1;
+	params->maxexecutions = 10;
 	params->traceminsize = 0;
 	params->checkthreshold = 500000;
-	//params->removevisible = false;
+	params->removevisible = false;
 	params->nofork = false;
-	params->maxscheduler = 20;
-	params->bugdepth = 5;
 }
 
 static void print_usage(struct model_params *params)
@@ -36,7 +34,6 @@ static void print_usage(struct model_params *params)
 	param_defaults(params);
 
 	model_print(
-		"print usage\n"
 		"Copyright (c) 2013 Regents of the University of California. All rights reserved.\n"
 		"Distributed under the GPLv2\n"
 		"Written by Brian Norris and Brian Demsky\n"
@@ -62,17 +59,11 @@ static void print_usage(struct model_params *params)
 		"                            Default: %u\n"
 		"-f, --freqfree=NUM          Frequency to free actions\n"
 		"                            Default: %u\n"
-		"-l, --maxshceduler          maximum for the scheduler length\n"
-		"                            Default: %u\n"
-		"-b, --bugdepth              bugdepth Default: %u\n",
-		//"-r, --removevisible         Free visible writes\n",
+		"-r, --removevisible         Free visible writes\n",
 		params->verbose,
 		params->maxexecutions,
 		params->traceminsize,
-		params->checkthreshold,
-		params->maxscheduler,
-		params->bugdepth);
-		
+		params->checkthreshold);
 	model_print("Analysis plugins:\n");
 	for(unsigned int i=0;i<registeredanalysis->size();i++) {
 		TraceAnalysis * analysis=(*registeredanalysis)[i];
@@ -97,20 +88,16 @@ bool install_plugin(char * name) {
 }
 
 void parse_options(struct model_params *params) {
-	//const char *shortopts = "hrnt:o:x:v:m:f:l:";
-	const char *shortopts = "hnt:o:x:v:m:f:l:b:";
-	//const char *shortopts = "hrnt:o:x:v:m:f:";
+	const char *shortopts = "hrnt:o:x:v:m:f:";
 	const struct option longopts[] = {
 		{"help", no_argument, NULL, 'h'},
-		//{"removevisible", no_argument, NULL, 'r'},
+		{"removevisible", no_argument, NULL, 'r'},
 		{"analysis", required_argument, NULL, 't'},
 		{"options", required_argument, NULL, 'o'},
 		{"maxexecutions", required_argument, NULL, 'x'},
 		{"verbose", optional_argument, NULL, 'v'},
 		{"minsize", required_argument, NULL, 'm'},
 		{"freqfree", required_argument, NULL, 'f'},
-		{"maxscheduler", required_argument, NULL, 'l'},
-		{"bugdepth", required_argument, NULL, 'b'},
 		{0, 0, 0, 0}	/* Terminator */
 	};
 	int opt, longindex;
@@ -163,15 +150,9 @@ void parse_options(struct model_params *params) {
 		case 'f':
 			params->checkthreshold = atoi(optarg);
 			break;
-		case 'l':
-			params->maxscheduler = atoi(optarg);
+		case 'r':
+			params->removevisible = true;
 			break;
-		case 'b':
-			params->bugdepth = atoi(optarg);
-			break;
-		// case 'r':
-		// 	params->removevisible = true;
-		// 	break;
 		case 'o':
 		{
 			ModelVector<TraceAnalysis *> * analyses = getInstalledTraceAnalysis();

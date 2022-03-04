@@ -16,12 +16,6 @@ Thread * Fuzzer::selectThread(int * threadlist, int numthreads) {
 	return model->get_thread(curr_tid);
 }
 
-Thread * Fuzzer::selectThreadbyid(int threadid) {
-
-	thread_id_t curr_tid = int_to_id(threadid);
-	return model->get_thread(curr_tid);
-}
-
 Thread * Fuzzer::selectNotify(simple_action_list_t * waiters) {
 	int numwaiters = waiters->size();
 	int random_index = random() % numwaiters;

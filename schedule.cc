@@ -40,133 +40,10 @@ Scheduler::Scheduler() :
 	enabled(NULL),
 	enabled_len(0),
 	curr_thread_index(0),
-	current(NULL),
-	params(NULL),
-	schelen(0),
-	highsize(0),
-	schelen_limit(0),
-	livelock(false)
-	////PCT params
-	//params(NULL),
-	// bugdepth(5),
-	// num_instr(50),
-	// curr_sche_len(0)
+	current(NULL)
 {
-	highvec.resize(0);
 }
 
-
-void Scheduler::highvec_addthread(Thread *t){
-		int threadid = id_to_int(t->get_id());	
-		SnapVector<int> oldhigh;
-		for(int i = 0; i < highsize; i++){
-			oldhigh[i] = highvec[i];
-		}
-
-		highsize++;	
-		
-		highvec.resize(highsize);
-		
-		int tmp = rand() % highsize;
-		if(tmp >= highsize - 1){
-			for(int i = 0; i < highsize - 1; i++){
-				highvec[i] = oldhigh[i];
-			}
-			highvec[highsize - 1] = threadid;				
-		}
-		else{
-			for(int i = 0; i < tmp; i++){
-				highvec[i] = oldhigh[i];
-			}
-			highvec[tmp] = threadid;
-			for(int i = tmp + 1; i < highsize; i++){
-				highvec[i] = oldhigh[i - 1];
-			}
-		}
-
-		
-	};
-
-void Scheduler::movethread(int lowvec_idx, int* availthreads, int availnum){
-	//first:get the highest prio thread
-	int moveid = 0;
-	bool highvec_flag = false;
-	bool lowvec_flag = false;
-
-	int findhigh = 0;
-	while(findhigh < highsize && !highvec_flag){
-		if(highvec[findhigh] != -1){
-			highvec_flag = true; // highvec has thread
-			moveid = highvec[findhigh];
-			highvec[findhigh] = -1;
-
-		}
-		findhigh++;
-
-	}
-
-
-	if(!highvec_flag){//highvec has no thread now
-		uint findlow = 0;
-		while(findlow < lowvec.size() && !lowvec_flag){
-			if(lowvec[findlow] != -1){
-				lowvec_flag = true;
-				moveid = lowvec[findlow];
-				lowvec[findlow] = -1;
-			}
-		findlow++;
-		}
-	}
-	//model_print("move_highest thread %d to lowvec %d \n", moveid, lowvec_idx);
-
-	//step4: update low vector
-	lowvec[lowvec_idx] = moveid;
-
-
-}
-
-
-void Scheduler::print_avails(int* availthreads, int availnum){
-	model_print("Currently avail threads: ");
-	for(int i = 0; i < availnum; i++){
-		model_print("[%d]: %d", i, availthreads[i]);
-	}
-	model_print("\n");
-}
-
-int Scheduler::find_highest(int* availthreads, int availnum){
-	int resid = 0;
-	bool highvec_flag = false;
-	bool lowvec_flag = false;
-
-	int findhigh = 0;
-	while(findhigh < highsize && !highvec_flag){
-		for(int i = 0; i < availnum; i++){
-			if(availthreads[i] == highvec[findhigh]){
-				highvec_flag = true; // highvec has thread available
-				resid = highvec[findhigh];
-			}
-		}
-		findhigh++;
-
-	}
-
-
-	if(!highvec_flag){//highvec has no available thread
-		uint findlow = 0;
-		while(findlow < lowvec.size() && !lowvec_flag){
-			for(int i = 0; i < availnum; i++){
-				if(availthreads[i] == lowvec[findlow]){
-					lowvec_flag = true; // highvec has thread available
-					resid = lowvec[findlow];
-			}
-		}
-		findlow++;
-		}
-	}
-	//model_print("find_highest: %d \n", resid);
-	return resid;
-}
 /**
  * @brief Register the ModelExecution engine
  * @param execution The ModelExecution which is controlling execution
@@ -190,7 +67,6 @@ void Scheduler::set_enabled(Thread *t, enabled_type_t enabled_status) {
 	}
 	enabled[threadid] = enabled_status;
 }
-
 
 /**
  * @brief Check if a Thread is currently enabled
@@ -290,7 +166,6 @@ void Scheduler::add_thread(Thread *t)
 	DEBUG("thread %d\n", id_to_int(t->get_id()));
 	ASSERT(!t->is_model_thread());
 	set_enabled(t, THREAD_ENABLED);
-	highvec_addthread(t);
 }
 
 /**
@@ -357,38 +232,7 @@ Thread * Scheduler::select_next_thread()
 		}
 	} else {
 		// Some threads are available
-
-		incSchelen();
-		// model_print("limitation for shcelen: %d - prevent live lock \n", schelen_limit);
-		// model_print("current length: %d \n", getSchelen());
-		// print_avails(thread_list, avail_threads);
-		// print_chg();
-		// model_print("find change priority == scheduler length: %d \n", find_chgidx(getSchelen()));
-
-		if(getSchelen() <= schelen_limit){
-			int threadpct = find_highest(thread_list, avail_threads);
-			thread = execution->getFuzzer()->selectThreadbyid(threadpct);
-			if(find_chgidx(getSchelen()) != -1){
-				movethread(find_chgidx(getSchelen()), thread_list, avail_threads);
-			}	
-		}
-		else{
-			if(!livelock){
-				model_print("Reaching livelock! \n");
-				livelock = true;
-			}
-			thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
-		}
-		
-		 //model_print("Scheduler picks thread: %d\n", id_to_int(thread->get_id()));
-		// print_lowvec();
-		// print_highvec();
-		// model_print("\n\n");
-		
-		//original: randomly select
-		//thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
-		//model_print("Scheduler picks thread: %d\n", id_to_int(thread->get_id()));
-		
+		thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 	}
 
 	//curr_thread_index = id_to_int(thread->get_id());

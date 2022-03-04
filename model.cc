@@ -74,32 +74,6 @@ void createModelIfNotExist() {
 	}
 }
 
-
-/* ---	PCT passing parameters	---*/
-void print_params(struct model_params *params)
-{
-	//parse_options(params);
-	model_print(
-		
-		
-		"----	PCT:print_params	----:\n"
-		"-v[NUM], --verbose[=NUM]    		Default: 0 - !!DBG_ENABLED(). | Now: %d\n"
-		"-x, --maxexec=NUM           		Maximum number of executions. Default: 1. | Now: %u\n"
-		"                            		-o help for a list of options\n"
-		"-m, --minsize=NUM           		Minimum number of actions to keep. Default:0 | Now: %u\n"
-		"-l, --maxscheduler=NUM          	Limitation of the scheduler length. Default:1000 | Now: %u\n"
-		"-b, --bugdepth=NUM             	Bugdepth. Default:5 | Now: %u\n"
-		"-f, --freqfree=NUM          		Frequency to free actions. Default:500000 | Now: %u\n",
-
-		params->verbose,
-		params->maxexecutions,
-		params->traceminsize,
-		params->maxscheduler,
-		params->bugdepth,
-		params->checkthreshold);
-		
-}
-
 /** @brief Constructor */
 ModelChecker::ModelChecker() :
 	/* Initialize default scheduler */
@@ -111,11 +85,10 @@ ModelChecker::ModelChecker() :
 	trace_analyses(),
 	inspect_plugin(NULL)
 {
-	// model_print("C11Tester\n"
-	// 						"Copyright (c) 2013 and 2019 Regents of the University of California. All rights reserved.\n"
-	// 						"Distributed under the GPLv2\n"
-	// 						"Written by Weiyu Luo, Brian Norris, and Brian Demsky\n\n");
-	model_print("C11tester using PCT in thread selection\n");
+	model_print("C11Tester\n"
+							"Copyright (c) 2013 and 2019 Regents of the University of California. All rights reserved.\n"
+							"Distributed under the GPLv2\n"
+							"Written by Weiyu Luo, Brian Norris, and Brian Demsky\n\n");
 	init_memory_ops();
 	real_memset(&stats,0,sizeof(struct execution_stats));
 	init_thread = new Thread(execution->get_next_id(), (thrd_t *) model_malloc(sizeof(thrd_t)), &placeholder, NULL, NULL);
@@ -125,20 +98,12 @@ ModelChecker::ModelChecker() :
 	execution->add_thread(init_thread);
 	scheduler->set_current_thread(init_thread);
 	register_plugins();
-	
-	
-	////PCT params
-	//scheduler->setParams(&params);
+	execution->setParams(&params);
 	param_defaults(&params);
 	parse_options(&params);
-	print_params(&params);
-
-	execution->setParams(&params);
-	scheduler->setParams(&params);
 	initRaceDetector();
 	/* Configure output redirection for the model-checker */
 	install_handler();
-	
 }
 
 /** @brief Destructor */
@@ -575,9 +540,7 @@ void ModelChecker::startChecker() {
 
 	//reset random number generator state
 	//setstate(random_state);
-
-	// not reproduce 
-	seed = get_nanotime();//equation 
+	seed = get_nanotime();
 	srandom(seed);
 
 	install_trace_analyses(get_execution());

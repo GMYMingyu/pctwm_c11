@@ -211,7 +211,7 @@ static struct DataRace * reportDataRace(thread_id_t oldthread, modelclock_t oldc
  */
 void assert_race(struct DataRace *race)
 {
-	model_print("catching! Race detected at location: \n");
+	model_print("Race detected at location: \n");
 	backtrace_symbols_fd(race->backtrace, race->numframes, model_out);
 	model_print("\nData race detected @ address %p:\n"
 							"    Access 1: %5s in thread %2d @ clock %3u\n"
