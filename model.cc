@@ -359,6 +359,7 @@ void ModelChecker::finish_execution(bool more_executions)
 
 	execution_number ++;
 
+	//print scheduler maxlength
 	model_print("current scheduler length is %d \n", scheduler->getSchelen());
 
 	if (more_executions)
