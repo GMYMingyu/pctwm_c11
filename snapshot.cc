@@ -135,10 +135,12 @@ volatile int modellock = 0;
 static void fork_loop() {
 	/* switch back here when takesnapshot is called */
 	snapshotid = fork_snap->currSnapShotID;
-	if (model->params.nofork) {
-		setcontext(&shared_ctxt);
-		_Exit(EXIT_SUCCESS);
-	}
+
+	//nofork always false
+	// if (model->params.nofork) {
+	// 	setcontext(&shared_ctxt);
+	// 	_Exit(EXIT_SUCCESS);
+	// }
 
 	while (true) {
 		pid_t forkedID;

@@ -24,7 +24,7 @@ void param_defaults(struct model_params *params)
 	//params->traceminsize = 0;
 	params->checkthreshold = 500000;
 	//params->removevisible = false;
-	params->nofork = false;
+	//params->nofork = false;
 	params->maxscheduler = 20;
 	params->bugdepth = 5;
 	params->usepct = 0;
@@ -101,7 +101,8 @@ bool install_plugin(char * name) {
 
 void parse_options(struct model_params *params) {
 	//const char *shortopts = "hrnt:o:x:v:m:f:l:";
-	const char *shortopts = "hnt:o:x:v:m:f:l:b:p:";
+	const char *shortopts = "hnt:o:x:v:f:l:b:p:";
+	// const char *shortopts = "hnt:o:x:v:m:f:l:b:p:";
 	//const char *shortopts = "hrnt:o:x:v:m:f:";
 	const struct option longopts[] = {
 		{"help", no_argument, NULL, 'h'},
@@ -110,7 +111,7 @@ void parse_options(struct model_params *params) {
 		{"options", required_argument, NULL, 'o'},
 		{"maxexecutions", required_argument, NULL, 'x'},
 		{"verbose", optional_argument, NULL, 'v'},
-		{"minsize", required_argument, NULL, 'm'},
+		//{"minsize", required_argument, NULL, 'm'},
 		{"freqfree", required_argument, NULL, 'f'},
 		{"maxscheduler", required_argument, NULL, 'l'},
 		{"bugdepth", required_argument, NULL, 'b'},
@@ -148,9 +149,9 @@ void parse_options(struct model_params *params) {
 		case 'h':
 			print_usage(params);
 			break;
-		case 'n':
-			params->nofork = true;
-			break;
+		// case 'n':
+		// 	params->nofork = true;
+		// 	break;
 		case 'x':
 			params->maxexecutions = atoi(optarg);
 			break;
