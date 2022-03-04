@@ -295,6 +295,7 @@ void ModelExecution::wake_up_sleeping_actions()
 
 void ModelExecution::assert_bug(const char *msg)
 {
+	model_print("have bug: current scheduler length is %d \n", scheduler->getSchelen());
 	priv->bugs.push_back(new bug_message(msg));
 	set_assert();
 }
