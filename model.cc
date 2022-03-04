@@ -361,8 +361,6 @@ void ModelChecker::finish_execution(bool more_executions)
 
 	execution_number ++;
 
-	//print scheduler maxlength
-	model_print("nobug: finished scheduler length is %d \n", scheduler->getSchelen());
 
 	if (more_executions)
 		reset_to_initial_state();
@@ -479,6 +477,10 @@ void ModelChecker::finishRunExecution(Thread *old)
 
 	/** We finished the final execution.  Print stuff and exit. */
 	model_print("******* Model-checking complete: *******\n");
+	
+	//print scheduler maxlength
+	model_print("nobug: finished scheduler length is %d \n", scheduler->getSchelen());
+
 	print_stats();
 
 	/* Have the trace analyses dump their output. */
