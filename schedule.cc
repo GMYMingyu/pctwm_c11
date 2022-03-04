@@ -360,7 +360,7 @@ Thread * Scheduler::select_next_thread()
 
 		incSchelen();
 		// model_print("limitation for shcelen: %d - prevent live lock \n", schelen_limit);
-		model_print("current length: %d \n", getSchelen());
+		// model_print("current length: %d \n", getSchelen());
 		// print_avails(thread_list, avail_threads);
 		// print_chg();
 		// model_print("find change priority == scheduler length: %d \n", find_chgidx(getSchelen()));
