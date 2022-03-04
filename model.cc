@@ -352,9 +352,10 @@ void ModelChecker::finish_execution(bool more_executions)
 
 	record_stats();
 	/* Output */
-	if ( (complete && params.verbose) || params.verbose>1 || (complete && execution->have_bug_reports()))
+	if ( (complete && params.verbose) || params.verbose>1 || (complete && execution->have_bug_reports())){
 		print_execution(complete);
 		model_print("current scheduler length is %d \n", scheduler->getSchelen());
+	}
 	else
 		clear_program_output();
 
