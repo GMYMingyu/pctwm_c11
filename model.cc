@@ -353,7 +353,7 @@ void ModelChecker::finish_execution(bool more_executions)
 	record_stats();
 	/* Output */
 	if ( (complete && params.verbose) || params.verbose>1 || (complete && execution->have_bug_reports())){
-		model_print("have bug: current scheduler length is %d \n", scheduler->getSchelen());
+		model_print("have bug: finished scheduler length is %d \n", scheduler->getSchelen());
 		print_execution(complete);
 	}
 	else
@@ -362,7 +362,7 @@ void ModelChecker::finish_execution(bool more_executions)
 	execution_number ++;
 
 	//print scheduler maxlength
-	model_print("nobug: current scheduler length is %d \n", scheduler->getSchelen());
+	model_print("nobug: finished scheduler length is %d \n", scheduler->getSchelen());
 
 	if (more_executions)
 		reset_to_initial_state();
@@ -541,6 +541,7 @@ uint64_t ModelChecker::switch_thread(ModelAction *act)
 bool ModelChecker::handleChosenThread(Thread *old)
 {
 	if (execution->has_asserted()) {
+		model_print("have bug: finished scheduler length is %d \n", scheduler->getSchelen());
 		finishRunExecution(old);
 		return false;
 	}
