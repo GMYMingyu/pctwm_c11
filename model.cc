@@ -359,6 +359,8 @@ void ModelChecker::finish_execution(bool more_executions)
 
 	execution_number ++;
 
+	model_print("current scheduler length is %d \n", scheduler->getSchelen());
+
 	if (more_executions)
 		reset_to_initial_state();
 }
