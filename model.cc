@@ -353,7 +353,6 @@ void ModelChecker::finish_execution(bool more_executions)
 	record_stats();
 	/* Output */
 	if ( (complete && params.verbose) || params.verbose>1 || (complete && execution->have_bug_reports())){
-		model_print("have bug: finished scheduler length is %d \n", scheduler->getSchelen());
 		print_execution(complete);
 	}
 	else
@@ -551,7 +550,7 @@ bool ModelChecker::handleChosenThread(Thread *old)
 		chosen_thread = get_next_thread();
 	}
 	if (!chosen_thread) {
-		model_print("have bug: finished scheduler length is %d \n", scheduler->getSchelen());
+		model_print("no chosen thread: finished scheduler length is %d \n", scheduler->getSchelen());
 		finishRunExecution(old);
 		return false;
 	}
@@ -569,7 +568,7 @@ bool ModelChecker::handleChosenThread(Thread *old)
 	chosen_thread = execution->take_step(curr);
 
 	if (should_terminate_execution()) {
-		model_print("have bug: finished scheduler length is %d \n", scheduler->getSchelen());
+		model_print("should terminate execution: finished scheduler length is %d \n", scheduler->getSchelen());
 		finishRunExecution(old);
 		return false;
 	} else {
