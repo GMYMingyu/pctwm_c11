@@ -16,6 +16,7 @@ struct model_params {
 	int verbose;
 
 	int maxscheduler;
+	int bugdepth;
 };
 
 void param_defaults(struct model_params *params);
