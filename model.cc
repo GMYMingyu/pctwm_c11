@@ -64,6 +64,17 @@ void install_handler() {
 	}
 }
 
+void print_params(struct model_params *params){
+		model_print("-v[NUM], --verbose[=NUM]   Default: 0 Now: %d\n"
+		"-x, --maxexec=NUM           Maximum number of executions. Default: 10 Now: %u\n"
+		"-m, --minsize=NUM           Minimum number of actions to keep Default: 0 Now: %u\n"
+		"-f, --freqfree=NUM          Frequency to free actions Default:500000 Now: %u\n",
+		params->verbose,
+		params->maxexecutions,
+		params->traceminsize,
+		params->checkthreshold);
+}
+
 void createModelIfNotExist() {
 	if (!model) {
 		ENTER_MODEL_FLAG;
@@ -101,6 +112,7 @@ ModelChecker::ModelChecker() :
 	execution->setParams(&params);
 	param_defaults(&params);
 	parse_options(&params);
+	print_params(&params);
 	initRaceDetector();
 	/* Configure output redirection for the model-checker */
 	install_handler();
