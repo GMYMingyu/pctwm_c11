@@ -117,11 +117,13 @@ ModelChecker::ModelChecker() :
 	execution->add_thread(init_thread);
 	scheduler->set_current_thread(init_thread);
 	register_plugins();
-	execution->setParams(&params);
-	scheduler->setParams(&params);
+	
 	param_defaults(&params);
 	parse_options(&params);
 	print_params(&params);
+	
+	execution->setParams(&params);
+	scheduler->setParams(&params);
 	initRaceDetector();
 	/* Configure output redirection for the model-checker */
 	install_handler();
