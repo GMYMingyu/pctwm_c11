@@ -27,6 +27,7 @@ void param_defaults(struct model_params *params)
 	params->nofork = false;
 	params->maxscheduler = 50;
 	params->bugdepth = 5;
+	params->version = 0;
 }
 
 static void print_usage(struct model_params *params)
@@ -63,13 +64,15 @@ static void print_usage(struct model_params *params)
 		"                            Default: %u\n"
 		"-r, --removevisible         Free visible writes\n"
 		"-l, --maxscheduler			 Scheduler length prevention\n"
-		"-b, --bugdepth 			 Bugdepth\n",
+		"-b, --bugdepth 			 Bugdepth\n"
+		"-v, --version				 0: using original c11tester; 1: using pct\n",
 		params->verbose,
 		params->maxexecutions,
 		params->traceminsize,
 		params->checkthreshold,
 		params->maxscheduler,
-		params->bugdepth);
+		params->bugdepth,
+		params->version);
 	model_print("Analysis plugins:\n");
 	for(unsigned int i=0;i<registeredanalysis->size();i++) {
 		TraceAnalysis * analysis=(*registeredanalysis)[i];
@@ -95,7 +98,7 @@ bool install_plugin(char * name) {
 
 void parse_options(struct model_params *params) {
 	//const char *shortopts = "hrnt:o:x:v:m:f:";
-	const char *shortopts = "hrnt:o:x:v:m:f:l:b:";
+	const char *shortopts = "hrnt:o:x:v:m:f:l:b:v:";
 	const struct option longopts[] = {
 		{"help", no_argument, NULL, 'h'},
 		{"removevisible", no_argument, NULL, 'r'},
@@ -107,6 +110,7 @@ void parse_options(struct model_params *params) {
 		{"freqfree", required_argument, NULL, 'f'},
 		{"maxscheduler", required_argument, NULL, 'l'},
 		{"bugdepth", required_argument, NULL, 'b'},
+		{"version", required_argument, NULL, 'v'},
 		{0, 0, 0, 0}	/* Terminator */
 	};
 	int opt, longindex;
@@ -162,8 +166,11 @@ void parse_options(struct model_params *params) {
 		case 'l':
 			params->maxscheduler = atoi(optarg);
 			break;
-			case 'b':
+		case 'b':
 			params->bugdepth = atoi(optarg);
+			break;
+		case 'v':
+			params->version = atoi(optarg);
 			break;
 		case 'r':
 			params->removevisible = true;
