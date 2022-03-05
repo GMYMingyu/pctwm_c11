@@ -40,7 +40,12 @@ Scheduler::Scheduler() :
 	enabled(NULL),
 	enabled_len(0),
 	curr_thread_index(0),
-	current(NULL)
+	current(NULL),
+	params(NULL),
+	schelen(0),
+	highsize(0),
+	schelen_limit(0),
+	livelock(false)
 {
 }
 

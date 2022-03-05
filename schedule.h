@@ -54,6 +54,19 @@ private:
 
 	/** The currently-running Thread */
 	Thread *current;
+
+	//PCT
+	struct model_params * params;
+
+	SnapVector<int> lowvec;
+	SnapVector<int> chg_pts;
+	int schelen;
+
+	SnapVector<int> highvec;
+	int highsize;
+	int schelen_limit;
+	bool livelock;
+	int usingpct;
 };
 
 #endif	/* __SCHEDULE_H__ */
