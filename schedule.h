@@ -43,6 +43,109 @@ public:
 	bool all_threads_sleeping() const;
 	void set_scheduler_thread(thread_id_t tid);
 
+	// related funcs
+
+	void setParams(struct model_params * _params) {
+		params = _params;
+		setlowvec(_params->bugdepth);
+		set_chg_pts(_params->bugdepth, _params->maxscheduler);
+		schelen_limit = 5 * _params->maxscheduler;
+		if(_params->version == 1) {
+			model_print("using pct version now. \n");
+			pctactive();
+		}
+		else model_print("using c11tester original version now. \n");
+		print_chg();
+	}
+
+
+	void setlowvec(int bugdepth){
+		if(bugdepth > 1){
+			lowvec.resize(bugdepth - 1,-1);
+		}
+		else lowvec.resize(1);
+		
+	}
+
+	void set_chg_pts(int bugdepth, int maxscheduler){
+		if(bugdepth <= 1){
+			chg_pts.resize(1, rand() % maxscheduler);
+		}
+		else{
+			chg_pts.resize(bugdepth - 1);
+			for(int i = 0; i < bugdepth - 1; i++){
+				int tmp = getRandom(maxscheduler); // [1, MAXSCHEDULER]
+				while(chg_pts.find(tmp)){
+					tmp = getRandom(maxscheduler);
+				}
+				chg_pts[i] = tmp;
+
+			}
+		}
+		
+	}
+
+	int getRandom(int range){
+		int res = rand() % range;
+		res = res < 1 ? 1 : res;
+		return res;
+	}
+
+
+	void print_chg(){
+		model_print("Change Priority Points:  ");
+		for(uint64_t i = 0; i < chg_pts.size(); i++){
+			model_print("[%u]: %d  ", i, chg_pts[i]);
+		}
+		model_print("\n");
+
+	}
+
+
+	void print_lowvec(){
+		model_print("Low priority threads:  ");
+		for(uint64_t i = 0; i < lowvec.size(); i++){
+			model_print("[%u]: %d  ", i, lowvec[i]);
+		}
+		model_print("\n");
+
+	}
+
+	void incSchelen(){
+		schelen++;
+	}
+
+	int getSchelen(){
+		return schelen;
+	}
+
+	int find_chgidx(int schelen){
+		int res = -1;
+		for(uint i = 0; i < chg_pts.size(); i++){
+			if(schelen == chg_pts[i]) res = i;
+		}
+		return res;
+	}
+
+	void highvec_addthread(Thread *t);
+
+	void print_highvec(){
+		model_print("high priority vector: ");
+		for(int i = 0; i < highsize; i++){
+			model_print("[%d] : %d", i, highvec[i]);
+		}
+		model_print("\n");
+	}
+
+
+	void print_avails(int* availthreads, int availnum);
+	int find_highest(int* availthreads, int availnum);
+	void movethread(int lowvec_idx, int* availthreads, int availnum);
+	void pctactive(){
+		usingpct = 1;
+	}
+
+
 	SNAPSHOTALLOC
 private:
 	ModelExecution *execution;
