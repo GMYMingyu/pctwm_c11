@@ -70,11 +70,13 @@ void print_params(struct model_params *params){
 		"-v[NUM], --verbose[=NUM]   Default: 0 Now: %d\n"
 		"-x, --maxexec=NUM           Maximum number of executions. Default: 10 Now: %u\n"
 		"-m, --minsize=NUM           Minimum number of actions to keep Default: 0 Now: %u\n"
-		"-f, --freqfree=NUM          Frequency to free actions Default:500000 Now: %u\n",
+		"-f, --freqfree=NUM          Frequency to free actions Default:500000 Now: %u\n"
+		"-l, --maxscheduler=NUM		 Scheduler length limitation Default:50 Now: %u\n",
 		params->verbose,
 		params->maxexecutions,
 		params->traceminsize,
-		params->checkthreshold);
+		params->checkthreshold,
+		params->maxscheduler);
 }
 
 void createModelIfNotExist() {
