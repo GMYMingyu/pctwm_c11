@@ -47,10 +47,10 @@ public:
 
 	void setParams(struct model_params * _params) {
 		params = _params;
-		setlowvec(_params->bugdepth);
-		set_chg_pts(_params->bugdepth, _params->maxscheduler);
-		schelen_limit = 5 * _params->maxscheduler;
-		if(_params->version == 1) {
+		setlowvec(params->bugdepth);
+		set_chg_pts(params->bugdepth, params->maxscheduler);
+		schelen_limit = 5 * params->maxscheduler;
+		if(params->version == 1) {
 			model_print("using pct version now. \n");
 			pctactive();
 		}
