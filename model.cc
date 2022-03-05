@@ -118,6 +118,7 @@ ModelChecker::ModelChecker() :
 	scheduler->set_current_thread(init_thread);
 	register_plugins();
 	execution->setParams(&params);
+	scheduler->setParams(&params);
 	param_defaults(&params);
 	parse_options(&params);
 	print_params(&params);
