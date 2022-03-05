@@ -77,7 +77,7 @@ void print_params(struct model_params *params){
 		params->maxexecutions,
 		params->traceminsize,
 		params->checkthreshold,
-		params->maxscheduler
+		params->maxscheduler,
 		params->bugdepth);
 }
 
