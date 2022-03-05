@@ -8,6 +8,7 @@
 #include "mymemory.h"
 #include "modeltypes.h"
 #include "classlist.h"
+#include "params.h"
 
 typedef enum enabled_type {
 	THREAD_DISABLED,
