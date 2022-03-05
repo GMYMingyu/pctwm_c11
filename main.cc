@@ -98,7 +98,7 @@ bool install_plugin(char * name) {
 
 void parse_options(struct model_params *params) {
 	//const char *shortopts = "hrnt:o:x:v:m:f:";
-	const char *shortopts = "hrnt:o:x:v:m:f:l:b:v:";
+	const char *shortopts = "hrnt:o:x:v:m:f:l:b:p:";
 	const struct option longopts[] = {
 		{"help", no_argument, NULL, 'h'},
 		{"removevisible", no_argument, NULL, 'r'},
@@ -110,7 +110,7 @@ void parse_options(struct model_params *params) {
 		{"freqfree", required_argument, NULL, 'f'},
 		{"maxscheduler", required_argument, NULL, 'l'},
 		{"bugdepth", required_argument, NULL, 'b'},
-		{"version", required_argument, NULL, 'v'},
+		{"version", required_argument, NULL, 'p'},
 		{0, 0, 0, 0}	/* Terminator */
 	};
 	int opt, longindex;
@@ -169,7 +169,7 @@ void parse_options(struct model_params *params) {
 		case 'b':
 			params->bugdepth = atoi(optarg);
 			break;
-		case 'v':
+		case 'p':
 			params->version = atoi(optarg);
 			break;
 		case 'r':
