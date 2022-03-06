@@ -359,12 +359,13 @@ Thread * Scheduler::select_next_thread()
 		// Some threads are available
 
 		incSchelen();
-		// model_print("limitation for shcelen: %d - prevent live lock \n", schelen_limit);
-		// model_print("current length: %d \n", getSchelen());
-		// print_avails(thread_list, avail_threads);
-		// print_chg();
-		// model_print("find change priority == scheduler length: %d \n", find_chgidx(getSchelen()));
-		// model_print("the state of using pct is : %u \n", usingpct);
+		model_print("limitation for shcelen: %d - prevent live lock \n", schelen_limit);
+		model_print("current length: %d \n", getSchelen());
+		print_avails(thread_list, avail_threads);
+		print_chg();
+		model_print("find change priority == scheduler length: %d \n", find_chgidx(getSchelen()));
+		print_lowvec();
+		print_highvec();
 
 		if(usingpct == 1){//pct
 			if(getSchelen() <= schelen_limit){
@@ -388,10 +389,9 @@ Thread * Scheduler::select_next_thread()
 
 
 		
-		 //model_print("Scheduler picks thread: %d\n", id_to_int(thread->get_id()));
-		// print_lowvec();
-		// print_highvec();
-		// model_print("\n\n");
+		model_print("Scheduler picks thread: %d\n", id_to_int(thread->get_id()));
+
+		model_print("\n\n");
 		
 		//original: randomly select
 		//thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
