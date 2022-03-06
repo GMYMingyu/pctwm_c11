@@ -95,7 +95,7 @@ void Scheduler::movethread(int lowvec_idx, int* availthreads, int availnum){
 			highvec_flag = true; // highvec has thread
 			moveid = highvec[findhigh];
 			highvec[findhigh] = -1;
-
+			break;
 		}
 		findhigh++;
 
@@ -142,6 +142,7 @@ int Scheduler::find_highest(int* availthreads, int availnum){
 			if(availthreads[i] == highvec[findhigh]){
 				highvec_flag = true; // highvec has thread available
 				resid = highvec[findhigh];
+				break;
 			}
 		}
 		findhigh++;
@@ -156,6 +157,7 @@ int Scheduler::find_highest(int* availthreads, int availnum){
 				if(availthreads[i] == lowvec[findlow]){
 					lowvec_flag = true; // highvec has thread available
 					resid = lowvec[findlow];
+					break;
 			}
 		}
 		findlow++;
