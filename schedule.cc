@@ -138,12 +138,10 @@ int Scheduler::find_highest(int* availthreads, int availnum){
 
 	int findhigh = 0;
 	while(findhigh < highsize && !highvec_flag){
-		int currthread = highvec[findhigh]; // current high-prio thread
-		for(int i = 0; i <= availnum; i++){ // if it is enabled
-			if(availthreads[i] == currthread){
+		for(int i = 0; i < availnum; i++){
+			if(availthreads[i] == highvec[findhigh]){
 				highvec_flag = true; // highvec has thread available
-				resid = currthread;
-				break;
+				resid = highvec[findhigh];
 			}
 		}
 		findhigh++;
