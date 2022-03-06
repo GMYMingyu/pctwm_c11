@@ -362,7 +362,8 @@ Thread * Scheduler::select_next_thread()
 		print_avails(thread_list, avail_threads);
 		print_chg();
 		model_print("find change priority == scheduler length: %d \n", find_chgidx(getSchelen()));
-		model_print("the state of using pct is : %u \n", usingpct);
+		print_highvec();
+		print_lowvec();
 
 		if(usingpct == 1){//pct
 			if(getSchelen() <= schelen_limit){
@@ -387,8 +388,6 @@ Thread * Scheduler::select_next_thread()
 
 		
 		model_print("Scheduler picks thread: %d\n", id_to_int(thread->get_id()));
-		print_lowvec();
-		print_highvec();
 		model_print("\n\n");
 		
 		//original: randomly select
