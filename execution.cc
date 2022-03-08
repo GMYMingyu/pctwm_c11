@@ -849,7 +849,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		//pctwm
 		incReadnum();
 		model_print("current readnums: %d \n", getReadnum());
-		int reach_chg_idx = find_chgidx(getReadnum());
+		int reach_chg_idx = scheduler->find_chgidx(getReadnum());
 		if(reach_chg_idx != -1){
 			model_print("reach a change point \n", reach_chg_idx);
 		}
