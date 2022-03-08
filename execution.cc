@@ -842,11 +842,14 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 	SnapVector<ModelAction *> * rf_set = NULL;
 	bool canprune = false;
-	/* Build may_read_from set for newly-created actions */
-	if (curr->is_read() && newly_explored) {
+
+	if(curr->is_read()){
 		//pctwm
 		incReadnum();
 		model_print("current readnums: %d \n", getReadnum());
+	}
+	/* Build may_read_from set for newly-created actions */
+	if (curr->is_read() && newly_explored) {
 		rf_set = build_may_read_from(curr);
 		canprune = process_read(curr, rf_set);
 		delete rf_set;
