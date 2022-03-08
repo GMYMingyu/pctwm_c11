@@ -83,7 +83,7 @@ void Scheduler::highvec_addthread(Thread *t){
 	};
 
 // move highest prio thread to low prio vector according to its index
-void Scheduler::movethread(int lowvec_idx, int* availthreads, int availnum){
+void Scheduler::movethread(int lowvec_idx){
 	//first:get the highest prio thread
 	int moveid = 0;
 	bool highvec_flag = false;
@@ -370,9 +370,9 @@ Thread * Scheduler::select_next_thread()
 			if(getSchelen() <= schelen_limit){
 				int threadpct = find_highest(thread_list, avail_threads);
 				thread = execution->getFuzzer()->selectThreadbyid(threadpct);
-				if(find_chgidx(getSchelen()) != -1){
-					movethread(find_chgidx(getSchelen()), thread_list, avail_threads);
-				}	
+				// if(find_chgidx(getSchelen()) != -1){
+				// 	movethread(find_chgidx(getSchelen()));
+				// }	
 			}
 			else{
 				if(!livelock){
