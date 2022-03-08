@@ -49,7 +49,8 @@ public:
 	void setParams(struct model_params * _params) {
 		params = _params;
 		setlowvec(params->bugdepth);
-		set_chg_pts(params->bugdepth, params->maxscheduler);
+		//set_chg_pts(params->bugdepth, params->maxscheduler);
+		set_chg_pts_byread(params->bugdepth, params->maxread);
 		schelen_limit = 5 * params->maxscheduler;
 		if(params->version == 1) {
 			model_print("using pct version now. \n");
@@ -78,6 +79,25 @@ public:
 				int tmp = getRandom(maxscheduler); // [1, MAXSCHEDULER]
 				while(chg_pts.find(tmp)){
 					tmp = getRandom(maxscheduler);
+				}
+				chg_pts[i] = tmp;
+
+			}
+		}
+		
+	}
+
+	//pctwm
+	void set_chg_pts_byread(int bugdepth, int maxread){
+		if(bugdepth <= 1){
+			chg_pts.resize(1, rand() % maxread);
+		}
+		else{
+			chg_pts.resize(bugdepth - 1);
+			for(int i = 0; i < bugdepth - 1; i++){
+				int tmp = getRandom(maxread); // [1, MAXSCHEDULER]
+				while(chg_pts.find(tmp)){
+					tmp = getRandom(maxread);
 				}
 				chg_pts[i] = tmp;
 
