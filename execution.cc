@@ -851,7 +851,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		model_print("current readnums: %d \n", getReadnum());
 		int reach_chg_idx = scheduler->find_chgidx(getReadnum());
 		if(reach_chg_idx != -1){
-			model_print("reach a change point \n", reach_chg_idx);
+			model_print("execution.cc: reach a change point: %d \n", reach_chg_idx);
 		}
 		rf_set = build_may_read_from(curr);
 		canprune = process_read(curr, rf_set);
