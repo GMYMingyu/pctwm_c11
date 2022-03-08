@@ -78,7 +78,9 @@ ModelExecution::ModelExecution(ModelChecker *m, Scheduler *scheduler) :
 	priv(new struct model_snapshot_members ()),
 	mo_graph(new CycleGraph()),
 	fuzzer(new Fuzzer()),
-	isfinished(false)
+	isfinished(false),
+	//pctwm
+	readnum(0)
 {
 	/* Initialize a model-checker thread, for special ModelActions */
 	model_thread = new Thread(get_next_id());
@@ -842,6 +844,9 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	bool canprune = false;
 	/* Build may_read_from set for newly-created actions */
 	if (curr->is_read() && newly_explored) {
+		//pctwm
+		incReadnum();
+		model_print("current readnums: %d \n", getReadnum());
 		rf_set = build_may_read_from(curr);
 		canprune = process_read(curr, rf_set);
 		delete rf_set;

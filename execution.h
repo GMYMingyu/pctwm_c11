@@ -99,6 +99,14 @@ public:
 #ifdef TLS
 	pthread_key_t getPthreadKey() {return pthreadkey;}
 #endif
+
+	void incReadnum(){
+		readnum++;
+	}
+
+	int getReadnum(){
+		return readnum;
+	}
 	SNAPSHOTALLOC
 private:
 	int get_execution_number() const;
@@ -209,6 +217,9 @@ private:
 	Thread * action_select_next_thread(const ModelAction *curr) const;
 
 	bool isfinished;
+
+	//pctwm
+	int readnum;
 };
 
 #endif	/* __EXECUTION_H__ */
