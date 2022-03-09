@@ -166,6 +166,13 @@ public:
 		usingpct = 1;
 	}
 
+	bool inhighvec(int threadid){
+		for(int i = 0; i < highsize; i++){
+			if(highvec[i] == threadid) return true;
+		}
+		return false;
+	}
+
 
 	SNAPSHOTALLOC
 private:
