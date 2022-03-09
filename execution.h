@@ -111,7 +111,7 @@ public:
 
 	void print_rfset(SnapVector<ModelAction *> * rf_set){
 		int len = rf_set->size();
-		model_print("print rf_set : ");
+		model_print("print rf_set : current read_from set size: %d. - ", len);
 		for(int i = 0; i < len; i++){
 			ModelAction *rf = (*rf_set)[i];
 			model_print("read_from thread %d  ", rf->get_tid());
