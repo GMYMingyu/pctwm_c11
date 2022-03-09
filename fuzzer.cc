@@ -9,6 +9,32 @@ int Fuzzer::selectWrite(ModelAction *read, SnapVector<ModelAction *> * rf_set) {
 	return random_index;
 }
 
+//pctwm
+// return the idx of write-value in the rf_set
+int Fuzzer::selectWriteMyThread(ModelAction *read, SnapVector<ModelAction *> * rf_set, int tid) {
+	int len = rf_set.size(); // get how many rfs we have now
+	if(len == 1) return 0;
+	
+	for(int i = 0; i < len; i++){
+		ModelAction *rf = (*rf_set)[i];
+		if(rf->get_tid() == tid){
+			return i;
+		}
+	}
+	
+	// if currently I cannot read from my 
+	int random_index = random() % rf_set->size();
+	return random_index;
+}
+
+//pctwm
+// return the idx of write-value in the rf_set
+int Fuzzer::selectWriteOtherThread(ModelAction *read, SnapVector<ModelAction *> * rf_set, int tid) {
+	if(rf_set->size() == 1) return 0;
+	int random_index = random() % rf_set->size();
+	return random_index;
+}
+
 Thread * Fuzzer::selectThread(int * threadlist, int numthreads) {
 	int random_index = random() % numthreads;
 	int thread = threadlist[random_index];
