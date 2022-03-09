@@ -114,7 +114,7 @@ public:
 		model_print("print rf_set : ");
 		for(int i = 0; i < len; i++){
 			ModelAction *rf = (*rf_set)[i];
-			model_print("read_from thread %d", rf->get_tid());
+			model_print("read_from thread %d  ", rf->get_tid());
 		}
 		model_print("\n");
 
