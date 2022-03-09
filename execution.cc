@@ -859,6 +859,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			scheduler->print_lowvec();
 		}
 		rf_set = build_may_read_from(curr);
+		print_rfset(rf_set);
 		canprune = process_read(curr, rf_set);
 		delete rf_set;
 	} else
