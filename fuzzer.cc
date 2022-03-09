@@ -3,6 +3,7 @@
 #include "threads-model.h"
 #include "model.h"
 #include "action.h"
+#
 
 int Fuzzer::selectWrite(ModelAction *read, SnapVector<ModelAction *> * rf_set) {
 	int random_index = random() % rf_set->size();
@@ -47,7 +48,7 @@ int Fuzzer::selectWriteOtherThread(ModelAction *read, SnapVector<ModelAction *> 
 		return 0;
 	}
 
-	Snapvector<int> otherThreadIdx;
+	SnapVector<int> otherThreadIdx;
 	for(int i = 0; i < len; i++){
 		ModelAction *rf = (*rf_set)[i];
 		if(rf->get_tid() != tid){//write values on other threads
