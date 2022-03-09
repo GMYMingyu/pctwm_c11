@@ -844,7 +844,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	bool canprune = false;
 
 	scheduler->print_highvec();
-	model_print("current action is in thread %d, in or not in highvec: %d", curr->get_tid(),scheduler->inhighvec(id_to_int(curr->get_tid()));
+	model_print("current action is in thread %d, in or not in highvec: %d", curr->get_tid(), scheduler->inhighvec(id_to_int(curr->get_tid())));
 	/* Build may_read_from set for newly-created actions */
 	if (curr->is_read() && newly_explored) {
 		//pctwm
