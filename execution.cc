@@ -849,7 +849,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		//pctwm
 		incReadnum();
 		model_print("current readnums: %d \n", getReadnum());
-		model_print("current action from thread - %d \n" curr->get_tid());
+		model_print("current action from thread - %d \n", curr->get_tid());
 		int reach_chg_idx = scheduler->find_chgidx(getReadnum());
 		if(reach_chg_idx != -1){
 			scheduler->print_highvec();
