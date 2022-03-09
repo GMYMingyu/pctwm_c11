@@ -18,6 +18,7 @@
 #include "mutex.h"
 #include <condition_variable>
 #include "classlist.h"
+#include "action.h"
 
 #define INITIAL_THREAD_ID	0
 #define MAIN_THREAD_ID		1
@@ -107,6 +108,17 @@ public:
 	int getReadnum(){
 		return readnum;
 	}
+
+	void print_rfset(SnapVector<ModelAction *> * rf_set){
+		int len = *rf_set;
+		model_print("print rf_set : ");
+		for(int i = 0; i < len; i++){
+			model_print("read_from thread %d", *rf_set[i].get_tid());
+		}
+		model_print("\n");
+
+	}
+
 	SNAPSHOTALLOC
 private:
 	int get_execution_number() const;
