@@ -16,7 +16,7 @@ int Fuzzer::selectWriteMyThread(ModelAction *read, SnapVector<ModelAction *> * r
 
 	// case1: only one read from value : return idx 0
 	if(len == 1) {
-		model_print("only one read: select idx: 0");
+		model_print("only one read: select idx: 0. \n");
 		return 0;
 	}
 	
@@ -25,14 +25,14 @@ int Fuzzer::selectWriteMyThread(ModelAction *read, SnapVector<ModelAction *> * r
 	for(int i = 0; i < len; i++){
 		ModelAction *rf = (*rf_set)[i];
 		if(rf->get_tid() == tid){
-			model_print("current thread has value to read from: idx %d", i);
+			model_print("current thread has value to read from: idx %d. \n", i);
 			return i;
 		}
 	}
 	
 	// case3: if currently I cannot read from the current thread, randomly select ont
 	int random_index = random() % rf_set->size();
-	model_print("current thread does not have value to read from %d", random_index);
+	model_print("current thread does not have value to read from %d. \n", random_index);
 	return random_index;
 }
 
