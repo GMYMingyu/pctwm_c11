@@ -110,7 +110,7 @@ public:
 	}
 
 	void print_rfset(SnapVector<ModelAction *> * rf_set){
-		int len = *rf_set;
+		int len = *rf_set.size();
 		model_print("print rf_set : ");
 		for(int i = 0; i < len; i++){
 			ModelAction *rf = (*rf_set)[i];
