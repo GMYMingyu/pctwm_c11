@@ -13,17 +13,26 @@ int Fuzzer::selectWrite(ModelAction *read, SnapVector<ModelAction *> * rf_set) {
 // return the idx of write-value in the rf_set
 int Fuzzer::selectWriteMyThread(ModelAction *read, SnapVector<ModelAction *> * rf_set, int tid) {
 	int len = rf_set->size(); // get how many rfs we have now
-	if(len == 1) return 0;
+
+	// case1: only one read from value : return idx 0
+	if(len == 1) {
+		model_print("only one read: select idx: 0");
+		return 0;
+	}
 	
+
+	// case2: traverse all values: return the value in my thread
 	for(int i = 0; i < len; i++){
 		ModelAction *rf = (*rf_set)[i];
 		if(rf->get_tid() == tid){
+			model_print("current thread has value to read from: idx %d", i);
 			return i;
 		}
 	}
 	
-	// if currently I cannot read from my 
+	// case3: if currently I cannot read from the current thread, randomly select ont
 	int random_index = random() % rf_set->size();
+	model_print("current thread does not have value to read from %d", random_index);
 	return random_index;
 }
 
