@@ -48,7 +48,7 @@ int Fuzzer::selectWriteOtherThread(ModelAction *read, SnapVector<ModelAction *> 
 		return 0;
 	}
 
-	SnapVector<int> otherThreadIdx;
+	SnapVector<int> otherThreadIdx; // the vector to save the idxs of other threads in rf-set
 	for(int i = 0; i < len; i++){
 		ModelAction *rf = (*rf_set)[i];
 		if(rf->get_tid() != tid){//write values on other threads
