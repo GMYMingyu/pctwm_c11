@@ -411,7 +411,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 	   }*/
 
 	while(true) {
-		int index = fuzzer->selectWrite(curr, rf_set);
+		int index = fuzzer->selectWriteMyThread(curr, rf_set);
 
 		ModelAction *rf = (*rf_set)[index];
 
