@@ -163,7 +163,7 @@ public:
 
 	void print_avails(int* availthreads, int availnum);
 	int find_highest(int* availthreads, int availnum);
-	void movethread(int lowvec_idx, int* availthreads, int availnum);
+	void movethread(int lowvec_idx);
 	void pctactive(){
 		usingpct = 1;
 	}

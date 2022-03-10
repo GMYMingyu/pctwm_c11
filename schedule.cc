@@ -83,7 +83,7 @@ void Scheduler::highvec_addthread(Thread *t){
 	};
 
 // move highest prio thread to low prio vector according to its index
-void Scheduler::movethread(int lowvec_idx, int* availthreads, int availnum){
+void Scheduler::movethread(int lowvec_idx){
 	//first:get the highest prio thread
 	int moveid = 0;
 	bool highvec_flag = false;
