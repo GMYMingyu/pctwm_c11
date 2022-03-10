@@ -418,13 +418,16 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 		// pctwm
 		int index;// index in the rf-set -> represent which write value we are going to use
 		if(scheduler->inhighvec(curr->get_tid())){ //still in the highvec - not change priority yet
+			model_print("process_read: select writes on other thread. ");
 			index = fuzzer->selectWriteOtherThread(curr, rf_set, curr->get_tid()); 
 		}
 		else{ // not in the highvec - already change the priority at least once
+			model_print("process_read: select writes on current thread. ");
 			index = fuzzer->selectWriteMyThread(curr, rf_set, curr->get_tid());
 		}
 
 		ModelAction *rf = (*rf_set)[index];
+		model_print("Select thread: %d. \n", rf->get_tid());
 
 		ASSERT(rf);
 		bool canprune = false;
