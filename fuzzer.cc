@@ -56,6 +56,7 @@ int Fuzzer::selectWriteOtherThread(ModelAction *read, SnapVector<ModelAction *> 
 		}
 	}
 	int random_index = random() % otherThreadIdx.size();
+	model_print("select from other thread : %d. \n", random_index);
 	return otherThreadIdx[random_index];
 }
 

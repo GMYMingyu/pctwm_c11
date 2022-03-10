@@ -856,6 +856,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	scheduler->print_highvec();
 	model_print("current action is in thread %d, in or not in highvec: %d \n", curr->get_tid(), scheduler->inhighvec(id_to_int(curr->get_tid())));
 	/* Build may_read_from set for newly-created actions */
+	// is_read: ATOMIC_READ || type == ATOMIC_RMWR || type == ATOMIC_RMWRCAS || type == ATOMIC_RMW
 	if (curr->is_read() && newly_explored) {
 		//pctwm
 		incReadnum();
