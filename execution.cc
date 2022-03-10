@@ -78,7 +78,10 @@ ModelExecution::ModelExecution(ModelChecker *m, Scheduler *scheduler) :
 	priv(new struct model_snapshot_members ()),
 	mo_graph(new CycleGraph()),
 	fuzzer(new Fuzzer()),
-	isfinished(false)
+	isfinished(false),
+	//pctwm
+	readnum(0),
+	maxreads(0)
 {
 	/* Initialize a model-checker thread, for special ModelActions */
 	model_thread = new Thread(get_next_id());
@@ -840,8 +843,22 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 	SnapVector<ModelAction *> * rf_set = NULL;
 	bool canprune = false;
+
+	//pctwm
+	scheduler->print_highvec();
+	// test whether we can find if current action threadid is in the highvec(not change priority yet)
+	model_print("current action is in thread %d, in or not in highvec: %d \n", curr->get_tid(), scheduler->inhighvec(id_to_int(curr->get_tid())));
 	/* Build may_read_from set for newly-created actions */
 	if (curr->is_read() && newly_explored) {
+
+		//pctwm - compare readnums
+		incReadnum();
+		model_print("current readnums: %d \n", getReadnum());
+		int reach_chg_idx = scheduler->find_chgidx(getReadnum());
+		if(reach_chg_idx != -1){
+			model_print("reach the %d change point. \n", reach_chg_idx);
+		}
+
 		rf_set = build_may_read_from(curr);
 		canprune = process_read(curr, rf_set);
 		delete rf_set;
