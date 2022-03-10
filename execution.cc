@@ -855,12 +855,22 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		incReadnum();
 		model_print("current readnums: %d \n", getReadnum());
 		int reach_chg_idx = scheduler->find_chgidx(getReadnum());
+		//reach the change point - change priority
 		if(reach_chg_idx != -1){
-			model_print("reach the %d change point. \n", reach_chg_idx);
+			scheduler->print_highvec();
+			scheduler->print_lowvec();
+			model_print("execution.cc: reach the %d change point. \n", reach_chg_idx);
+			scheduler->movethread(reach_chg_idx); // the same as the pct - find the highest thread and put it to the related idx in lowvec
+			scheduler->print_highvec();
+			scheduler->print_lowvec();
 		}
 
 		rf_set = build_may_read_from(curr);
-		canprune = process_read(curr, rf_set);
+
+		//pctwm - to print the rf-set threads
+		print_rfset(rf_set);
+
+		canprune = process_read(curr, rf_set); // here the programs calls the selectWrite - ensure that we change the priority before the select write
 		delete rf_set;
 	} else
 		ASSERT(rf_set == NULL);

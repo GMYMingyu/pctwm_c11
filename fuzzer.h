@@ -9,6 +9,11 @@ class Fuzzer {
 public:
 	Fuzzer() {}
 	virtual int selectWrite(ModelAction *read, SnapVector<ModelAction *>* rf_set);
+	
+	//pctwm - two kinds of select write values
+	virtual int selectWriteMyThread(ModelAction *read, SnapVector<ModelAction *>* rf_set, int tid);
+	virtual int selectWriteOtherThread(ModelAction *read, SnapVector<ModelAction *>* rf_set, int tid);
+
 	virtual bool has_paused_threads() { return false; }
 	virtual Thread * selectThread(int * threadlist, int numthreads);
 	virtual Thread *selectThreadbyid(int threadid);

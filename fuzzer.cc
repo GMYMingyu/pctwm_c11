@@ -9,6 +9,57 @@ int Fuzzer::selectWrite(ModelAction *read, SnapVector<ModelAction *> * rf_set) {
 	return random_index;
 }
 
+//pctwm
+// return the idx of write-value in the rf_set
+int Fuzzer::selectWriteMyThread(ModelAction *read, SnapVector<ModelAction *> * rf_set, int tid) {
+	int len = rf_set->size(); // get how many rfs we have now
+
+	// case1: only one read from value : return idx 0
+	if(len <= 1) {
+		model_print("only one read: select idx: 0. \n");
+		return 0;
+	}
+	
+
+	// case2: traverse all values: return the value in my thread
+	for(int i = 0; i < len; i++){
+		ModelAction *rf = (*rf_set)[i];
+		if(rf->get_tid() == tid){
+			model_print("current thread has value to read from: idx %d. \n", i);
+			return i;
+		}
+	}
+	
+	// case3: if currently I cannot read from the current thread, randomly select ont
+	int random_index = random() % rf_set->size();
+	model_print("current thread does not have value to read from %d. \n", random_index);
+	return random_index;
+}
+
+//pctwm
+// return the idx of write-value in the rf_set
+int Fuzzer::selectWriteOtherThread(ModelAction *read, SnapVector<ModelAction *> * rf_set, int tid) {
+	int len = rf_set->size(); // get how many rfs we have now
+
+	// case1: only one read from value : return idx 0
+	if(len <= 1) {
+		model_print("only one read: select idx: 0. \n");
+		return 0;
+	}
+
+	SnapVector<int> otherThreadIdx; // the vector to save the idxs of other threads in rf-set
+	for(int i = 0; i < len; i++){
+		ModelAction *rf = (*rf_set)[i];
+		if(rf->get_tid() != tid){//write values on other threads
+			otherThreadIdx.push_back(i); // the idxs that save other threads
+		}
+	}
+	int random_index = random() % otherThreadIdx.size();
+	model_print("select from other thread : %d. \n", random_index);
+	return otherThreadIdx[random_index];
+}
+
+
 Thread * Fuzzer::selectThread(int * threadlist, int numthreads) {
 	int random_index = random() % numthreads;
 	int thread = threadlist[random_index];
