@@ -412,7 +412,17 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 	   }*/
 
 	while(true) {
-		int index = fuzzer->selectWrite(curr, rf_set);
+		//originally randomly select
+		//int index = fuzzer->selectWrite(curr, rf_set);
+		
+		// pctwm
+		int index;// index in the rf-set -> represent which write value we are going to use
+		if(scheduler->inhighvec(curr->get_tid())){ //still in the highvec - not change priority yet
+			index = fuzzer->selectWriteOtherThread(curr, rf_set, curr->get_tid()); 
+		}
+		else{ // not in the highvec - already change the priority at least once
+			index = fuzzer->selectWriteMyThread(curr, rf_set, curr->get_tid());
+		}
 
 		ModelAction *rf = (*rf_set)[index];
 
