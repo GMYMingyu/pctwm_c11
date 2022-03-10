@@ -80,7 +80,8 @@ ModelExecution::ModelExecution(ModelChecker *m, Scheduler *scheduler) :
 	fuzzer(new Fuzzer()),
 	isfinished(false),
 	//pctwm
-	readnum(0)
+	readnum(0),
+	maxreads(0)
 {
 	/* Initialize a model-checker thread, for special ModelActions */
 	model_thread = new Thread(get_next_id());

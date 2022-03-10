@@ -42,7 +42,11 @@ public:
 	~ModelExecution();
 
 	struct model_params * get_params() const { return params; }
-	void setParams(struct model_params * _params) {params = _params;}
+	void setParams(struct model_params * _params) {
+		params = _params;
+		maxreads = 5 * params->maxread; // set the livelock bound for read nums
+		model_print("The limit of read nums is %d. \n", maxreads);
+		}
 
 	Thread * take_step(ModelAction *curr);
 
@@ -233,6 +237,7 @@ private:
 
 	//pctwm
 	int readnum;
+	int maxreads;
 };
 
 #endif	/* __EXECUTION_H__ */
