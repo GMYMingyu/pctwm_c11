@@ -41,7 +41,11 @@ public:
 	~ModelExecution();
 
 	struct model_params * get_params() const { return params; }
-	void setParams(struct model_params * _params) {params = _params;}
+		void setParams(struct model_params * _params) {
+		params = _params;
+		maxreads = 5 * params->maxread; // set the livelock bound for read nums
+		model_print("The limit of read nums is %d. \n", maxreads);
+	}
 
 	Thread * take_step(ModelAction *curr);
 
@@ -90,6 +94,26 @@ public:
 	HashTable<pthread_cond_t *, cdsc::snapcondition_variable *, uintptr_t, 4> * getCondMap() {return &cond_map;}
 	HashTable<pthread_mutex_t *, cdsc::snapmutex *, uintptr_t, 4> * getMutexMap() {return &mutex_map;}
 	ModelAction * check_current_action(ModelAction *curr);
+
+	//pctwm
+	void incReadnum(){
+		readnum++;
+	}
+
+	int getReadnum(){
+		return readnum;
+	}
+
+	void print_rfset(SnapVector<ModelAction *> * rf_set){
+		int len = rf_set->size();
+		model_print("print rf_set : current read_from set size: %d. - ", len);
+		for(int i = 0; i < len; i++){
+			ModelAction *rf = (*rf_set)[i];
+			model_print("read_from thread %d  ", rf->get_tid());
+		}
+		model_print("\n");
+
+	}
 
 	bool isFinished() {return isfinished;}
 	void setFinished() {isfinished = true;}
@@ -209,6 +233,10 @@ private:
 	Thread * action_select_next_thread(const ModelAction *curr) const;
 
 	bool isfinished;
+
+	//pctwm
+	int readnum;
+	int maxreads;
 };
 
 #endif	/* __EXECUTION_H__ */
