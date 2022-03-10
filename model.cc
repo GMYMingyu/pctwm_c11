@@ -73,14 +73,16 @@ void print_params(struct model_params *params){
 		"-f, --freqfree=NUM          Frequency to free actions Default:500000 Now: %u\n"
 		"-l, --maxscheduler=NUM		 Scheduler length limitation Default:50 Now: %u\n"
 		"-b, --bugdepth=NUM			 bugdepth Default:5 Now: %u\n"
-		"-v, --version=NUM			 c11testerversion Default:0 Now: %u\n",
+		"-v, --version=NUM			 c11testerversion Default:0 Now: %u\n"
+		"-e, --maxread=NUM			 read num bounds: Default:30 Now: %u\n",
 		params->verbose,
 		params->maxexecutions,
 		params->traceminsize,
 		params->checkthreshold,
 		params->maxscheduler,
 		params->bugdepth,
-		params->version);
+		params->version,
+		params->maxread);
 }
 
 void createModelIfNotExist() {

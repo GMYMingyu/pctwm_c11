@@ -18,6 +18,8 @@ struct model_params {
 	int maxscheduler;
 	int bugdepth;
 	int version;
+	//pctwm
+	int maxread;
 };
 
 void param_defaults(struct model_params *params);
