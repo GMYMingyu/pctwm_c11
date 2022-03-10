@@ -416,7 +416,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 		//int index = fuzzer->selectWrite(curr, rf_set);
 
 		// pctwm
-		if(scheduler->inhighvec()){ //still in the highvec - not change priority yet
+		if(scheduler->inhighvec(curr->get_tid())){ //still in the highvec - not change priority yet
 			int index = fuzzer->selectWriteOtherThread(curr, rf_set, curr->get_tid());
 		}
 		else{ // not in the highvec - already change the priority at least once
