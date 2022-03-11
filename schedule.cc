@@ -83,40 +83,30 @@ void Scheduler::highvec_addthread(Thread *t){
 	};
 
 // move highest prio thread to low prio vector according to its index
-void Scheduler::movethread(int lowvec_idx, int* availthreads, int availnum){
-	//first:get the highest prio thread
-	int moveid = 0;
-	bool highvec_flag = false;
-	bool lowvec_flag = false;
-
-	int findhigh = 0;
-	while(findhigh < highsize && !highvec_flag){
-		if(highvec[findhigh] != -1){
-			highvec_flag = true; // highvec has thread
-			moveid = highvec[findhigh];
-			highvec[findhigh] = -1;
+void Scheduler::movethread(int lowvec_idx, int threadid){
+	//first:find the threadid
+	
+	bool inhigh = false;
+	for(int i = 0; i < highsize; i++){
+		if(highvec[i] == threadid){//find the thread in highvec
+			highvec[i] = -1;
+			inhigh = true;
 			break;
 		}
-		findhigh++;
-
 	}
 
-
-	if(!highvec_flag){//highvec has no thread now
-		uint findlow = 0;
-		while(findlow < lowvec.size() && !lowvec_flag){
-			if(lowvec[findlow] != -1){
-				lowvec_flag = true;
-				moveid = lowvec[findlow];
-				lowvec[findlow] = -1;
+	if(!inhigh){//does not find the thread in highvec, find in lowvec
+		for(uint i = 0; i < lowvec.size(); i++){
+			if(lowvec[i] == threadid){
+				lowvec[i] = -1;
+				break;
 			}
-		findlow++;
 		}
 	}
 	//model_print("move_highest thread %d to lowvec %d \n", moveid, lowvec_idx);
 
 	//step4: update low vector
-	lowvec[lowvec_idx] = moveid;
+	lowvec[lowvec_idx] = threadid;
 
 
 }
@@ -371,7 +361,7 @@ Thread * Scheduler::select_next_thread()
 				int threadpct = find_highest(thread_list, avail_threads);
 				thread = execution->getFuzzer()->selectThreadbyid(threadpct);
 				if(find_chgidx(getSchelen()) != -1){
-					movethread(find_chgidx(getSchelen()), thread_list, avail_threads);
+					movethread(find_chgidx(getSchelen()), threadpct);
 				}	
 			}
 			else{
