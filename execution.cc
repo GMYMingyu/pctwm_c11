@@ -417,14 +417,20 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 		
 		// pctwm
 		int index;// index in the rf-set -> represent which write value we are going to use
-		if(scheduler->inhighvec(curr->get_tid())){ //still in the highvec - not change priority yet
-			model_print("process_read: select writes on other thread. ");
-			index = fuzzer->selectWriteOtherThread(curr, rf_set, curr->get_tid()); 
+		if(readnum <= maxreads){ // less than the bound
+			if(scheduler->inhighvec(curr->get_tid())){ //still in the highvec - not change priority yet
+				model_print("process_read: select writes on other thread. ");
+				index = fuzzer->selectWriteOtherThread(curr, rf_set, curr->get_tid()); 
+			}
+			else{ // not in the highvec - already change the priority at least once
+				model_print("process_read: select writes on current thread. ");
+				index = fuzzer->selectWriteMyThread(curr, rf_set, curr->get_tid());
+			}			
 		}
-		else{ // not in the highvec - already change the priority at least once
-			model_print("process_read: select writes on current thread. ");
-			index = fuzzer->selectWriteMyThread(curr, rf_set, curr->get_tid());
+		else{ // larger than the bound
+			index = fuzzer->selectWrite(curr, rf_set);
 		}
+
 
 		ModelAction *rf = (*rf_set)[index];
 		model_print("Select thread: %d. \n", rf->get_tid());
@@ -858,22 +864,25 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	bool canprune = false;
 
 	//pctwm
-	scheduler->print_highvec();
+	
 	// test whether we can find if current action threadid is in the highvec(not change priority yet)
 	model_print("current action is in thread %d, in or not in highvec: %d \n", curr->get_tid(), scheduler->inhighvec(id_to_int(curr->get_tid())));
 	/* Build may_read_from set for newly-created actions */
 	if (curr->is_read() && newly_explored) {
-
+		model_print("execution: check current action -");
+		scheduler->print_highvec();
 		//pctwm - compare readnums
 		incReadnum();
 		model_print("current readnums: %d \n", getReadnum());
 		int reach_chg_idx = scheduler->find_chgidx(getReadnum());
 		//reach the change point - change priority
 		if(reach_chg_idx != -1){
+			model_print("execution: reach change point. before:");
 			scheduler->print_highvec();
 			scheduler->print_lowvec();
 			model_print("execution.cc: reach the %d change point. \n", reach_chg_idx);
 			scheduler->movethread(reach_chg_idx); // the same as the pct - find the highest thread and put it to the related idx in lowvec
+			model_print("execution: reach change point. after:");
 			scheduler->print_highvec();
 			scheduler->print_lowvec();
 		}
