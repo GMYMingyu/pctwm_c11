@@ -125,7 +125,7 @@ public:
 			if(iteract.get_location() == act.get_location()){ // the same variable
 				if(iteract.get_seq_number() > act.get_seq_number()){
 					local_vec[i] = act;
-					hasflag = true;
+					has_flag = true;
 				}
 				break;
 			}
@@ -138,7 +138,6 @@ public:
 
 	void init_vec(){
 		local_vec_size = 0;
-		local_vec = NULL;
 	}
 
 	friend void thread_startup();
