@@ -121,7 +121,7 @@ public:
 		bool has_flag = false;
 		//int threadid = id_to_int(act->get_tid()); // get the thread id of the current action
 		for(uint i = 0; i < get_localvec_size(); i++){
-			ModelAction iteract = local_vec[i];
+			ModelAction* iteract = local_vec[i];
 			if(iteract->get_location() == act->get_location()){ // the same variable
 				if(iteract->get_seq_number() > act->get_seq_number()){
 					local_vec[i] = act;
@@ -173,7 +173,7 @@ private:
 
 	// the vector to save each variable value
 	// save seq_number
-	SnapVector<ModelAction> local_vec; // the vector to save each variable newest value
+	SnapVector<ModelAction*> local_vec; // the vector to save each variable newest value
 	int local_vec_size;
 
 	/** @brief The parent Thread which created this Thread */
