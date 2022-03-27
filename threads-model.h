@@ -117,7 +117,7 @@ public:
 		return local_vec.size();
 	}
 
-	void update_local_vec(ModelAction act){
+	void update_local_vec(ModelAction* act){
 		bool has_flag = false;
 		int threadid = id_to_int(act->get_tid()); // get the thread id of the current action
 		for(uint i = 0; i < get_localvec_size(); i++){
