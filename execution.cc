@@ -1435,6 +1435,30 @@ bool valequals(uint64_t val1, uint64_t val2, int size) {
 	}
 }
 
+// weak memory implementation test
+SnapVector<ModelAction *> *  ModelExecution::build_local_read_from(ModelAction *curr)
+{
+	SnapVector<action_list_t> *thrd_lists = obj_thrd_map.get(curr->get_location()); // get all actions on one thread
+
+	int tid = curr->get_tid(); // get the current thread id
+
+	action_list_t *list = &(*thrd_lists)[tid];
+	sllnode<ModelAction *> * rit;
+	bool before_flag = false;
+	for (rit = list->end();rit != NULL;rit=rit->getPrev()) { // get all actions before current action
+		ModelAction *act = rit->getVal();
+		if(act == curr){
+			before_flag = true;
+		}
+
+		if(before_flag){// iterate all actions before the current action
+
+
+		}
+	}
+}
+
+
 /**
  * Build up an initial set of all past writes that this 'read' action may read
  * from, as well as any previously-observed future values that must still be valid.
@@ -1629,6 +1653,7 @@ void ModelExecution::add_thread(Thread *t)
 	if (i >= thread_map.size())
 		thread_map.resize(i + 1);
 	thread_map[i] = t;
+	t.init_vec();
 	if (!t->is_model_thread())
 		scheduler->add_thread(t);
 }

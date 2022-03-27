@@ -14,6 +14,7 @@
 #include "classlist.h"
 #include "pthread.h"
 #include <sys/epoll.h>
+#include "action.h"
 
 struct thread_params {
 	thrd_start_t func;
@@ -111,6 +112,35 @@ public:
 	void * get_stack_addr() { return stack; }
 	ClockVector * get_acq_fence_cv() { return acq_fence_cv; }
 
+	//weak memory 
+	uint get_localvec_size(){
+		return local_vec.size();
+	}
+
+	void update_local_vec(ModelAction act){
+		bool has_flag = false;
+		int threadid = id_to_int(act.get_tid()); // get the thread id of the current action
+		for(uint i = 0; i < get_localvec_size(); i++){
+			ModelAction iteract = local_vec[i];
+			if(iteract.get_location() == act.get_location()){ // the same variable
+				if(iteract.get_seq_number() > act.get_seq_number()){
+					local_vec[i] = act;
+					hasflag = true;
+				}
+				break;
+			}
+		}
+		if(!has_flag){ // does not have this variable yet
+			local_vec.push_back(act);
+			local_vec_size++;
+		}
+	}
+
+	void init_vec(){
+		local_vec_size = 0;
+		local_vec = NULL;
+	}
+
 	friend void thread_startup();
 #ifdef TLS
 	friend void setup_context();
@@ -141,6 +171,11 @@ public:
 #endif
 private:
 	int create_context();
+
+	// the vector to save each variable value
+	// save seq_number
+	SnapVector<ModelAction> local_vec; // the vector to save each variable newest value
+	int local_vec_size;
 
 	/** @brief The parent Thread which created this Thread */
 	Thread * const parent;
