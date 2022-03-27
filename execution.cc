@@ -581,7 +581,10 @@ bool ModelExecution::process_mutex(ModelAction *curr)
  * @return True if the mo_graph was updated or promises were resolved
  */
 void ModelExecution::process_write(ModelAction *curr)
-{
+{	
+	// we meet a write action -> update the local vec
+	Thread * curr_thread = get_thread(curr->getVal());
+	curr_thread.update_local_vec(curr);
 	w_modification_order(curr);
 	get_thread(curr)->set_return_value(VALUE_NONE);
 }
