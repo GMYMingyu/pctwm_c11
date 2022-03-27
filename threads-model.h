@@ -119,11 +119,11 @@ public:
 
 	void update_local_vec(ModelAction act){
 		bool has_flag = false;
-		int threadid = id_to_int(act.get_tid()); // get the thread id of the current action
+		int threadid = id_to_int(act->get_tid()); // get the thread id of the current action
 		for(uint i = 0; i < get_localvec_size(); i++){
 			ModelAction iteract = local_vec[i];
-			if(iteract.get_location() == act.get_location()){ // the same variable
-				if(iteract.get_seq_number() > act.get_seq_number()){
+			if(iteract->get_location() == act->get_location()){ // the same variable
+				if(iteract->get_seq_number() > act->get_seq_number()){
 					local_vec[i] = act;
 					has_flag = true;
 				}
