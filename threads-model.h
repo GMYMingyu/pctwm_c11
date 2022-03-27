@@ -136,6 +136,14 @@ public:
 		}
 	}
 
+	void print_local_vec(){
+		for(uint i = 0; i < get_localvec_size(); i++){
+			ModelAction* iteract = local_vec[i];
+			model_print("location: %u, value: %u", iteract->get_location(), iteract->get_value());
+		}
+		model_print("\n");
+	}
+
 	void init_vec(){
 		local_vec_size = 0;
 	}
