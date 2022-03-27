@@ -1653,7 +1653,7 @@ void ModelExecution::add_thread(Thread *t)
 	if (i >= thread_map.size())
 		thread_map.resize(i + 1);
 	thread_map[i] = t;
-	t.init_vec();
+	t->init_vec();
 	if (!t->is_model_thread())
 		scheduler->add_thread(t);
 }
