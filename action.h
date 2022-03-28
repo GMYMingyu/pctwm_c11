@@ -208,6 +208,10 @@ public:
 		bag_flag = true;
 	}
 
+	bool checkbag(){
+		return bag_flag;
+	}
+
 	SNAPSHOTALLOC
 private:
 	const char * get_type_str() const;

@@ -1445,12 +1445,79 @@ bool valequals(uint64_t val1, uint64_t val2, int size) {
 	}
 }
 
+// weak memory : 
+/**
+ * Update a vector by the new action. Return a variable vector
+ * @param input_vec The old variable vector
+ * @param curr The new action
+ * @return Desired new variable vector
+ */
+SnapVector<ModelAction*> * ModelExecution::updateVec(SnapVector<ModelAction*> input_vec, ModelAction* curr){
+	int len = input_vec.size();
+	bool has_curr = false;
+	for(int i = 0; i < len; i++){
+		ModelAction* act = input_vec[i];
+		if(curr->get_location() == act->get_location()){
+			has_curr = true; //the vec has this variable
+			if(act->get_seq_number() > curr->get_seq_number()){ // update only when the new action(curr) has larger sequence number
+				input_vec[i] = act;
+			}
+		}
+	}
+	
+	if(!has_curr){
+		input_vec.push_back(curr);
+	}
+
+	return input_vec;
+}
+
+// weak memory : 
+/**
+ * a vector saves the newest variable 
+ * @param Eacc The accumulate vector
+ * @param local_vec The local vector on the thread
+ * @return Desired vector with newest variable
+ */
+SnapVector<ModelAction*> * ModelExecution::maxVec(SnapVector<ModelAction*> Eacc, SnapVector<ModelAction*> local_vec){
+	uint Eacc_len = Eacc.size();
+	
+	for(uint i = 0; i < Eacc_len; i++){
+		ModelAction* act1 = Eacc[i]; // the variable in accumulate vector
+		uint localvec_idx = local_vec.get_index(act1);
+		if(localvec_idx != -1){// have this variable
+			ModelAction* act2 = local_vec[localvec_idx]; // the same variable
+			if(act1->get_seq_number() > act2->get_seq_number()){
+				local_vec[localvec_idx] = act1;
+			}
+		}
+		else{
+			local_vec.push_back(act1);
+		}
+		
+	}
+
+	return local_vec;
+}
+
 // weak memory implementation test
-SnapVector<ModelAction *> *  ModelExecution::build_local_read_from(ModelAction *curr)
-{
+/**
+ * Iterate all actions on the current thread
+ * @param rd the read action
+ * @param curr the action to iterate
+ * @return Desired new variable vector
+ */
+SnapVector<ModelAction *> *  ModelExecution::build_local_read_from(ModelAction *rd, ModelAction * curr)
+{	
+	ASSERT(rd->is_read()); // the inital read action
+	SnapVector<ModelAction*> Eres; // the result E
+	SnapVector<ModelAction*> Eacc; // the accumulate bag 
+	
 	SnapVector<action_list_t> *thrd_lists = obj_thrd_map.get(curr->get_location()); // get all actions on one thread
 
 	int tid = curr->get_tid(); // get the current thread id
+	Thread *external_thr = get_thread(tid);
+	SnapVector<ModelAction*> thr_local_vec = external_thr->get_local_vec();
 
 	action_list_t *list = &(*thrd_lists)[tid];
 	sllnode<ModelAction *> * rit;
@@ -1462,10 +1529,29 @@ SnapVector<ModelAction *> *  ModelExecution::build_local_read_from(ModelAction *
 		}
 
 		if(before_flag){// iterate all actions before the current action
+			if(act->is_thread_start()){//reach the start of a thread
+				Eres = Eacc;
+				break;
+			}
+			else if(!act.is_write() && (act.is_read() && !act->checkbag())){
+				continue;
+			}
+			else if(act.is_read() && act->checkbag()){// reach an action with bag
+				Eres = maxVec(Eacc, thr_local_vec); // merge the accumulate vector with local vector
+			}
+			else if(act.is_write()){
+				if((act.is_release() || act->is_seqcst()) && (rd.is_acquire() || rd.is_seqcst())){
+					continue;
+				}
+				else{
+					updateVec(Eacc, act);
+				}
+			}
 
 
 		}
 	}
+	return Eacc;
 }
 
 

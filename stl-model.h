@@ -492,6 +492,14 @@ public:
 		return false;
 	}
 
+	// get the index of the find item
+	uint get_index(type item){
+		for(uint i = 0; i < _size; i++){
+			if(array[i] == item) return i;
+		}
+		return -1;
+	}
+
 
 	// add resize with item
 	void resize(uint psize,type item) {

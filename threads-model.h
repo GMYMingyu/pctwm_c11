@@ -136,6 +136,10 @@ public:
 		}
 	}
 
+	SnapVector<ModelAction*> get_local_vec(){
+		return local_vec;
+	}
+
 	void print_local_vec(){
 		for(uint i = 0; i < get_localvec_size(); i++){
 			ModelAction* iteract = local_vec[i];
