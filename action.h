@@ -198,6 +198,16 @@ public:
 	void setActionRef(sllnode<ModelAction *> *ref) { action_ref = ref; }
 	sllnode<ModelAction *> * getActionRef() { return action_ref; }
 
+
+	// weak memory - bag flag
+	void init_bagflag(){
+		bag_flag = false;
+	}
+
+	void set_bag(){
+		bag_flag = true;
+	}
+
 	SNAPSHOTALLOC
 private:
 	const char * get_type_str() const;
@@ -256,6 +266,10 @@ private:
 	 * should represent the action's position in the execution order.
 	 */
 	modelclock_t seq_number;
+
+	// weak memory - add bag flag and bag
+	bool bag_flag;
+	SnapVector<ModelAction* > bag;
 };
 
 #endif	/* __ACTION_H__ */
