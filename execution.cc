@@ -1517,14 +1517,17 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	
 	SnapVector<action_list_t> *thrd_lists = obj_thrd_map.get(curr->get_location()); // get all actions on one thread
 
-	int tid = curr->get_tid(); // get the current thread id
-	Thread *external_thr = get_thread(tid);
-	SnapVector<ModelAction *> * thr_local_vec = external_thr->get_local_vec();
+	// the thread of read action - get local vector
+	int rd_tid = rd->get_id();
+	Thread *rd_thr = get_thread(rd_tid);
+	SnapVector<ModelAction *> * rd_local_vec = rd_thr->get_local_vec();
 
-	action_list_t *list = &(*thrd_lists)[tid];
+	// the thread of write action - iteration
+	int wr_tid = curr->get_tid(); // get the current thread id
+	action_list_t *wr_list = &(*thrd_lists)[wr_tid]; // get the thread of write action
 	sllnode<ModelAction *> * rit;
 	bool before_flag = false;
-	for (rit = list->end();rit != NULL;rit=rit->getPrev()) { // get all actions before current action
+	for (rit = wr_list->end();rit != NULL;rit=rit->getPrev()) { // get all actions before current action
 		ModelAction *act = rit->getVal();
 		if(act == curr){
 			before_flag = true;
