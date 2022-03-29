@@ -1533,14 +1533,14 @@ SnapVector<ModelAction *> *  ModelExecution::build_local_read_from(ModelAction *
 				Eres = Eacc;
 				break;
 			}
-			else if(!act.is_write() && (act.is_read() && !act->checkbag())){
+			else if(!act->is_write() && (act->is_read() && !act->checkbag())){
 				continue;
 			}
-			else if(act.is_read() && act->checkbag()){// reach an action with bag
+			else if(act->is_read() && act->checkbag()){// reach an action with bag
 				Eres = maxVec(Eacc, thr_local_vec); // merge the accumulate vector with local vector
 			}
-			else if(act.is_write()){
-				if((act.is_release() || act->is_seqcst()) && (rd.is_acquire() || rd.is_seqcst())){
+			else if(act->is_write()){
+				if((act->is_release() || act->is_seqcst()) && (rd->is_acquire() || rd->is_seqcst())){
 					continue;
 				}
 				else{
