@@ -1503,14 +1503,15 @@ SnapVector<ModelAction*> * ModelExecution::maxVec(SnapVector<ModelAction*> * Eac
 
 // weak memory implementation test
 /**
- * Iterate all actions on the current thread
+ * Iterate all actions on the current thread to build the bag for this action
  * @param rd the read action
- * @param curr the action to iterate
+ * @param curr the action to iterate(the selected write)
  * @return Desired new variable vector
  */
-SnapVector<ModelAction *> *  ModelExecution::build_local_read_from(ModelAction *rd, ModelAction * curr)
+SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, ModelAction * curr)
 {	
 	ASSERT(rd->is_read()); // the inital read action
+	ASSERT(curr->is_write()); // the randomly selected write action
 	SnapVector<ModelAction *> * Eres = new SnapVector<ModelAction *>(); // the result E
 	SnapVector<ModelAction *> * Eacc = new SnapVector<ModelAction *>(); // the accumulate bag 
 	

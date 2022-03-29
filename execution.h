@@ -123,7 +123,7 @@ private:
 	ModelAction * get_last_unlock(ModelAction *curr) const;
 	SnapVector<ModelAction *> * build_may_read_from(ModelAction *curr);
 	// weak memory function
-	SnapVector<ModelAction *> * build_local_read_from(ModelAction *rd, ModelAction * curr);
+	SnapVector<ModelAction *> * computeUpdate(ModelAction *rd, ModelAction * curr);
 	SnapVector<ModelAction*> * updateVec(SnapVector<ModelAction*> *input_vec, ModelAction* curr);
 	SnapVector<ModelAction*> * maxVec(SnapVector<ModelAction*> * Eacc, SnapVector<ModelAction*> *local_vec);
 	ModelAction * process_rmw(ModelAction *curr);
