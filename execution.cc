@@ -1551,7 +1551,8 @@ SnapVector<ModelAction *> *  ModelExecution::build_local_read_from(ModelAction *
 
 		}
 	}
-	return Eacc;
+	rd->set_bag(Eres);
+	return Eres;
 }
 
 
