@@ -206,7 +206,6 @@ public:
 
 	void set_bag(SnapVector<ModelAction*> *E){
 		bag_flag = true;
-		SnapVector<ModelAction *> * bag = new SnapVector<ModelAction *>();
 		bag = E;
 
 	}
