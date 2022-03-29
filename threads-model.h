@@ -151,6 +151,10 @@ public:
 		model_print("\n");
 	}
 
+	void init_vec(){
+		local_vec = new SnapVector<ModelAction *>();
+	}
+
 
 	friend void thread_startup();
 #ifdef TLS
