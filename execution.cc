@@ -1485,7 +1485,8 @@ SnapVector<ModelAction*> * ModelExecution::maxVec(SnapVector<ModelAction*> * Eac
 	for(uint i = 0; i < Eacc_len; i++){
 		ModelAction* act1 = (*Eacc)[i]; // the variable in accumulate vector
 		uint localvec_idx = local_vec->get_index(act1);
-		if(localvec_idx != -1){// have this variable
+		uint NoVariable = -1;
+		if(localvec_idx != NoVariable){// have this variable
 			ModelAction* act2 = (*local_vec)[localvec_idx]; // the same variable
 			if(act1->get_seq_number() > act2->get_seq_number()){
 				(*local_vec)[localvec_idx] = act1;
