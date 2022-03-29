@@ -123,6 +123,7 @@ private:
 	ModelAction * get_last_unlock(ModelAction *curr) const;
 	SnapVector<ModelAction *> * build_may_read_from(ModelAction *curr);
 	SnapVector<ModelAction *> * build_local_read_from(ModelAction *curr);
+	SnapVector<ModelAction*> *updateVec(SnapVector<ModelAction*> input_vec, ModelAction* curr)
 	ModelAction * process_rmw(ModelAction *curr);
 	bool r_modification_order(ModelAction *curr, const ModelAction *rf, SnapVector<ModelAction *> *priorset, bool *canprune);
 	void w_modification_order(ModelAction *curr);

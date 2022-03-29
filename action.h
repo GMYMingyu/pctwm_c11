@@ -204,13 +204,17 @@ public:
 		bag_flag = false;
 	}
 
-	void set_bag(){
+	void set_bag(SnapVector<ModelAction*> *E){
 		bag_flag = true;
+		SnapVector<ModelAction *> * bag = new SnapVector<ModelAction *>();
+		bag = E;
+
 	}
 
 	bool checkbag(){
 		return bag_flag;
 	}
+
 
 	SNAPSHOTALLOC
 private:
@@ -273,7 +277,7 @@ private:
 
 	// weak memory - add bag flag and bag
 	bool bag_flag;
-	SnapVector<ModelAction* > bag;
+	SnapVector<ModelAction* > *bag;
 };
 
 #endif	/* __ACTION_H__ */
