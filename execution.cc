@@ -423,7 +423,8 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 			index = fuzzer->selectWrite(curr, rf_set);
 			rf = (*rf_set)[index]; // a randomly selected write
 			computeUpdate(curr, rf); // it will not change the selection of write - but update local vec
-
+			(*rf_set)[index] = rf_set->back();
+			rf_set->pop_back();
 
 		}
 		else{ // ask to use the local vec variable
