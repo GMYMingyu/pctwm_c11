@@ -643,7 +643,7 @@ void ModelExecution::process_write(ModelAction *curr)
 	// we meet a write action -> update the local vec
 	Thread * curr_thread = get_thread(curr);
 	SnapVector<ModelAction*> *thrd_localvec = curr_thread->get_local_vec();
-	updateVec(thrd_localvec, curr);
+	curr_thread->set_local_vec(updateVec(thrd_localvec, curr));
 	//curr_thread->update_local_vec(curr);
 	model_print("In process_write: local vec in thread %d - ", id_to_int(curr_thread->get_id()));
 	curr_thread->print_local_vec();
@@ -1627,7 +1627,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 					continue;
 				}
 				else{
-					updateVec(Eacc, act);
+					Eacc = updateVec(Eacc, act);
 				}
 			}
 

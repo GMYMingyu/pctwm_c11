@@ -142,6 +142,12 @@ public:
 		}
 	}
 
+	void set_local_vec(SnapVector<ModelAction*> * newvec){
+		local_vec = new SnapVector<ModelAction *> ();
+		local_vec = newvec;
+
+	}
+
 	/** @brief print the local vector*/
 	void print_local_vec(){
 		for(uint i = 0; i < local_vec->size(); i++){
