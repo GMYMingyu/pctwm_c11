@@ -862,7 +862,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		int reach_chg_idx = scheduler->find_chgidx(getReadnum());
 		if(reach_chg_idx != -1){
 			//step3: reach a priority change point - a. move thread
-			model_print("reach the %d change point. Read value externally. \n", reach_chg_idx);
+			model_print("reach the %d change point. Change priority of thread %d. \n", reach_chg_idx, scheduler->get_highest_thread());
 			scheduler->print_highvec();
 			scheduler->print_lowvec();
 			scheduler->movethread(reach_chg_idx, scheduler->get_highest_thread());
