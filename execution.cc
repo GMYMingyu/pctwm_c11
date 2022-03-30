@@ -426,9 +426,11 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 			//SnapVector<ModelAction*> * thrd_locavec = rd_thr->get_local_vec();
 			rf = rd_thr->get_same_location_act(curr);
 			if(rf != curr){
+				model_print("Read locally: localvec has such variable \n");
 				index = fuzzer->find_idx(rf_set, rf); // localvec has the same variable
 			}
 			else{
+				model_print("Read locally: localvec does not have such variable \n");
 				index = fuzzer->selectWrite(curr, rf_set);
 				rf = (*rf_set)[index];
 			}
