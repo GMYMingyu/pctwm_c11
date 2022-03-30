@@ -441,7 +441,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 		// weak memory
 		int rd_tid = curr->get_tid();
 		Thread *rd_thr = get_thread(rd_tid);
-		model_print("In process read: \n");
+		model_print("In process read: current localvec size is %d.\n", rd_thr->get_localvec_size());
 		rd_thr->print_local_vec();
 		if(read_external){ // ask to read externally
 			model_print("Read externally. \n");
