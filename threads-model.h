@@ -155,6 +155,18 @@ public:
 		local_vec = new SnapVector<ModelAction *>();
 	}
 
+	ModelAction* get_same_location_act(ModelAction* act){
+		ModelAction* resact;
+		for(uint i = 0; i < local_vec->size(); i++){
+			ModelAction* iteract = (*local_vec)[i];
+			if(act->get_location() == iteract->get_location()){
+				resact = act;
+				break;
+			}
+		}
+		return resact;
+	}
+
 
 	friend void thread_startup();
 #ifdef TLS

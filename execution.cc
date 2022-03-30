@@ -391,8 +391,9 @@ ModelAction * ModelExecution::convertNonAtomicStore(void * location) {
  * @param rf_set is the set of model actions we can possibly read from
  * @return True if the read can be pruned from the thread map list.
  */
-bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> * rf_set)
+bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> * rf_set, bool read_external)
 {
+	ASSERT(curr->is_read());
 	SnapVector<ModelAction *> * priorset = new SnapVector<ModelAction *>();
 	bool hasnonatomicstore = hasNonAtomicStore(curr->get_location());
 	if (hasnonatomicstore) {
@@ -413,9 +414,17 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 	   }*/
 
 	while(true) {
-		int index = fuzzer->selectWrite(curr, rf_set);
-
-		ModelAction *rf = (*rf_set)[index];
+		if(read_external){
+			int index = fuzzer->selectWrite(curr, rf_set);
+			ModelAction *rf = (*rf_set)[index];
+		}
+		else{
+			int rd_tid = curr->get_tid();
+			Thread *rd_thr = get_thread(rd_tid);
+			SnapVector<ModelAction*> * thrd_locavec = rd_thr->get_local_vec();
+			ModelAction *rf = rd_thr->get_same_location_act(curr);
+		}
+		
 
 		ASSERT(rf);
 		bool canprune = false;
@@ -850,6 +859,8 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 	wake_up_sleeping_actions();
 
+	bool read_external = false;
+
 	SnapVector<ModelAction *> * rf_set = NULL;
 	bool canprune = false;
 	/* Build may_read_from set for newly-created actions */
@@ -868,11 +879,13 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			scheduler->movethread(reach_chg_idx, scheduler->get_highest_thread());
 			scheduler->print_highvec();
 			scheduler->print_lowvec();
+			//step4: meet the change point: read externally
+			read_external = true;
 		}
 
 
 		rf_set = build_may_read_from(curr);
-		canprune = process_read(curr, rf_set);
+		canprune = process_read(curr, rf_set, read_external);
 		delete rf_set;
 	} else
 		ASSERT(rf_set == NULL);
