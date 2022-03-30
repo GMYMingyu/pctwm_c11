@@ -146,7 +146,7 @@ public:
 	void print_local_vec(){
 		for(uint i = 0; i < local_vec->size(); i++){
 			ModelAction* iteract = (*local_vec)[i];
-			model_print("location: %u, value: %u, seq_num: %u", iteract->get_location(), iteract->get_value(), iteract->get_seq_number());
+			model_print("location: %u, value: %u, seq_num: %u. ", iteract->get_location(), iteract->get_value(), iteract->get_seq_number());
 		}
 		model_print("\n");
 	}
