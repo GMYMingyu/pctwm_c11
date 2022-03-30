@@ -41,7 +41,11 @@ public:
 	~ModelExecution();
 
 	struct model_params * get_params() const { return params; }
-	void setParams(struct model_params * _params) {params = _params;}
+	void setParams(struct model_params * _params) {
+		params = _params;
+		maxreads = 5 * params->maxread; // set the livelock bound for read nums
+		model_print("The limit of read nums is %d. \n", maxreads);
+		}
 
 	Thread * take_step(ModelAction *curr);
 
@@ -96,6 +100,28 @@ public:
 	void restore_last_seq_num();
 	void collectActions();
 	modelclock_t get_curr_seq_num();
+
+	//pctwm
+	void incReadnum(){
+		readnum++;
+	}
+
+	int getReadnum(){
+		return readnum;
+	}
+
+	void print_actset(SnapVector<ModelAction *> * act_set){
+		int len = act_set->size();
+		model_print("print act_set : current action set size: %d. - ", len);
+		for(int i = 0; i < len; i++){
+			ModelAction *act = (*act_set)[i];
+			model_print("read_from thread %d  ", act->get_tid());
+		}
+		model_print("\n");
+
+	}
+
+
 #ifdef TLS
 	pthread_key_t getPthreadKey() {return pthreadkey;}
 #endif
@@ -213,6 +239,8 @@ private:
 	Thread * action_select_next_thread(const ModelAction *curr) const;
 
 	bool isfinished;
+
+	int readnum, maxreads;
 };
 
 #endif	/* __EXECUTION_H__ */

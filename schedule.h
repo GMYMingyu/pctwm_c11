@@ -86,6 +86,35 @@ public:
 		
 	}
 
+	//pctwm
+	void set_chg_pts_byread(int bugdepth, int maxread){
+		if(bugdepth <= 1){
+			chg_pts.resize(1, rand() % maxread);
+		}
+		else{
+			chg_pts.resize(bugdepth - 1);
+			for(int i = 0; i < bugdepth - 1; i++){
+				int tmp = getRandom(maxread); // [1, MAXSCHEDULER]
+				while(chg_pts.find(tmp)){
+					tmp = getRandom(maxread);
+				}
+				chg_pts[i] = tmp;
+
+			}
+		}
+		
+	}
+
+	//pctwm - return bool: true : threadid in highvec(not change prio yet)
+	bool inhighvec(int threadid){
+		for(int i = 0; i < highsize; i++){
+			if(highvec[i] == threadid) return true;
+		}
+		return false;
+	}
+
+
+
 	int getRandom(int range){
 		int res = rand() % range;
 		res = res < 1 ? 1 : res;
@@ -120,10 +149,10 @@ public:
 		return schelen;
 	}
 
-	int find_chgidx(int schelen){
+	int find_chgidx(int currlen){ // rename the parameter to currlen - it may be readnum
 		int res = -1;
 		for(uint i = 0; i < chg_pts.size(); i++){
-			if(schelen == chg_pts[i]) res = i;
+			if(currlen == chg_pts[i]) res = i;
 		}
 		return res;
 	}

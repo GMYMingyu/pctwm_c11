@@ -360,9 +360,9 @@ Thread * Scheduler::select_next_thread()
 			if(getSchelen() <= schelen_limit){
 				int threadpct = find_highest(thread_list, avail_threads);
 				thread = execution->getFuzzer()->selectThreadbyid(threadpct);
-				if(find_chgidx(getSchelen()) != -1){ // reach change point - move thread
-					movethread(find_chgidx(getSchelen()), threadpct);
-				}	
+				// if(find_chgidx(getSchelen()) != -1){ // reach change point - move thread
+				// 	movethread(find_chgidx(getSchelen()), threadpct);
+				// }	
 			}
 			else{
 				if(!livelock){
