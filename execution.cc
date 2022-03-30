@@ -1520,7 +1520,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	// the thread of read action - get local vector
 	int rd_tid = rd->get_tid();
 	Thread *rd_thr = get_thread(rd_tid);
-	SnapVector<ModelAction *> * rd_local_vec = rd_thr->get_local_vec();
+	SnapVector<ModelAction *> * rd_localvec = rd_thr->get_local_vec();
 
 	// the thread of write action - iteration
 	int wr_tid = curr->get_tid(); // get the current thread id
@@ -1542,7 +1542,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 				continue;
 			}
 			else if(act->is_read() && act->checkbag()){// reach an action with bag
-				Eres = maxVec(Eacc, rd_local_vec); // merge the accumulate vector with local vector
+				Eres = maxVec(Eacc, rd_localvec); // merge the accumulate vector with local vector
 			}
 			else if(act->is_write()){
 				if((act->is_release() || act->is_seqcst()) && (rd->is_acquire() || rd->is_seqcst())){
