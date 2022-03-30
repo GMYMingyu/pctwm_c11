@@ -441,6 +441,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 		// weak memory
 		int rd_tid = curr->get_tid();
 		Thread *rd_thr = get_thread(rd_tid);
+		model_print("In process read: \n");
 		rd_thr->print_local_vec();
 		if(read_external){ // ask to read externally
 			model_print("Read externally. \n");
@@ -644,7 +645,7 @@ void ModelExecution::process_write(ModelAction *curr)
 	SnapVector<ModelAction*> *thrd_localvec = curr_thread->get_local_vec();
 	updateVec(thrd_localvec, curr);
 	//curr_thread->update_local_vec(curr);
-	model_print("process_write: local vec in thread %d - ", id_to_int(curr_thread->get_id()));
+	model_print("In process_write: local vec in thread %d - ", id_to_int(curr_thread->get_id()));
 	curr_thread->print_local_vec();
 	w_modification_order(curr);
 	get_thread(curr)->set_return_value(VALUE_NONE);
@@ -1590,9 +1591,9 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	ASSERT(rd->is_read()); // the inital read action
 	ASSERT(curr->is_write()); // the randomly selected write action
 	SnapVector<ModelAction *> * Eres = new SnapVector<ModelAction *>(); // the result E
-	//SnapVector<ModelAction *> * Eacc = new SnapVector<ModelAction *>(); // the accumulate bag 
+	SnapVector<ModelAction *> * Eacc = new SnapVector<ModelAction *>(); // the accumulate bag 
 	
-	//SnapVector<action_list_t> *thrd_lists = obj_thrd_map.get(curr->get_location()); // get all actions on one thread
+	SnapVector<action_list_t> *thrd_lists = obj_thrd_map.get(curr->get_location()); // get all actions on one thread
 
 	// the thread of read action - get local vector
 	int rd_tid = rd->get_tid();
@@ -1600,41 +1601,41 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	SnapVector<ModelAction *> * rd_localvec = rd_thr->get_local_vec();
 
 	// the thread of write action - iteration
-	//int wr_tid = curr->get_tid(); // get the current thread id
-	//action_list_t *wr_list = &(*thrd_lists)[wr_tid]; // get the thread of write action
-	//sllnode<ModelAction *> * rit;
-	//bool before_flag = false;
-	// for (rit = wr_list->end();rit != NULL;rit=rit->getPrev()) { // get all actions before current action
-	// 	ModelAction *act = rit->getVal();
-	// 	if(act == curr){
-	// 		before_flag = true;
-	// 	}
+	int wr_tid = curr->get_tid(); // get the current thread id
+	action_list_t *wr_list = &(*thrd_lists)[wr_tid]; // get the thread of write action
+	sllnode<ModelAction *> * rit;
+	bool before_flag = false;
+	for (rit = wr_list->end();rit != NULL;rit=rit->getPrev()) { // get all actions before current action
+		ModelAction *act = rit->getVal();
+		if(act == curr){
+			before_flag = true;
+		}
 
-	// 	if(before_flag){// iterate all actions before the current action
-	// 		if(act->is_thread_start()){//reach the start of a thread
-	// 			Eres = Eacc;
-	// 			break;
-	// 		}
-	// 		else if(!act->is_write() && (act->is_read() && !act->checkbag())){
-	// 			continue;
-	// 		}
-	// 		else if(act->is_read() && act->checkbag()){// reach an action with bag
-	// 			Eres = maxVec(Eacc, rd_localvec); // merge the accumulate vector with local vector
-	// 		}
-	// 		else if(act->is_write()){
-	// 			if((act->is_release() || act->is_seqcst()) && (rd->is_acquire() || rd->is_seqcst())){
-	// 				continue;
-	// 			}
-	// 			else{
-	// 				updateVec(Eacc, act);
-	// 			}
-	// 		}
+		if(before_flag){// iterate all actions before the current action
+			if(act->is_thread_start()){//reach the start of a thread
+				Eres = Eacc;
+				break;
+			}
+			else if(!act->is_write() && (act->is_read() && !act->checkbag())){
+				continue;
+			}
+			else if(act->is_read() && act->checkbag()){// reach an action with bag
+				Eres = maxVec(Eacc, rd_localvec); // merge the accumulate vector with local vector
+			}
+			else if(act->is_write()){
+				if((act->is_release() || act->is_seqcst()) && (rd->is_acquire() || rd->is_seqcst())){
+					continue;
+				}
+				else{
+					updateVec(Eacc, act);
+				}
+			}
 
 
-	// 	}
-	// }
-	// rd_localvec = maxVec(Eres, rd_localvec);
-	// rd->set_bag(Eres);
+		}
+	}
+	rd_localvec = maxVec(Eres, rd_localvec);
+	rd->set_bag(Eres);
 	Eres = rd_localvec;
 	return Eres;
 }
