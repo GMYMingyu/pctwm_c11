@@ -116,7 +116,8 @@ public:
 		model_print("print act_set : current action set size: %d. - ", len);
 		for(int i = 0; i < len; i++){
 			ModelAction * act = (*act_set)[i];
-			model_print("action on thread %d  ", id_to_int(act->get_tid()));
+			model_print("[action on thread %d, location: %d, seq_nums: %u ]", 
+			id_to_int(act->get_tid()), act->get_location(), act->get_seq_number());
 		}
 		model_print("\n");
 
