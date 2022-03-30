@@ -422,8 +422,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 		//original c11tester
 		index = fuzzer->selectWrite(curr, rf_set);
 		rf = (*rf_set)[index];
-		(*rf_set)[index] = rf_set->back();
-		rf_set->pop_back();
+
 
 
 		if(read_external){
@@ -436,7 +435,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 			Thread *rd_thr = get_thread(rd_tid);
 			rd_thr->print_local_vec();
 		}
-		
+
 		// weak memory
 
 		// if(read_external){ // ask to read externally
@@ -481,6 +480,8 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 				get_thread(curr)->get_acq_fence_cv()->merge(hbcv);
 			return canprune && (curr->get_type() == ATOMIC_READ);
 		}
+		(*rf_set)[index] = rf_set->back();
+		rf_set->pop_back();
 		priorset->clear();
 		
 	}
