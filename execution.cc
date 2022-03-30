@@ -420,53 +420,53 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 						curr->get_location(),id_to_int(curr->get_tid()));
 
 		//original c11tester
-		index = fuzzer->selectWrite(curr, rf_set);
-		rf = (*rf_set)[index];
-		(*rf_set)[index] = rf_set->back();
-		rf_set->pop_back();
+		// index = fuzzer->selectWrite(curr, rf_set);
+		// rf = (*rf_set)[index];
+		// (*rf_set)[index] = rf_set->back();
+		// rf_set->pop_back();
 
 
-		if(read_external){
-			int rd_tid = curr->get_tid();
-			Thread *rd_thr = get_thread(rd_tid);
-			rd_thr->print_local_vec();
-		}
-		else{
-			int rd_tid = curr->get_tid();
-			Thread *rd_thr = get_thread(rd_tid);
-			rd_thr->print_local_vec();
-		}
+		// if(read_external){
+		// 	int rd_tid = curr->get_tid();
+		// 	Thread *rd_thr = get_thread(rd_tid);
+		// 	rd_thr->print_local_vec();
+		// }
+		// else{
+		// 	int rd_tid = curr->get_tid();
+		// 	Thread *rd_thr = get_thread(rd_tid);
+		// 	rd_thr->print_local_vec();
+		// }
 
 
 		// weak memory
-		// int rd_tid = curr->get_tid();
-		// Thread *rd_thr = get_thread(rd_tid);
-		// rd_thr->print_local_vec();
-		// if(read_external){ // ask to read externally
-		// 	model_print("Read externally. \n");
-		// 	index = fuzzer->selectWrite(curr, rf_set);
-		// 	rf = (*rf_set)[index]; // a randomly selected write
-		// 	computeUpdate(curr, rf); // it will not change the selection of write - but update local vec
-		// 	//the same as original c11tester: delete this rf_set
-		// 	(*rf_set)[index] = rf_set->back();
-		// 	rf_set->pop_back();
+		int rd_tid = curr->get_tid();
+		Thread *rd_thr = get_thread(rd_tid);
+		rd_thr->print_local_vec();
+		if(read_external){ // ask to read externally
+			model_print("Read externally. \n");
+			index = fuzzer->selectWrite(curr, rf_set);
+			rf = (*rf_set)[index]; // a randomly selected write
+			computeUpdate(curr, rf); // it will not change the selection of write - but update local vec
+			//the same as original c11tester: delete this rf_set
+			(*rf_set)[index] = rf_set->back();
+			rf_set->pop_back();
 
-		// }
-		// else{ // ask to use the local vec variable
-		// 	// int rd_tid = curr->get_tid();
-		// 	// Thread *rd_thr = get_thread(rd_tid);
-		// 	//SnapVector<ModelAction*> * thrd_locavec = rd_thr->get_local_vec();
-		// 	rf = rd_thr->get_same_location_act(curr);
-		// 	model_print("local vec has such write, seqnum:%d \n", rf->get_seq_number());
-		// 	index = fuzzer->find_idx(rf_set, rf);
-		// 	if(index != -1){ // to make sure this variable locally is readable
-		// 		model_print("Read locally: localvec has such variable \n");
-		// 		(*rf_set)[index] = rf_set->back();
-		// 		rf_set->pop_back();
-		// 		 // localvec has the same variable
-		// 	}
+		}
+		else{ // ask to use the local vec variable
+			// int rd_tid = curr->get_tid();
+			// Thread *rd_thr = get_thread(rd_tid);
+			//SnapVector<ModelAction*> * thrd_locavec = rd_thr->get_local_vec();
+			rf = rd_thr->get_same_location_act(curr);
+			model_print("local vec has such write, seqnum:%d \n", rf->get_seq_number());
+			index = fuzzer->find_idx(rf_set, rf);
+			if(index != -1){ // to make sure this variable locally is readable
+				model_print("Read locally: localvec has such variable \n");
+				(*rf_set)[index] = rf_set->back();
+				rf_set->pop_back();
+				 // localvec has the same variable
+			}
 			
-		// }
+		}
 		
 		ASSERT(rf);
 		ASSERT(rf->is_write());
@@ -1604,37 +1604,38 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	action_list_t *wr_list = &(*thrd_lists)[wr_tid]; // get the thread of write action
 	sllnode<ModelAction *> * rit;
 	bool before_flag = false;
-	for (rit = wr_list->end();rit != NULL;rit=rit->getPrev()) { // get all actions before current action
-		ModelAction *act = rit->getVal();
-		if(act == curr){
-			before_flag = true;
-		}
+	// for (rit = wr_list->end();rit != NULL;rit=rit->getPrev()) { // get all actions before current action
+	// 	ModelAction *act = rit->getVal();
+	// 	if(act == curr){
+	// 		before_flag = true;
+	// 	}
 
-		if(before_flag){// iterate all actions before the current action
-			if(act->is_thread_start()){//reach the start of a thread
-				Eres = Eacc;
-				break;
-			}
-			else if(!act->is_write() && (act->is_read() && !act->checkbag())){
-				continue;
-			}
-			else if(act->is_read() && act->checkbag()){// reach an action with bag
-				Eres = maxVec(Eacc, rd_localvec); // merge the accumulate vector with local vector
-			}
-			else if(act->is_write()){
-				if((act->is_release() || act->is_seqcst()) && (rd->is_acquire() || rd->is_seqcst())){
-					continue;
-				}
-				else{
-					updateVec(Eacc, act);
-				}
-			}
+	// 	if(before_flag){// iterate all actions before the current action
+	// 		if(act->is_thread_start()){//reach the start of a thread
+	// 			Eres = Eacc;
+	// 			break;
+	// 		}
+	// 		else if(!act->is_write() && (act->is_read() && !act->checkbag())){
+	// 			continue;
+	// 		}
+	// 		else if(act->is_read() && act->checkbag()){// reach an action with bag
+	// 			Eres = maxVec(Eacc, rd_localvec); // merge the accumulate vector with local vector
+	// 		}
+	// 		else if(act->is_write()){
+	// 			if((act->is_release() || act->is_seqcst()) && (rd->is_acquire() || rd->is_seqcst())){
+	// 				continue;
+	// 			}
+	// 			else{
+	// 				updateVec(Eacc, act);
+	// 			}
+	// 		}
 
 
-		}
-	}
-	rd_localvec = maxVec(Eres, rd_localvec);
-	rd->set_bag(Eres);
+	// 	}
+	// }
+	// rd_localvec = maxVec(Eres, rd_localvec);
+	// rd->set_bag(Eres);
+	Eres = rd_localvec;
 	return Eres;
 }
 
