@@ -161,18 +161,17 @@ public:
 	}
 
 	ModelAction* get_same_location_act(ModelAction* act){
-		ModelAction* resact;
+		
 		model_print("thread localvec size: %d \n", local_vec->size());
 		for(uint i = 0; i < local_vec->size(); i++){
 			ModelAction* iteract = (*local_vec)[i];
 			if(act->get_location() == iteract->get_location()){
-				resact = iteract;
-				return resact;
+				return iteract;
 			}
 		}
 		
-		resact = act;
-		return resact;
+		
+		return NULL;
 		
 		
 	}
