@@ -420,7 +420,9 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 						curr->get_location(),id_to_int(curr->get_tid()));
 		if(read_external){ // ask to read externally
 			index = fuzzer->selectWrite(curr, rf_set);
-			rf = (*rf_set)[index];
+			rf = (*rf_set)[index]; // a randomly selected write
+			computeUpdate(curr, rf);
+
 		}
 		else{ // ask to use the local vec variable
 			int rd_tid = curr->get_tid();
@@ -428,7 +430,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 			//SnapVector<ModelAction*> * thrd_locavec = rd_thr->get_local_vec();
 			rf = rd_thr->get_same_location_act(curr);
 			index = fuzzer->find_idx(rf_set, rf);
-			if(index != -1){
+			if(index != -1){ // to make sure this variable locally is readable
 				model_print("Read locally: localvec has such variable \n");
 				 // localvec has the same variable
 			}
