@@ -49,7 +49,7 @@ public:
 	void setParams(struct model_params * _params) {
 		params = _params;
 		setlowvec(params->bugdepth);
-		set_chg_pts(params->bugdepth, params->maxscheduler);
+		set_chg_pts_byread(params->bugdepth, params->maxread);
 		schelen_limit = 5 * params->maxscheduler;
 		if(params->version == 1) {
 			model_print("using pct version now. \n");
