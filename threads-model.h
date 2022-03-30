@@ -161,7 +161,6 @@ public:
 			ModelAction* iteract = (*local_vec)[i];
 			if(act->get_location() == iteract->get_location()){
 				resact = iteract;
-				has_same_location = true;
 				return resact;
 			}
 		}
