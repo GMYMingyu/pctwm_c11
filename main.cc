@@ -28,7 +28,7 @@ void param_defaults(struct model_params *params)
 	params->maxscheduler = 50;
 	params->bugdepth = 5;
 	params->version = 1;
-	params->maxread = 30;
+	params->maxread = 15;
 }
 
 static void print_usage(struct model_params *params)
