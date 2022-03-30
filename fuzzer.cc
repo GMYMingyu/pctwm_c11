@@ -9,11 +9,11 @@ int Fuzzer::selectWrite(ModelAction *read, SnapVector<ModelAction *> * rf_set) {
 	return random_index;
 }
 
-int Fuzzer::find_idx(SnapVector<ModelAction *> * rf_set, ModelAction* local_wr){
+int Fuzzer::find_idx(SnapVector<ModelAction *> * rf_set, ModelAction* chosen_wr){
 	int index = -1;
 	for(uint i = 0; i < rf_set->size(); i++){
 		ModelAction* curr = (*rf_set)[i];
-		if(curr == local_wr){
+		if(curr == chosen_wr){
 			index = i;
 			break;
 		}

@@ -422,7 +422,8 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 			model_print("Read externally. \n");
 			index = fuzzer->selectWrite(curr, rf_set);
 			rf = (*rf_set)[index]; // a randomly selected write
-			computeUpdate(curr, rf);
+			computeUpdate(curr, rf); // it will not change the selection of write - but update local vec
+
 
 		}
 		else{ // ask to use the local vec variable
@@ -1606,6 +1607,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 
 		}
 	}
+	rd_localvec = maxVec(Eres, rd_localvec);
 	rd->set_bag(Eres);
 	return Eres;
 }
