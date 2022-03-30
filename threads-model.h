@@ -145,7 +145,6 @@ public:
 	void set_local_vec(SnapVector<ModelAction*> * newvec){
 		local_vec = new SnapVector<ModelAction *> ();
 		local_vec = newvec;
-
 	}
 
 	/** @brief print the local vector*/
@@ -163,6 +162,7 @@ public:
 
 	ModelAction* get_same_location_act(ModelAction* act){
 		ModelAction* resact;
+		model_print("thread localvec size: %d \n", local_vec->size());
 		for(uint i = 0; i < local_vec->size(); i++){
 			ModelAction* iteract = (*local_vec)[i];
 			if(act->get_location() == iteract->get_location()){
