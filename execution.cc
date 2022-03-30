@@ -418,30 +418,52 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 		int index;
 		model_print("current read action location: %u, threadid : %u \n", 
 						curr->get_location(),id_to_int(curr->get_tid()));
-		if(read_external){ // ask to read externally
-			model_print("Read externally. \n");
-			index = fuzzer->selectWrite(curr, rf_set);
-			rf = (*rf_set)[index]; // a randomly selected write
-			computeUpdate(curr, rf); // it will not change the selection of write - but update local vec
-			(*rf_set)[index] = rf_set->back();
-			rf_set->pop_back();
 
-		}
-		else{ // ask to use the local vec variable
+		//original c11tester
+		index = fuzzer->selectWrite(curr, rf_set);
+		rf = (*rf_set)[index];
+		(*rf_set)[index] = rf_set->back();
+		rf_set->pop_back();
+
+
+		if(read_external){
 			int rd_tid = curr->get_tid();
 			Thread *rd_thr = get_thread(rd_tid);
-			//SnapVector<ModelAction*> * thrd_locavec = rd_thr->get_local_vec();
-			rf = rd_thr->get_same_location_act(curr);
-			model_print("local vec has such write, seqnum:%d \n", rf->get_seq_number());
-			index = fuzzer->find_idx(rf_set, rf);
-			if(index != -1){ // to make sure this variable locally is readable
-				model_print("Read locally: localvec has such variable \n");
-				(*rf_set)[index] = rf_set->back();
-				rf_set->pop_back();
-				 // localvec has the same variable
-			}
-			
+			rd_thr->print_local_vec();
 		}
+		else{
+			int rd_tid = curr->get_tid();
+			Thread *rd_thr = get_thread(rd_tid);
+			rd_thr->print_local_vec();
+		}
+		
+		// weak memory
+
+		// if(read_external){ // ask to read externally
+		// 	model_print("Read externally. \n");
+		// 	index = fuzzer->selectWrite(curr, rf_set);
+		// 	rf = (*rf_set)[index]; // a randomly selected write
+		// 	computeUpdate(curr, rf); // it will not change the selection of write - but update local vec
+		// 	//the same as original c11tester: delete this rf_set
+		// 	(*rf_set)[index] = rf_set->back();
+		// 	rf_set->pop_back();
+
+		// }
+		// else{ // ask to use the local vec variable
+		// 	int rd_tid = curr->get_tid();
+		// 	Thread *rd_thr = get_thread(rd_tid);
+		// 	//SnapVector<ModelAction*> * thrd_locavec = rd_thr->get_local_vec();
+		// 	rf = rd_thr->get_same_location_act(curr);
+		// 	model_print("local vec has such write, seqnum:%d \n", rf->get_seq_number());
+		// 	index = fuzzer->find_idx(rf_set, rf);
+		// 	if(index != -1){ // to make sure this variable locally is readable
+		// 		model_print("Read locally: localvec has such variable \n");
+		// 		(*rf_set)[index] = rf_set->back();
+		// 		rf_set->pop_back();
+		// 		 // localvec has the same variable
+		// 	}
+			
+		// }
 		
 		ASSERT(rf);
 		ASSERT(rf->is_write());
