@@ -441,8 +441,8 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 			
 		}
 		
-
 		ASSERT(rf);
+		ASSERT(rf->is_write());
 		bool canprune = false;
 		if (r_modification_order(curr, rf, priorset, &canprune)) {
 			for(unsigned int i=0;i<priorset->size();i++) {
