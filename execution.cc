@@ -432,6 +432,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 			Thread *rd_thr = get_thread(rd_tid);
 			//SnapVector<ModelAction*> * thrd_locavec = rd_thr->get_local_vec();
 			rf = rd_thr->get_same_location_act(curr);
+			model_print("local vec has such write, seqnum:%d \n", rf->get_seq_number());
 			index = fuzzer->find_idx(rf_set, rf);
 			if(index != -1){ // to make sure this variable locally is readable
 				model_print("Read locally: localvec has such variable \n");
