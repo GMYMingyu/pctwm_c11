@@ -1530,20 +1530,19 @@ bool valequals(uint64_t val1, uint64_t val2, int size) {
  */
 SnapVector<ModelAction*> * ModelExecution::updateVec(SnapVector<ModelAction*> *input_vec, ModelAction* curr){
 	int len = input_vec->size();
-	bool has_curr = false;
 	for(int i = 0; i < len; i++){
-		ModelAction* act = (*input_vec)[i];
-		if(curr->get_location() == act->get_location()){
-			has_curr = true; //the vec has this variable
-			if(act->get_seq_number() > curr->get_seq_number()){ // update only when the new action(curr) has larger sequence number
-				(*input_vec)[i] = act;
+		ModelAction* iteract = (*input_vec)[i];
+		if(curr->get_location() == iteract->get_location()){
+			if(iteract->get_seq_number() > curr->get_seq_number()){ // update only when the new action(curr) has larger sequence number
+				(*input_vec)[i] = iteract;
 			}
+			return input_vec;
 		}
 	}
 	
-	if(!has_curr){
-		input_vec->push_back(curr);
-	}
+	
+	input_vec->push_back(curr);
+	
 
 	return input_vec;
 }
