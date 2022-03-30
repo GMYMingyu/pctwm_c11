@@ -854,6 +854,23 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	bool canprune = false;
 	/* Build may_read_from set for newly-created actions */
 	if (curr->is_read() && newly_explored) {
+		//weak memory
+		//step1: increase readnum
+		incReadnum();
+		model_print("Current Read nums:%d. \n", getReadnum());
+		//step2: check if a prority change point
+		int reach_chg_idx = scheduler->find_chgidx(getReadnum());
+		if(reach_chg_idx != -1){
+			//step3: reach a priority change point - a. move thread
+			model_print("reach the %d change point. Read value externally. \n", reach_chg_idx);
+			scheduler->print_highvec();
+			scheduler->print_lowvec();
+			scheduler->movethread(reach_chg_idx, scheduler->get_highest_thread());
+			scheduler->print_highvec();
+			scheduler->print_lowvec();
+		}
+
+
 		rf_set = build_may_read_from(curr);
 		canprune = process_read(curr, rf_set);
 		delete rf_set;
