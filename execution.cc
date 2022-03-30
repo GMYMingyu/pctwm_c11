@@ -419,6 +419,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 		model_print("current read action location: %u, threadid : %u \n", 
 						curr->get_location(),id_to_int(curr->get_tid()));
 		if(read_external){ // ask to read externally
+			model_print("Read externally. \n");
 			index = fuzzer->selectWrite(curr, rf_set);
 			rf = (*rf_set)[index]; // a randomly selected write
 			computeUpdate(curr, rf);
