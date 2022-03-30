@@ -114,8 +114,8 @@ public:
 		int len = act_set->size();
 		model_print("print act_set : current action set size: %d. - ", len);
 		for(int i = 0; i < len; i++){
-			ModelAction *act = (*act_set)[i];
-			model_print("read_from thread %d  ", act->get_tid());
+			ModelAction * act = (*act_set)[i];
+			model_print("read_from thread %d  ", id_to_int(act->get_tid()));
 		}
 		model_print("\n");
 
