@@ -157,12 +157,17 @@ public:
 
 	ModelAction* get_same_location_act(ModelAction* act){
 		ModelAction* resact;
+		bool has_same_location = false;
 		for(uint i = 0; i < local_vec->size(); i++){
 			ModelAction* iteract = (*local_vec)[i];
 			if(act->get_location() == iteract->get_location()){
 				resact = act;
+				has_same_location = true;
 				break;
 			}
+		}
+		if(!has_same_location){
+			resact = act;
 		}
 		return resact;
 	}
