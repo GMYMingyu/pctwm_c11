@@ -1600,10 +1600,10 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	SnapVector<ModelAction *> * rd_localvec = rd_thr->get_local_vec();
 
 	// the thread of write action - iteration
-	int wr_tid = curr->get_tid(); // get the current thread id
-	action_list_t *wr_list = &(*thrd_lists)[wr_tid]; // get the thread of write action
-	sllnode<ModelAction *> * rit;
-	bool before_flag = false;
+	//int wr_tid = curr->get_tid(); // get the current thread id
+	//action_list_t *wr_list = &(*thrd_lists)[wr_tid]; // get the thread of write action
+	//sllnode<ModelAction *> * rit;
+	//bool before_flag = false;
 	// for (rit = wr_list->end();rit != NULL;rit=rit->getPrev()) { // get all actions before current action
 	// 	ModelAction *act = rit->getVal();
 	// 	if(act == curr){
