@@ -414,15 +414,16 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 	   }*/
 
 	while(true) {
+		ModelAction *rf;
 		if(read_external){
 			int index = fuzzer->selectWrite(curr, rf_set);
-			ModelAction *rf = (*rf_set)[index];
+			rf = (*rf_set)[index];
 		}
 		else{
 			int rd_tid = curr->get_tid();
 			Thread *rd_thr = get_thread(rd_tid);
 			SnapVector<ModelAction*> * thrd_locavec = rd_thr->get_local_vec();
-			ModelAction *rf = rd_thr->get_same_location_act(curr);
+			rf = rd_thr->get_same_location_act(curr);
 		}
 		
 
