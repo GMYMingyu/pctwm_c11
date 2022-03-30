@@ -175,6 +175,11 @@ public:
 		usingpct = 1;
 	}
 
+	//weak memory
+	int get_highest_thread(){
+		return highest_id;
+	}
+
 
 	SNAPSHOTALLOC
 private:
@@ -200,6 +205,9 @@ private:
 	int schelen_limit;
 	bool livelock;
 	int usingpct;
+
+	// weak memory - save the highest thread - for execution.cc to move
+	int highest_id;
 };
 
 #endif	/* __SCHEDULE_H__ */

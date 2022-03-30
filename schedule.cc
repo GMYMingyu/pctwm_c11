@@ -45,7 +45,9 @@ Scheduler::Scheduler() :
 	schelen(0),
 	highsize(0),
 	schelen_limit(0),
-	livelock(false)
+	livelock(false),
+	//weak memory: save the highest thread by scheduler
+	highest_id(0)
 {
 }
 
@@ -359,6 +361,7 @@ Thread * Scheduler::select_next_thread()
 		if(usingpct == 1){//pct
 			if(getSchelen() <= schelen_limit){
 				int threadpct = find_highest(thread_list, avail_threads);
+				highest_id = threadpct; // update the selection of scheduler - highest priority thread
 				thread = execution->getFuzzer()->selectThreadbyid(threadpct);
 				// if(find_chgidx(getSchelen()) != -1){ // reach change point - move thread
 				// 	movethread(find_chgidx(getSchelen()), threadpct);
