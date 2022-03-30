@@ -1592,7 +1592,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	SnapVector<ModelAction *> * Eres = new SnapVector<ModelAction *>(); // the result E
 	SnapVector<ModelAction *> * Eacc = new SnapVector<ModelAction *>(); // the accumulate bag 
 	
-	SnapVector<action_list_t> *thrd_lists = obj_thrd_map.get(curr->get_location()); // get all actions on one thread
+	//SnapVector<action_list_t> *thrd_lists = obj_thrd_map.get(curr->get_location()); // get all actions on one thread
 
 	// the thread of read action - get local vector
 	int rd_tid = rd->get_tid();
