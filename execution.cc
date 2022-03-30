@@ -434,12 +434,9 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 			index = fuzzer->find_idx(rf_set, rf);
 			if(index != -1){ // to make sure this variable locally is readable
 				model_print("Read locally: localvec has such variable \n");
+				(*rf_set)[index] = rf_set->back();
+				rf_set->pop_back();
 				 // localvec has the same variable
-			}
-			else{
-				model_print("Read locally: localvec does not have such variable \n");
-				index = fuzzer->selectWrite(curr, rf_set);
-				rf = (*rf_set)[index];
 			}
 			
 		}
@@ -461,8 +458,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 			return canprune && (curr->get_type() == ATOMIC_READ);
 		}
 		priorset->clear();
-		(*rf_set)[index] = rf_set->back();
-		rf_set->pop_back();
+		
 	}
 }
 
