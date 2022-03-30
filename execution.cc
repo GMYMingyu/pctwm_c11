@@ -1590,7 +1590,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	ASSERT(rd->is_read()); // the inital read action
 	ASSERT(curr->is_write()); // the randomly selected write action
 	SnapVector<ModelAction *> * Eres = new SnapVector<ModelAction *>(); // the result E
-	SnapVector<ModelAction *> * Eacc = new SnapVector<ModelAction *>(); // the accumulate bag 
+	//SnapVector<ModelAction *> * Eacc = new SnapVector<ModelAction *>(); // the accumulate bag 
 	
 	//SnapVector<action_list_t> *thrd_lists = obj_thrd_map.get(curr->get_location()); // get all actions on one thread
 
