@@ -415,15 +415,17 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 
 	while(true) {
 		ModelAction *rf;
-		if(read_external){
-			int index = fuzzer->selectWrite(curr, rf_set);
+		int index;
+		if(read_external){ // ask to read externally
+			index = fuzzer->selectWrite(curr, rf_set);
 			rf = (*rf_set)[index];
 		}
-		else{
+		else{ // ask to use the local vec variable
 			int rd_tid = curr->get_tid();
 			Thread *rd_thr = get_thread(rd_tid);
-			SnapVector<ModelAction*> * thrd_locavec = rd_thr->get_local_vec();
+			//SnapVector<ModelAction*> * thrd_locavec = rd_thr->get_local_vec();
 			rf = rd_thr->get_same_location_act(curr);
+			index = fuzzer->find_idx(rf_set, rf);
 		}
 		
 

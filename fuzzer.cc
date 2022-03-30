@@ -9,6 +9,18 @@ int Fuzzer::selectWrite(ModelAction *read, SnapVector<ModelAction *> * rf_set) {
 	return random_index;
 }
 
+int Fuzzer::find_idx(SnapVector<ModelAction *> * rf_set, ModelAction* local_wr){
+	int index = -1;
+	for(uint i = 0; i < rf_set->size(); i++){
+		ModelAction* curr = (*rf_set)[i];
+		if(curr == local_wr){
+			index = i;
+			break;
+		}
+	}
+	return index;
+}
+
 Thread * Fuzzer::selectThread(int * threadlist, int numthreads) {
 	int random_index = random() % numthreads;
 	int thread = threadlist[random_index];
