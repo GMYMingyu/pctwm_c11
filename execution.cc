@@ -1649,6 +1649,8 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	}
 	model_print("\n");
 	rd_localvec = maxVec(Eres, rd_localvec);
+	rd_thr->set_local_vec(rd_localvec);
+	
 	rd->set_bag(Eres);
 	Eres = rd_localvec;
 	return Eres;
