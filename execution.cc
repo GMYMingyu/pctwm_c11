@@ -1620,10 +1620,10 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 		
 		if(act == curr){
 			before_flag = true;
+			model_print("action before the write:");
 		}
 
 		if(before_flag){// iterate all actions before the current action
-			model_print("action before the write:");
 			model_print("Iteration action seq_num: %u. location: %u. threadid: %d \n", act->get_seq_number(), act->get_location(), act->get_tid());
 			if(act->is_thread_start()){//reach the start of a thread
 				Eres = Eacc;
