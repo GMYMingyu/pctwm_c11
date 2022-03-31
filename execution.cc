@@ -1617,7 +1617,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	bool before_flag = false;
 	for (rit = wr_list->end();rit != NULL;rit=rit->getPrev()) { // get all actions before current action
 		ModelAction *act = rit->getVal();
-		model_print("Iteration action seq_num: %u. location: %u. \n", act->get_seq_number(), act->get_location());
+		model_print("Iteration action seq_num: %u. location: %u. threadid: %d \n", act->get_seq_number(), act->get_location(), act->get_tid());
 		if(act == curr){
 			before_flag = true;
 		}
