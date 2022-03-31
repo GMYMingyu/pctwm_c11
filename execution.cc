@@ -1599,7 +1599,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 {	
 	ASSERT(rd->is_read()); // the inital read action
 	ASSERT(curr->is_write()); // the randomly selected write action
-	model_print("Start updating the bag for read action %d. /n", rd->get_seq_number());
+	model_print("Start updating the bag for read action %d. \n", rd->get_seq_number());
 	SnapVector<ModelAction *> * Eres = new SnapVector<ModelAction *>(); // the result E
 	SnapVector<ModelAction *> * Eacc = new SnapVector<ModelAction *>(); // the accumulate bag 
 	
@@ -1617,12 +1617,14 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	bool before_flag = false;
 	for (rit = wr_list->end();rit != NULL;rit=rit->getPrev()) { // get all actions before current action
 		ModelAction *act = rit->getVal();
-		model_print("Iteration action seq_num: %u. location: %u. threadid: %d \n", act->get_seq_number(), act->get_location(), act->get_tid());
+		
 		if(act == curr){
 			before_flag = true;
 		}
 
 		if(before_flag){// iterate all actions before the current action
+			model_print("action before the write:");
+			model_print("Iteration action seq_num: %u. location: %u. threadid: %d \n", act->get_seq_number(), act->get_location(), act->get_tid());
 			if(act->is_thread_start()){//reach the start of a thread
 				Eres = Eacc;
 				break;
