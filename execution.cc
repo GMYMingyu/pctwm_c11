@@ -654,7 +654,7 @@ void ModelExecution::process_write(ModelAction *curr)
 	SnapVector<ModelAction*> *thrd_localvec = curr_thread->get_local_vec();
 	curr_thread->set_local_vec(updateVec(thrd_localvec, curr));
 	//curr_thread->update_local_vec(curr);
-	model_print("In process_write: local vec in thread %d - ", id_to_int(curr_thread->get_id()));
+	model_print("Process_write updates local vec in thread %d - ", id_to_int(curr_thread->get_id()));
 	curr_thread->print_local_vec();
 	w_modification_order(curr);
 	get_thread(curr)->set_return_value(VALUE_NONE);
@@ -1649,7 +1649,9 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	}
 	model_print("\n");
 	rd_localvec = maxVec(Eres, rd_localvec);
+	model_print("Process read computeUpdate updates localvec in thread %d", rd_tid);
 	rd_thr->set_local_vec(rd_localvec);
+	rd_thr->print_local_vec();
 	
 	rd->set_bag(Eres);
 	rd->print_bag();
