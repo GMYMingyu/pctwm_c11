@@ -216,7 +216,7 @@ public:
 
 	void print_bag(){
 		if(bag_flag){
-			model_print("This action has bag:");
+			model_print("This action has bag: size is %d, ", bag->size());
 			uint baglen = bag->size();
 			for(uint i = 0; i < baglen; i++){
 				ModelAction* curr = (*bag)[i];

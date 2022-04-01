@@ -149,6 +149,7 @@ public:
 
 	/** @brief print the local vector*/
 	void print_local_vec(){
+		model_print("The size of localvec is %d.", local_vec->size());
 		for(uint i = 0; i < local_vec->size(); i++){
 			ModelAction* iteract = (*local_vec)[i];
 			model_print("location: %u, value: %u, seq_num: %u. ", iteract->get_location(), iteract->get_value(), iteract->get_seq_number());

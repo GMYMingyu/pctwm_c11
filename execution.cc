@@ -1609,6 +1609,8 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	int rd_tid = rd->get_tid();
 	Thread *rd_thr = get_thread(rd_tid);
 	SnapVector<ModelAction *> * rd_localvec = rd_thr->get_local_vec();
+	model_print("computeUpdate: the localvec on read action's thread, size: %d. ", rd_localvec->size());
+	print_actset(rd_localvec);
 
 	// the thread of write action - iteration
 	int wr_tid = curr->get_tid(); // get the current thread id
@@ -1625,14 +1627,14 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 
 		if(before_flag){// iterate all actions before the current action
 			model_print("Iteration action seq_num: %u. location: %u. threadid: %d \n", act->get_seq_number(), act->get_location(), act->get_tid());
-			if(act->is_thread_start()){//reach the start of a thread
+			if(act->is_thread_start()){//stop condition 2: reach the start of a thread
 				Eres = Eacc;
 				break;
 			}
 			else if(!act->is_write() && (act->is_read() && !act->checkbag())){
 				continue;
 			}
-			else if(act->is_read() && act->checkbag()){// reach an action with bag
+			else if(act->is_read() && act->checkbag()){// stop condtion1: reach an action with bag
 				Eres = maxVec(Eacc, rd_localvec); // merge the accumulate vector with local vector
 			}
 			else if(act->is_write()){
@@ -1648,6 +1650,9 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 		}
 	}
 	model_print("\n");
+	model_print("computeUpdate: iteration bag result: Eres size is %d", Eres->size());
+	print_actset(Eres);
+
 	rd_localvec = maxVec(Eres, rd_localvec);
 	rd_thr->set_local_vec(rd_localvec);
 	model_print("Process read computeUpdate updates localvec in thread %d", rd_tid);
