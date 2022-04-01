@@ -1610,7 +1610,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	int rd_tid = rd->get_tid();
 	Thread *rd_thr = get_thread(rd_tid);
 	SnapVector<ModelAction *> * rd_localvec = rd_thr->get_local_vec();
-	model_print("computeUpdate: the localvec on read action's thread, size: %d. ", rd_localvec->size());
+	model_print("computeUpdate for action %u on thread %d : the localvec on read action's thread, size: %d.\n ", rd->get_seq_number(), rd_tid, rd_localvec->size());
 	print_actset(rd_localvec);
 
 	// the thread of write action - iteration
