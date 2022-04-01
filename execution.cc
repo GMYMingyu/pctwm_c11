@@ -1652,6 +1652,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	rd_thr->set_local_vec(rd_localvec);
 	
 	rd->set_bag(Eres);
+	rd->print_bag();
 	Eres = rd_localvec;
 	return Eres;
 }
