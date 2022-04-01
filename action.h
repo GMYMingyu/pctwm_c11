@@ -214,6 +214,22 @@ public:
 		return bag_flag;
 	}
 
+	void print_bag(){
+		if(bag_flag){
+			model_print("This action has bag:");
+			uint baglen = bag->size();
+			for(uint i = 0; i < baglen; i++){
+				ModelAction* curr = (*bag)[i];
+				model_print("action: seqnum: %u, location: %u, value: %u. ", 
+				curr->get_seq_num(), curr->get_location(), curr->get_value());
+			}
+			model_print("\n");
+		}
+		else{
+			model_print("This action has no bag. \n")
+		}
+	}
+
 
 	SNAPSHOTALLOC
 private:
