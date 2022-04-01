@@ -226,7 +226,7 @@ public:
 			model_print("\n");
 		}
 		else{
-			model_print("This action has no bag. \n")
+			model_print("This action has no bag. \n");
 		}
 	}
 
