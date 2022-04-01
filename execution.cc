@@ -649,12 +649,13 @@ bool ModelExecution::process_mutex(ModelAction *curr)
  */
 void ModelExecution::process_write(ModelAction *curr)
 {	
+	model_print("\n Process write action. ");
 	// we meet a write action -> update the local vec
 	Thread * curr_thread = get_thread(curr);
 	SnapVector<ModelAction*> *thrd_localvec = curr_thread->get_local_vec();
 	curr_thread->set_local_vec(updateVec(thrd_localvec, curr));
 	//curr_thread->update_local_vec(curr);
-	model_print("Process_write updates local vec in thread %d - ", id_to_int(curr_thread->get_id()));
+	model_print("Updates local vec in thread %d - ", id_to_int(curr_thread->get_id()));
 	curr_thread->print_local_vec();
 	w_modification_order(curr);
 	get_thread(curr)->set_return_value(VALUE_NONE);
@@ -924,7 +925,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		//weak memory
 		//step1: increase readnum
 		incReadnum();
-		model_print("Current Read nums:%d. \n", getReadnum());
+		model_print("\n Current read nums: %d. \n", getReadnum());
 		//step2: check if a prority change point
 		int reach_chg_idx = scheduler->find_chgidx(getReadnum());
 		if(reach_chg_idx != -1){
