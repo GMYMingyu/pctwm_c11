@@ -221,7 +221,7 @@ public:
 			for(uint i = 0; i < baglen; i++){
 				ModelAction* curr = (*bag)[i];
 				model_print("action: seqnum: %u, location: %u, value: %u. ", 
-				curr->get_seq_num(), curr->get_location(), curr->get_value());
+				curr->get_seq_number(), curr->get_location(), curr->get_value());
 			}
 			model_print("\n");
 		}
