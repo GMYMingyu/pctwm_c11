@@ -175,6 +175,22 @@ public:
 		usingpct = 1;
 	}
 
+	void print_current_avail_threads(){
+		int availnum = 0;
+		int availthreads[enabled_len];
+	
+		for (int i = 0;i < enabled_len;i++) {
+			if (enabled[i] == THREAD_ENABLED)
+				availthreads[availnum++] = i;
+		}
+
+		model_print("current %d avail threads.", availnum);
+		for(int i = 0; i < availnum; i++){
+			model_print("thread: %d, ", availthreads[i]);
+		}
+		model_print("\n");
+	}
+
 	//weak memory
 	int get_highest_thread(){
 		return highest_id;
