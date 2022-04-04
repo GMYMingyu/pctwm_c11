@@ -182,7 +182,6 @@ public:
 
 	int get_scecond_high_thread(){
 		int availnum = 0;
-		
 		int availthreads[enabled_len];
 		Thread * thread;
 
@@ -192,14 +191,14 @@ public:
 		}
 		// only one thread is available
 		if(availnum == 1){
-			return availnum[0];
+			return availthreads[0];
 		}
 
 		int highest1 = -1;
 		int highest2 = -1;
 		
 
-		int findhigh = 0;
+		uint findhigh = 0;
 		while(findhigh < highvec.size()){
 			for(int i = 0; i < availnum; i++){
 				if(availthreads[i] == highvec[findhigh]){
@@ -217,7 +216,7 @@ public:
 		}
 
 		if((highest1 == -1) || (highest2 == -1)){
-			int findlow = 0;
+			uint findlow = 0;
 			while(findlow < lowvec.size()){
 				for(int i = 0; i < availnum; i++){
 					if(availthreads[i] == lowvec[findlow]){
