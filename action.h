@@ -202,6 +202,7 @@ public:
 	// weak memory - bag flag
 	void init_bagflag(){
 		bag_flag = false;
+		read_external_flag = false;
 	}
 
 	void set_bag(SnapVector<ModelAction*> *E){
@@ -212,6 +213,18 @@ public:
 
 	bool checkbag(){
 		return bag_flag;
+	}
+
+	void set_external_flag(){
+		read_external_flag = true;
+	}
+
+	void reset_external_flag(){
+		read_external_flag = false;
+	}
+
+	bool checkexternal(){
+		return read_external_flag;
 	}
 
 	void print_bag(){
@@ -293,6 +306,7 @@ private:
 	// weak memory - add bag flag and bag
 	bool bag_flag;
 	SnapVector<ModelAction* > *bag;
+	bool read_external_flag;
 };
 
 #endif	/* __ACTION_H__ */

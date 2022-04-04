@@ -455,7 +455,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 		}
 		else{ // ask to use the local vec variable
 			rf = rd_thr->get_same_location_act(curr);
-			if(rf){
+			if(rf){ // the local vec has such variable
 				model_print("local vec has such write, seqnum:%d \n", rf->get_seq_number());
 				index = fuzzer->find_idx(rf_set, rf);
 				if(index != -1){ // to make sure this variable locally is readable
@@ -465,7 +465,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 				 	// localvec has the same variable
 				}
 			}
-			else{
+			else{// the local vec has no such variable
 				model_print("localvec has no variable. randomly select from rf_set. \n");
 				index = fuzzer->selectWrite(curr, rf_set);
 				rf = (*rf_set)[index];
@@ -785,7 +785,15 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 
 		*curr = newcurr;
 		return false;
-	} else {
+	}
+	// weak memory - change priority change point
+	else if(((*curr)->is_read()) && (*curr)->checkexternal()){ // secondly view this action 
+		ModelAction *newcurr = process_rmw(*curr);
+		delete *curr;
+		*curr = newcurr;
+		return false;
+	}
+	else {
 		ModelAction *newcurr = *curr;
 
 		newcurr->set_seq_number(get_next_seq_num());
@@ -916,19 +924,25 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 	wake_up_sleeping_actions();
 
-	bool read_external = false;
+	//bool read_external = false;
 
 	SnapVector<ModelAction *> * rf_set = NULL;
 	bool canprune = false;
 	/* Build may_read_from set for newly-created actions */
-	if (curr->is_read() && newly_explored) {
+	if(curr->is_read() && curr->checkexternal()){
+		rf_set = build_may_read_from(curr);
+		canprune = process_read(curr, rf_set, true); // read externally 
+		curr->reset_external_flag(); // not externally any more
+		delete rf_set;
+	}
+	else if (curr->is_read() && newly_explored && !curr->checkexternal()) {
 		//weak memory
 		//step1: increase readnum
 		incReadnum();
 		model_print("\n Current read nums: %d. \n", getReadnum());
 		//step2: check if a prority change point
 		int reach_chg_idx = scheduler->find_chgidx(getReadnum());
-		if(reach_chg_idx != -1){
+		if(reach_chg_idx != -1){ // we meet a priority change point - hang on this action
 			//step3: reach a priority change point - a. move thread
 			model_print("reach the %d change point. Change priority of thread %d. \n", reach_chg_idx, scheduler->get_highest_thread());
 			scheduler->print_highvec();
@@ -937,13 +951,15 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			scheduler->print_highvec();
 			scheduler->print_lowvec();
 			//step4: meet the change point: read externally
-			read_external = true;
+			curr->set_external_flag();
 		}
-
-
-		rf_set = build_may_read_from(curr);
-		canprune = process_read(curr, rf_set, read_external);
-		delete rf_set;
+		else{
+			// only process the read when it is not a prio change point
+			rf_set = build_may_read_from(curr);
+			canprune = process_read(curr, rf_set, false); // read internally
+			delete rf_set;
+		}
+		
 	} else
 		ASSERT(rf_set == NULL);
 
@@ -979,6 +995,14 @@ ModelAction * ModelExecution::process_rmw(ModelAction *act) {
 	if (act->is_rmw()) {
 		mo_graph->addRMWEdge(lastread->get_reads_from(), lastread);
 	}
+	return lastread;
+}
+
+
+/** The read action was hanged by the scheduler*/
+ModelAction * ModelExecution::process_savedread(ModelAction *act) {
+	ModelAction *lastread = get_last_action(act->get_tid());
+	ASSERT(lastread->is_read());
 	return lastread;
 }
 
@@ -1954,6 +1978,10 @@ Thread * ModelExecution::action_select_next_thread(const ModelAction *curr) cons
 	if (curr->get_type() == PTHREAD_CREATE) {
 		return curr->get_thread_operand();
 	}
+		// weak memory model - return the second highest thread when the we meet a change point
+	if(curr->is_read() && curr->checkexternal()){
+		return scheduler->get_scecond_high_thread();
+	}
 	return NULL;
 }
 
@@ -1971,6 +1999,8 @@ Thread * ModelExecution::take_step(ModelAction *curr)
 	ASSERT(check_action_enabled(curr));	/* May have side effects? */
 	curr = check_current_action(curr);
 	ASSERT(curr);
+
+
 
 	/* Process this action in ModelHistory for records */
 	if (curr_thrd->is_blocked() || curr_thrd->is_complete())

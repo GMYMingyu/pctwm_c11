@@ -155,6 +155,8 @@ private:
 	SnapVector<ModelAction*> * updateVec(SnapVector<ModelAction*> *input_vec, ModelAction* curr);
 	SnapVector<ModelAction*> * maxVec(SnapVector<ModelAction*> * Eacc, SnapVector<ModelAction*> *local_vec);
 	ModelAction * process_rmw(ModelAction *curr);
+	//weak memory - process the saved read action in the thread
+	ModelAction *process_savedread(ModelAction *curr);
 	bool r_modification_order(ModelAction *curr, const ModelAction *rf, SnapVector<ModelAction *> *priorset, bool *canprune);
 	void w_modification_order(ModelAction *curr);
 	ClockVector * get_hb_from_write(ModelAction *rf) const;
