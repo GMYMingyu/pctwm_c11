@@ -929,7 +929,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	SnapVector<ModelAction *> * rf_set = NULL;
 	bool canprune = false;
 	/* Build may_read_from set for newly-created actions */
-	if(curr->is_read() && curr->checkexternal()){
+	if(!newly_explored && curr->is_read() && curr->checkexternal()){
 		rf_set = build_may_read_from(curr);
 		canprune = process_read(curr, rf_set, true); // read externally 
 		curr->reset_external_flag(); // not externally any more
