@@ -183,8 +183,7 @@ public:
 	int get_scecond_high_thread(){
 		int availnum = 0;
 		int availthreads[enabled_len];
-		Thread * thread;
-
+	
 		for (int i = 0;i < enabled_len;i++) {
 			if (enabled[i] == THREAD_ENABLED)
 				availthreads[availnum++] = i;
