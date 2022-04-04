@@ -788,7 +788,7 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 	}
 	// weak memory - change priority change point
 	else if(((*curr)->is_read()) && (*curr)->checkexternal()){ // secondly view this action 
-		ModelAction *newcurr = process_rmw(*curr);
+		ModelAction *newcurr = process_savedread(*curr);
 		delete *curr;
 		*curr = newcurr;
 		return false;
