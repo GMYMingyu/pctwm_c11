@@ -787,6 +787,7 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 		*curr = newcurr;
 		
 		ASSERT((*curr)->is_read());
+		ASSERT((*curr)->checkexternal());
 		return false;
 	}
 
