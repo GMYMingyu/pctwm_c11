@@ -779,12 +779,13 @@ void ModelExecution::process_thread_action(ModelAction *curr)
  */
 bool ModelExecution::initialize_curr_action(ModelAction **curr)
 {	
-	if((*curr)->checkexternal()){
-		model_print("meet again.\n");
+	if((*curr)->is_read() && (*curr)->checkexternal()){
+		ASSERT((*curr)->is_read());
+		model_print("meet a hang read action again.\n");
 		ModelAction *newcurr = process_savedread(*curr);
 		delete *curr;
 		*curr = newcurr;
-		ASSERT((*curr)->is_read());
+		
 
 		return false;
 	}
