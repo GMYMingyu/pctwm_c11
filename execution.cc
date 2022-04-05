@@ -781,7 +781,7 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 {	
 	if((*curr)->is_read() && (*curr)->checkexternal()){
 		ASSERT((*curr)->is_read());
-		model_print("meet a hang read action again.\n");
+		model_print("meet a read action again.\n");
 		ModelAction *newcurr = process_savedread(*curr);
 		delete *curr;
 		*curr = newcurr;
@@ -1024,9 +1024,11 @@ ModelAction * ModelExecution::process_rmw(ModelAction *act) {
 
 
 /** The read action was hanged by the scheduler*/
+// weak memory
 ModelAction * ModelExecution::process_savedread(ModelAction *act) {
 	ModelAction *lastread = get_last_action(act->get_tid());
 	ASSERT(lastread->is_read());
+	ASSERT(lastread->checkexternal());
 	return lastread;
 }
 
