@@ -1984,6 +1984,7 @@ Thread * ModelExecution::action_select_next_thread(const ModelAction *curr) cons
 	}
 		// weak memory model - return the second highest thread when the we meet a change point
 	if(curr->is_read() && curr->checkexternal_const()){
+		model_print("now hang on: select the second highest thread.");
 		scheduler->print_current_avail_threads();
 		return get_thread(int_to_id(scheduler->get_scecond_high_thread()));
 	}
