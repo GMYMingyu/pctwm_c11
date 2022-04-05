@@ -960,9 +960,10 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			scheduler->print_lowvec();
 			//step4: meet the change point: read externally
 			curr->set_external_flag();
-			rf_set = build_may_read_from(curr);
-			canprune = process_read(curr, rf_set, false); // read internally
-			delete rf_set;
+			
+			//rf_set = build_may_read_from(curr);
+			//canprune = process_read(curr, rf_set, false); // read internally
+			//delete rf_set;
 		}
 		else{
 			// only process the read when it is not a prio change point
@@ -975,7 +976,8 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		ASSERT(rf_set == NULL);
 
 	/* Add the action to lists if not the second part of a rmw */
-	if (newly_explored) {
+	//if (newly_explored) {
+	if (newly_explored && !(curr->is_read() && curr->checkexternal())) {
 #ifdef COLLECT_STAT
 		record_atomic_stats(curr);
 #endif
