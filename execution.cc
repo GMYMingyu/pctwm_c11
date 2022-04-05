@@ -781,7 +781,7 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 {	
 	if((*curr)->is_read() && (*curr)->checkexternal()){
 		ASSERT((*curr)->is_read());
-		model_print("meet a read action again.\n");
+		model_print("initialize_curr_action: meet a read action again.\n");
 		ModelAction *newcurr = process_savedread(*curr);
 		delete *curr;
 		*curr = newcurr;
@@ -949,7 +949,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	// }
 	// else 
 	if(curr->is_read() && curr->checkexternal()){
-		model_print("meet this read agian");
+		model_print("check_current_action: meet this read agian");
 		rf_set = build_may_read_from(curr);
 		canprune = process_read(curr, rf_set, true); // read internally
 		curr->reset_external_flag(); // back to false
