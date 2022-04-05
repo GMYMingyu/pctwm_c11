@@ -467,6 +467,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 			}
 			else{// the local vec has no such variable
 				model_print("localvec has no variable. randomly select from rf_set. \n");
+				model_print("rf_set size is: %u. \n", rf_set->size());
 				index = fuzzer->selectWrite(curr, rf_set);
 				rf = (*rf_set)[index];
 				(*rf_set)[index] = rf_set->back();
