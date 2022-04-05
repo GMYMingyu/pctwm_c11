@@ -936,7 +936,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	// 	delete rf_set;
 	// }
 	// else 
-	if(curr->is_read() &&curr->checkexternal()){
+	if(curr->is_read() && curr->checkexternal()){
 		model_print("meet this read agian");
 		rf_set = build_may_read_from(curr);
 		canprune = process_read(curr, rf_set, true); // read internally
@@ -960,9 +960,9 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			scheduler->print_lowvec();
 			//step4: meet the change point: read externally
 			curr->set_external_flag();
-			// rf_set = build_may_read_from(curr);
-			// canprune = process_read(curr, rf_set, false); // read internally
-			// delete rf_set;
+			rf_set = build_may_read_from(curr);
+			canprune = process_read(curr, rf_set, false); // read internally
+			delete rf_set;
 		}
 		else{
 			// only process the read when it is not a prio change point
