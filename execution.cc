@@ -786,7 +786,7 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 		delete *curr;
 		*curr = newcurr;
 		
-
+		ASSERT((*curr)->is_read());
 		return false;
 	}
 
