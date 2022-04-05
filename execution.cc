@@ -786,13 +786,13 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 		*curr = newcurr;
 		return false;
 	}
-	// weak memory - change priority change point
-	else if(((*curr)->is_read()) && (*curr)->checkexternal()){ // secondly view this action 
-		ModelAction *newcurr = process_savedread(*curr);
-		delete *curr;
-		*curr = newcurr;
-		return false;
-	}
+	// // weak memory - change priority change point
+	// else if(((*curr)->is_read()) && (*curr)->checkexternal()){ // secondly view this action 
+	// 	ModelAction *newcurr = process_savedread(*curr);
+	// 	delete *curr;
+	// 	*curr = newcurr;
+	// 	return false;
+	// }
 	else {
 		ModelAction *newcurr = *curr;
 
@@ -929,13 +929,14 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	SnapVector<ModelAction *> * rf_set = NULL;
 	bool canprune = false;
 	/* Build may_read_from set for newly-created actions */
-	if(!newly_explored && curr->is_read() && curr->checkexternal()){
-		rf_set = build_may_read_from(curr);
-		canprune = process_read(curr, rf_set, true); // read externally 
-		curr->reset_external_flag(); // not externally any more
-		delete rf_set;
-	}
-	else if (curr->is_read() && newly_explored && !curr->checkexternal()) {
+	// if(curr->is_read() && curr->checkexternal()){
+	// 	rf_set = build_may_read_from(curr);
+	// 	canprune = process_read(curr, rf_set, true); // read externally 
+	// 	curr->reset_external_flag(); // not externally any more
+	// 	delete rf_set;
+	// }
+	// else 
+	if (curr->is_read() && newly_explored && !curr->checkexternal()) {
 		//weak memory
 		//step1: increase readnum
 		incReadnum();
@@ -952,6 +953,9 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			scheduler->print_lowvec();
 			//step4: meet the change point: read externally
 			curr->set_external_flag();
+			rf_set = build_may_read_from(curr);
+			canprune = process_read(curr, rf_set, false); // read internally
+			delete rf_set;
 		}
 		else{
 			// only process the read when it is not a prio change point
@@ -1000,11 +1004,11 @@ ModelAction * ModelExecution::process_rmw(ModelAction *act) {
 
 
 /** The read action was hanged by the scheduler*/
-ModelAction * ModelExecution::process_savedread(ModelAction *act) {
-	ModelAction *lastread = get_last_action(act->get_tid());
-	ASSERT(lastread->is_read());
-	return lastread;
-}
+// ModelAction * ModelExecution::process_savedread(ModelAction *act) {
+// 	ModelAction *lastread = get_last_action(act->get_tid());
+// 	ASSERT(lastread->is_read());
+// 	return lastread;
+// }
 
 /**
  * @brief Updates the mo_graph with the constraints imposed from the current
