@@ -781,7 +781,7 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 {	
 	if((*curr)->checkexternal()){
 		model_print("meet again.\n");
-		ModelAction *newcurr = process_savedread*curr);
+		ModelAction *newcurr = process_savedread(*curr);
 		delete *curr;
 		*curr = newcurr;
 		ASSERT((*curr)->is_read());
