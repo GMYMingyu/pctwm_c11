@@ -469,7 +469,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 				model_print("localvec has no variable. randomly select from rf_set. \n");
 				model_print("rf_set size is: %u. \n", rf_set->size());
 				index = fuzzer->selectWrite(curr, rf_set);
-				//model_print("the read external flag: %d \n", rf->checkexternal());
+				model_print("the read external flag: %u \n", rf->checkexternal());
 				rf = (*rf_set)[index];
 				(*rf_set)[index] = rf_set->back();
 				rf_set->pop_back();
