@@ -781,8 +781,15 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 {	
 	if((*curr)->checkexternal()){
 		model_print("meet again.\n");
+		ModelAction *newcurr = process_savedread*curr);
+		delete *curr;
+		*curr = newcurr;
+		ASSERT((*curr)->is_read());
+
+		return false;
 	}
-	if ((*curr)->is_rmwc() || (*curr)->is_rmw()) {
+
+	else if ((*curr)->is_rmwc() || (*curr)->is_rmw()) {
 		ModelAction *newcurr = process_rmw(*curr);
 		delete *curr;
 
@@ -1016,11 +1023,11 @@ ModelAction * ModelExecution::process_rmw(ModelAction *act) {
 
 
 /** The read action was hanged by the scheduler*/
-// ModelAction * ModelExecution::process_savedread(ModelAction *act) {
-// 	ModelAction *lastread = get_last_action(act->get_tid());
-// 	ASSERT(lastread->is_read());
-// 	return lastread;
-// }
+ModelAction * ModelExecution::process_savedread(ModelAction *act) {
+	ModelAction *lastread = get_last_action(act->get_tid());
+	ASSERT(lastread->is_read());
+	return lastread;
+}
 
 /**
  * @brief Updates the mo_graph with the constraints imposed from the current
