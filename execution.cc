@@ -778,7 +778,10 @@ void ModelExecution::process_thread_action(ModelAction *curr)
  * @return True if curr is a newly-explored action; false otherwise
  */
 bool ModelExecution::initialize_curr_action(ModelAction **curr)
-{
+{	
+	if((*curr)->checkexternal()){
+		model_print("meet again.\n");
+	}
 	if ((*curr)->is_rmwc() || (*curr)->is_rmw()) {
 		ModelAction *newcurr = process_rmw(*curr);
 		delete *curr;
