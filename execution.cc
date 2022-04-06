@@ -782,7 +782,7 @@ void ModelExecution::process_thread_action(ModelAction *curr)
  */
 bool ModelExecution::initialize_curr_action(ModelAction **curr)
 {	
-	if((*curr)->is_read() && (*curr)->checkexternal()){
+	if((*curr)->checkexternal()){
 		ASSERT((*curr)->is_read());
 		model_print("initialize: enter case 1 \n");
 		model_print("initialize_curr_action: meet a read action again.\n");
