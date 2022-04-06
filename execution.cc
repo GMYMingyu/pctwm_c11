@@ -782,7 +782,7 @@ void ModelExecution::process_thread_action(ModelAction *curr)
  */
 bool ModelExecution::initialize_curr_action(ModelAction **curr)
 {	
-	(*curr)->print();
+	
 	model_print("the type of action is %u, external flag is %u \n", (*curr)->get_type(),(*curr)->checkexternal());
 	if((*curr)->checkexternal()){
 		ASSERT((*curr)->is_read());
@@ -2054,7 +2054,8 @@ Thread * ModelExecution::action_select_next_thread(const ModelAction *curr) cons
 		return curr->get_thread_operand();
 	}
 		// weak memory model - return the second highest thread when the we meet a change point
-	if(curr->is_read() && curr->checkexternal_const()){
+	bool external_flag = curr->checkexternal();
+	if(curr->is_read() && external_flag){
 		model_print("now hang on: select the second highest thread.");
 		scheduler->print_current_avail_threads();
 		return get_thread(int_to_id(scheduler->get_scecond_high_thread()));
