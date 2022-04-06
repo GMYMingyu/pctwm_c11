@@ -784,6 +784,7 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 {	
 	if((*curr)->is_read() && (*curr)->checkexternal()){
 		ASSERT((*curr)->is_read());
+		model_print("initialize: enter case 1 \n");
 		model_print("initialize_curr_action: meet a read action again.\n");
 		ModelAction *newcurr = *curr;
 		newcurr->create_cv(get_parent_action(newcurr->get_tid()));
@@ -795,8 +796,8 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 		ASSERT((*curr)->checkexternal());
 		return false;
 	}
-
 	else if ((*curr)->is_rmwc() || (*curr)->is_rmw()) {
+		model_print("initialize: enter case 2 \n");
 		ModelAction *newcurr = process_rmw(*curr);
 		delete *curr;
 
@@ -811,6 +812,7 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 	// 	return false;
 	// }
 	else {
+		model_print("initialize: enter case 3 \n");
 		ModelAction *newcurr = *curr;
 
 		newcurr->set_seq_number(get_next_seq_num());
