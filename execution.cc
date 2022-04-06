@@ -785,8 +785,6 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 	
 	//model_print("the type of action is %u, external flag is %u \n", (*curr)->get_type_str(),(*curr)->checkexternal());
 	if((*curr)->checkexternal()){
-		ASSERT((*curr)->is_write() == true);
-		
 		model_print("initialize: enter case 1 \n");
 		model_print("had check external flag is true, it must be read action:%d \n", (*curr)->is_read());
 		model_print("initialize_curr_action: meet a read action again.\n");
@@ -973,9 +971,13 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	// 	delete rf_set;
 	// }
 	// else 
+
+	model_print("before add readnum:");
+	const char *type_str = curr->get_type_str();
+	model_print("current action type is  %-14s. \n", type_str);
 	if(curr->is_read() && curr->checkexternal()){
+
 		model_print("enter the hang process: check external %d. ",curr->checkexternal());
-		model_print("enter the hang process: is read %d. \n",curr->is_read());
 		model_print("check_current_action: meet this read agian");
 		rf_set = build_may_read_from(curr);
 		canprune = process_read(curr, rf_set, true); // read internally
