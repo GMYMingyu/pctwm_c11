@@ -784,14 +784,17 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 {	
 	if((*curr)->checkexternal()){
 		ASSERT((*curr)->is_read());
+		
 		model_print("initialize: enter case 1 \n");
+		model_print("had check external flag is true, it must be read action:%d \n", (*curr)->is_read());
 		model_print("initialize_curr_action: meet a read action again.\n");
 		ModelAction *newcurr = *curr;
 		newcurr->create_cv(get_parent_action(newcurr->get_tid()));
-
+		newcurr->set_seq_number(get_next_seq_num());
 		/* Assign most recent release fence */
 		newcurr->set_last_fence_release(get_last_fence_release(newcurr->get_tid()));
-		
+		newcurr->set_external_flag();
+
 		ASSERT((*newcurr)->is_read());
 		ASSERT((*newcurr)->checkexternal());
 		return false;
