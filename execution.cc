@@ -973,7 +973,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	// else 
 
 	model_print("before add readnum:");
-	const char *type_str = curr->get_type_str();
+	type_str = curr->get_type_str();
 	model_print("current action type is  %-14s. \n", type_str);
 	if(curr->is_read() && curr->checkexternal()){
 
