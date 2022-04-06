@@ -943,12 +943,10 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	
 	ASSERT(curr);
 	const char *type_str = curr->get_type_str();
-	model_print("current action type is  %-14s. \n", type_str);
+	model_print("current action type is  %-14s. external_flag: %u \n", type_str, curr->checkexternal());
 	bool meet_flag = false;
 	if(curr->checkexternal()){
 		meet_flag = true;
-		model_print("action: check external %d. ",curr->checkexternal());
-		model_print("action: is read %d. \n",curr->is_read());
 	}
 	
 	bool newly_explored = initialize_curr_action(&curr);
@@ -974,11 +972,9 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 	model_print("before add readnum:");
 	type_str = curr->get_type_str();
-	model_print("current action type is  %-14s. \n", type_str);
+	model_print("current action type is  %-14s. external_flag: %u \n", type_str, curr->checkexternal());
 	if(curr->is_read() && curr->checkexternal()){
-
-		model_print("enter the hang process: check external %d. ",curr->checkexternal());
-		model_print("check_current_action: meet this read agian");
+		model_print("enter externally read: meet this read agian");
 		rf_set = build_may_read_from(curr);
 		canprune = process_read(curr, rf_set, true); // read internally
 		curr->reset_external_flag(); // back to false
