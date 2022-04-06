@@ -782,6 +782,7 @@ void ModelExecution::process_thread_action(ModelAction *curr)
  */
 bool ModelExecution::initialize_curr_action(ModelAction **curr)
 {	
+	(*curr)->print();
 	model_print("the type of action is %u, external flag is %u \n", (*curr)->get_type(),(*curr)->checkexternal());
 	if((*curr)->checkexternal()){
 		ASSERT((*curr)->is_read());
