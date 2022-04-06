@@ -82,41 +82,6 @@ typedef enum action_type {
 	ATOMIC_NOP	// < Placeholder
 } action_type_t;
 
-//weak memory
-SnapVector<action_type> get_type_name = {
-	THREAD_CREATE,	// < A thread creation action
-	THREAD_START,	// < First action in each thread
-	THREAD_YIELD,	// < A thread yield action
-	THREAD_JOIN,	// < A thread join action
-	THREAD_FINISH,	// < A thread completion action
-	THREADONLY_FINISH,	// < A thread completion action
-	THREAD_SLEEP,	// < A sleep operation
-
-	PTHREAD_CREATE,	// < A pthread creation action
-	PTHREAD_JOIN,	// < A pthread join action
-
-	NONATOMIC_WRITE,	// < Represents a non-atomic store
-	ATOMIC_INIT,	// < Initialization of an atomic object (e.g., atomic_init())
-	ATOMIC_WRITE,	// < An atomic write action
-	ATOMIC_RMW,	// < The write part of an atomic RMW action
-	ATOMIC_READ,	// < An atomic read action
-	ATOMIC_RMWR,	// < The read part of an atomic RMW action
-	ATOMIC_RMWRCAS,	// < The read part of an atomic RMW action
-	ATOMIC_RMWC,	// < Convert an atomic RMW action into a READ
-
-	ATOMIC_FENCE,	// < A fence action
-	ATOMIC_LOCK,	// < A lock action
-	ATOMIC_TRYLOCK,	// < A trylock action
-	ATOMIC_UNLOCK,	// < An unlock action
-
-	ATOMIC_NOTIFY_ONE,	// < A notify_one action
-	ATOMIC_NOTIFY_ALL,	// < A notify all action
-	ATOMIC_WAIT,	// < A wait action
-	ATOMIC_TIMEDWAIT,	// < A timed wait action
-	ATOMIC_ANNOTATION,	// < An annotation action to pass information to a trace analysis
-	READY_FREE,	// < Write is ready to be freed
-	ATOMIC_NOP	// < Placeholder
-};
 /**
  * @brief Represents a single atomic action
  *
