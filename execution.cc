@@ -785,7 +785,7 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 	
 	//model_print("the type of action is %u, external flag is %u \n", (*curr)->get_type_str(),(*curr)->checkexternal());
 	if((*curr)->checkexternal()){
-		ASSERT((*curr)->is_read() == 1);
+		ASSERT((*curr)->is_write() == 1);
 		
 		model_print("initialize: enter case 1 \n");
 		model_print("had check external flag is true, it must be read action:%d \n", (*curr)->is_read());
