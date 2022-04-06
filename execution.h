@@ -241,7 +241,7 @@ private:
 
 	Fuzzer * fuzzer;
 
-	Thread * action_select_next_thread(const ModelAction *curr) const;
+	Thread * action_select_next_thread(const ModelAction *curr, bool flag) const;
 
 	bool isfinished;
 
