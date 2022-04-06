@@ -933,6 +933,9 @@ bool ModelExecution::check_action_enabled(ModelAction *curr) {
 ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 {
 	ASSERT(curr);
+	if(curr->checkexternal()){
+		model_print("check_current_action: meet read action again. \n");
+	}
 	bool newly_explored = initialize_curr_action(&curr);
 
 	DBG();
@@ -1348,6 +1351,32 @@ ClockVector * ModelExecution::get_hb_from_write(ModelAction *rf) const {
 		delete processset;
 	return vec;
 }
+
+
+/**
+ * @brief add the hang read action to list - weak memory
+ * 
+ */
+void ModelExecution::add_hang_read_lists(ModelAction *act){
+	int tid = id_to_int(act->get_tid());
+	SnapVector<action_list_t> *vec = get_safe_ptr_vect_action(&obj_thrd_map, act->get_location());
+	if ((int)vec->size() <= tid) {
+		uint oldsize = vec->size();
+		vec->resize(priv->next_thread_id);
+		for(uint i = oldsize;i < priv->next_thread_id;i++)
+			new (&(*vec)[i]) action_list_t();
+
+		fixup_action_list(vec);
+	}
+	(*vec)[tid].addAction(act);
+	// Update thrd_last_action, the last action taken by each thread
+	if ((int)thrd_last_action.size() <= tid)
+		thrd_last_action.resize(get_num_threads());
+	thrd_last_action[tid] = act;
+}
+
+
+
 
 /**
  * Performs various bookkeeping operations for the current ModelAction. For
