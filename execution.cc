@@ -792,8 +792,8 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 		/* Assign most recent release fence */
 		newcurr->set_last_fence_release(get_last_fence_release(newcurr->get_tid()));
 		
-		ASSERT((*curr)->is_read());
-		ASSERT((*curr)->checkexternal());
+		ASSERT((*newcurr)->is_read());
+		ASSERT((*newcurr)->checkexternal());
 		return false;
 	}
 	else if ((*curr)->is_rmwc() || (*curr)->is_rmw()) {
@@ -939,6 +939,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	ASSERT(curr);
 	bool meet_flag = false;
 	if(curr->checkexternal()){
+		ASSERT(curr->is_read());
 		meet_flag = true;
 		model_print("before the initialize:the check external result is %d. \n",curr->checkexternal());
 	}
