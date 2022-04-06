@@ -103,40 +103,7 @@ public:
 	thread_id_t get_tid() const { return tid; }
 	action_type get_type() const { return type; }
 
-	char get_str_type() const{
-		switch(type){
-			case THREAD_CREATE: return "thread create";
-		case THREAD_START: return "thread start";
-		case THREAD_YIELD: return "thread yield";
-		case THREAD_JOIN: return "thread join";
-		case THREAD_FINISH: return "thread finish";
-		case THREAD_SLEEP: return "thread sleep";
-		case THREADONLY_FINISH: return "pthread_exit finish";
-
-		case PTHREAD_CREATE: return "pthread create";
-		case PTHREAD_JOIN: return "pthread join";
-
-		case NONATOMIC_WRITE: return "nonatomic write";
-		case ATOMIC_READ: return "atomic read";
-		case ATOMIC_WRITE: return "atomic write";
-		case ATOMIC_RMW: return "atomic rmw";
-		case ATOMIC_FENCE: return "fence";
-		case ATOMIC_RMWR: return "atomic rmwr";
-		case ATOMIC_RMWRCAS: return "atomic rmwrcas";
-		case ATOMIC_RMWC: return "atomic rmwc";
-		case ATOMIC_INIT: return "init atomic";
-		case ATOMIC_LOCK: return "lock";
-		case ATOMIC_UNLOCK: return "unlock";
-		case ATOMIC_TRYLOCK: return "trylock";
-		case ATOMIC_WAIT: return "wait";
-		case ATOMIC_TIMEDWAIT: return "timed wait";
-		case ATOMIC_NOTIFY_ONE: return "notify one";
-		case ATOMIC_NOTIFY_ALL: return "notify all";
-		case ATOMIC_ANNOTATION: return "annotation";
-		default: return "unknown type";
-	};
-
-	}
+	const char * get_type_str() const;
 
 
 	void set_type(action_type _type) { type = _type; }
@@ -284,7 +251,7 @@ public:
 
 	SNAPSHOTALLOC
 private:
-	const char * get_type_str() const;
+	//const char * get_type_str() const;
 	const char * get_mo_str() const;
 
 	/** @brief A pointer to the memory location for this action. */
