@@ -116,7 +116,7 @@ SnapVector<action_type_t> get_type_name = {
 	ATOMIC_ANNOTATION,	// < An annotation action to pass information to a trace analysis
 	READY_FREE,	// < Write is ready to be freed
 	ATOMIC_NOP	// < Placeholder
-}
+};
 /**
  * @brief Represents a single atomic action
  *
