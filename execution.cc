@@ -944,7 +944,8 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 {
 	
 	ASSERT(curr);
-	model_print("current action type is %u. \n",&(curr->get_type_str()));
+	const char *type_str = curr->get_type_str();
+	model_print("current action type is %u. \n", type_str);
 	bool meet_flag = false;
 	if(curr->checkexternal()){
 		meet_flag = true;
