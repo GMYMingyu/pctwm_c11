@@ -989,6 +989,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			scheduler->print_highvec();
 			scheduler->print_lowvec();
 			//step4: meet the change point: read externally
+			ASSERT(curr->is_read());
 			curr->set_external_flag();
 			
 			//rf_set = build_may_read_from(curr);
