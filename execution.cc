@@ -944,7 +944,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	}
 	bool newly_explored = initialize_curr_action(&curr);
 	if(meet_flag){
-		model_print("after the initialize: %u. \n",curr->checkexternal());
+		model_print("after the initialize: the check external result is %d. \n",curr->checkexternal());
 	}
 	DBG();
 
