@@ -786,8 +786,10 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 		ASSERT((*curr)->is_read());
 		model_print("initialize_curr_action: meet a read action again.\n");
 		ModelAction *newcurr = *curr;
-		delete *curr;
-		*curr = newcurr;
+		newcurr->create_cv(get_parent_action(newcurr->get_tid()));
+
+		/* Assign most recent release fence */
+		newcurr->set_last_fence_release(get_last_fence_release(newcurr->get_tid()));
 		
 		ASSERT((*curr)->is_read());
 		ASSERT((*curr)->checkexternal());
