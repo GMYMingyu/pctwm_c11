@@ -942,6 +942,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 {
 	
 	ASSERT(curr);
+	model_print("\n new check current action. \n ");
 	const char *type_str = curr->get_type_str();
 	model_print("current action type is  %-14s. external_flag: %u \n", type_str, curr->checkexternal());
 	bool meet_flag = false;
@@ -984,7 +985,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		//weak memory
 		//step1: increase readnum
 		incReadnum();
-		model_print("\n Current read nums: %d. \n", getReadnum());
+		model_print("Current read nums: %d. \n", getReadnum());
 		//step2: check if a prority change point
 		int reach_chg_idx = scheduler->find_chgidx(getReadnum());
 		if(reach_chg_idx != -1){ // we meet a priority change point - hang on this action
