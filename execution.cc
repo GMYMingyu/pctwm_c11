@@ -933,11 +933,15 @@ bool ModelExecution::check_action_enabled(ModelAction *curr) {
 ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 {
 	ASSERT(curr);
+	bool meet_flag = false;
 	if(curr->checkexternal()){
+		meet_flag = true;
 		model_print("check_current_action: meet read action again. \n");
 	}
 	bool newly_explored = initialize_curr_action(&curr);
-
+	if(meet_flag){
+		model_print("after the initialize: %u. \n",curr->checkexternal());
+	}
 	DBG();
 
 	wake_up_sleeping_actions();
