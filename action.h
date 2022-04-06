@@ -83,7 +83,7 @@ typedef enum action_type {
 } action_type_t;
 
 //weak memory
-SnapVector<action_type_t> get_type_name = {
+SnapVector<action_type> get_type_name = {
 	THREAD_CREATE,	// < A thread creation action
 	THREAD_START,	// < First action in each thread
 	THREAD_YIELD,	// < A thread yield action
