@@ -944,10 +944,12 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 {
 	
 	ASSERT(curr);
+	model_print("current action type is %u. \n",curr->get_str_type());
 	bool meet_flag = false;
 	if(curr->checkexternal()){
 		meet_flag = true;
-		model_print("before the initialize:the check external result is %d. \n",curr->checkexternal());
+		model_print("action: check external %d. ",curr->checkexternal());
+		model_print("action: is read %d. \n",curr->is_read());
 	}
 	
 	bool newly_explored = initialize_curr_action(&curr);
