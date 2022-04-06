@@ -940,7 +940,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	bool meet_flag = false;
 	if(curr->checkexternal()){
 		meet_flag = true;
-		model_print("check_current_action: meet read action again. \n");
+		model_print("before the initialize:the check external result is %d. \n",curr->checkexternal());
 	}
 	bool newly_explored = initialize_curr_action(&curr);
 	if(meet_flag){
