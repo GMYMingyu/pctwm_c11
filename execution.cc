@@ -783,7 +783,7 @@ void ModelExecution::process_thread_action(ModelAction *curr)
 bool ModelExecution::initialize_curr_action(ModelAction **curr)
 {	
 	
-	model_print("the type of action is %u, external flag is %u \n", (*curr)->get_type_str(),(*curr)->checkexternal());
+	//model_print("the type of action is %u, external flag is %u \n", (*curr)->get_type_str(),(*curr)->checkexternal());
 	if((*curr)->checkexternal()){
 		ASSERT((*curr)->is_read() == true);
 		
@@ -942,6 +942,7 @@ bool ModelExecution::check_action_enabled(ModelAction *curr) {
  */
 ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 {
+	curr->print();
 	ASSERT(curr);
 	bool meet_flag = false;
 	if(curr->checkexternal()){
@@ -949,6 +950,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		meet_flag = true;
 		model_print("before the initialize:the check external result is %d. \n",curr->checkexternal());
 	}
+	
 	bool newly_explored = initialize_curr_action(&curr);
 	if(meet_flag){
 		model_print("after the initialize: the check external result is %d. \n",curr->checkexternal());
