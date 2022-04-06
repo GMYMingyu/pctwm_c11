@@ -785,7 +785,7 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 	if((*curr)->is_read() && (*curr)->checkexternal()){
 		ASSERT((*curr)->is_read());
 		model_print("initialize_curr_action: meet a read action again.\n");
-		ModelAction *newcurr = curr;
+		ModelAction *newcurr = &curr;
 		delete *curr;
 		*curr = newcurr;
 		
