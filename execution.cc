@@ -782,6 +782,7 @@ void ModelExecution::process_thread_action(ModelAction *curr)
  */
 bool ModelExecution::initialize_curr_action(ModelAction **curr)
 {	
+	model_print("the type of action is %u, external flag is %u \n", (*curr)->get_type(),(*curr)->checkexternal());
 	if((*curr)->checkexternal()){
 		ASSERT((*curr)->is_read());
 		
@@ -790,6 +791,7 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 		model_print("initialize_curr_action: meet a read action again.\n");
 		ModelAction *newcurr = *curr;
 		newcurr->create_cv(get_parent_action(newcurr->get_tid()));
+		newcurr->init_bagflag();
 		newcurr->set_seq_number(get_next_seq_num());
 		/* Assign most recent release fence */
 		newcurr->set_last_fence_release(get_last_fence_release(newcurr->get_tid()));
