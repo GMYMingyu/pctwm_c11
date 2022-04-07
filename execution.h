@@ -129,8 +129,8 @@ public:
 		int idx = i;
 	
 		if (i >= external_readnum_thread.size()){
-			i++;
-			external_readnum_thread.resize(i);
+			idx++;
+			external_readnum_thread.resize(idx);
 			external_readnum_thread[idx] = 1;
 		}
 		else{
@@ -162,8 +162,8 @@ public:
 		uint i = id_to_int(t->get_id());
 		int idx = i;
 		if (i >= external_readnum_thread.size()){
-			i++;
-			external_readnum_thread.resize(i);
+			idx++;
+			external_readnum_thread.resize(idx);
 			return 0;
 		}
 		else{
