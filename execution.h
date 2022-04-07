@@ -127,16 +127,12 @@ public:
 	void add_external_readnum_thread(Thread *t){
 		uint i = id_to_int(t->get_id());
 		int idx = i;
-		SnapVector<int> newvec;
+		
 	
-		if (i >= external_readnum_thread.size()){
+		if (i >= external_readnum_thread->size()){
+			external_readnum_thread->resize(i + 1);
 			
-			newvec.resize(i + 1, 0);
-			for(uint j = 0; j < external_readnum_thread.size(); j++){
-				newvec[j] = external_readnum_thread[j];
-			}
 			newvec[idx] = 1;
-			external_readnum_thread = newvec;
 		}
 		else{
 			external_readnum_thread[idx] = external_readnum_thread[idx] + 1;
@@ -147,7 +143,7 @@ public:
 	bool deleteone_external_readnum_thread(Thread *t){
 		uint i = id_to_int(t->get_id());
 		int idx = i;
-		if (i >= external_readnum_thread.size()){
+		if (i >= external_readnum_thread->size()){
 			return false;
 			}
 		else{
@@ -166,13 +162,8 @@ public:
 	int get_external_readnum_thread(Thread *t){
 		uint i = id_to_int(t->get_id());
 		int idx = i;
-		if (i >= external_readnum_thread.size()){
-			SnapVector<int> newvec;
-			newvec.resize(i + 1, 0);
-			for(uint j = 0; j < external_readnum_thread.size(); j++){
-				newvec[j] = external_readnum_thread[j];
-			}
-			external_readnum_thread = newvec;
+		if (i >= external_readnum_thread->size()){
+			external_readnum_thread->resize(i + 1);
 			return 0;
 		}
 		else{
@@ -308,7 +299,7 @@ private:
 	bool isfinished;
 
 	int readnum, maxreads;
-	SnapVector<int> external_readnum_thread;
+	SnapVector<int> *external_readnum_thread;
 };
 
 #endif	/* __EXECUTION_H__ */
