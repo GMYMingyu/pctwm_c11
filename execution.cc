@@ -981,7 +981,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	// type_str = curr->get_type_str();
 	// model_print("current action type is  %-14s. external_flag: %u \n", type_str, curr->checkexternal());
 	Thread* curr_thread = get_thread(curr);
-	int read_external_num_on_curr_thread = get_external_readnum_thread(curr_thread);
+	int read_external_num_on_curr_thread = scheduler->get_external_readnum_thread(curr_thread);
 	// if(curr->is_read() && curr->checkexternal()){
 	// 	model_print("enter externally read: meet this read agian");
 	// 	rf_set = build_may_read_from(curr);
@@ -1024,7 +1024,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 				rf_set = build_may_read_from(curr);
 				canprune = process_read(curr, rf_set, true); // read internally
 				delete rf_set;
-				deleteone_external_readnum_thread(curr_thread);
+				scheduler->deleteone_external_readnum_thread(curr_thread);
 			}
 			else{
 				rf_set = build_may_read_from(curr);
@@ -1041,7 +1041,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			delete rf_set;
 		}
 		else if(curr->checkexternal() && read_external_num_on_curr_thread ==0){
-			add_external_readnum_thread(curr_thread); // add the read external num on this thread
+			scheduler->add_external_readnum_thread(curr_thread); // add the read external num on this thread
 		}
 		
 	} else

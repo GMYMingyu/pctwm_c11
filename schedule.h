@@ -254,6 +254,49 @@ public:
 
 	}
 
+			// weak memory model
+	void add_external_readnum_thread(Thread *t){
+		unsigned int i = id_to_int(t->get_id());
+		if (i >= external_readnum_thread.size()){
+			external_readnum_thread->push_back(1);
+		}
+		else{
+			
+			external_readnum_thread[i]++;
+		}
+
+	}
+
+	bool deleteone_external_readnum_thread(Thread *t){
+		unsigned int i = id_to_int(t->get_id());
+		if (i >= external_readnum_thread.size()){
+			return false;
+			}
+		else{
+			if(external_readnum_thread[i] > 0){
+				external_readnum_thread[i]--;
+				return true;
+			}
+			else return false;
+			
+		}
+
+		return true;
+
+	}
+
+	int get_external_readnum_thread(Thread *t){
+		unsigned int i = id_to_int(t->get_id());
+		if (i >= external_readnum_thread.size()){
+			external_readnum_thread->push_back(0);
+			return 0;
+		}
+		else{
+			int res = external_readnum_thread[i];
+			return res;
+		}
+	}
+
 
 	SNAPSHOTALLOC
 private:
@@ -282,6 +325,8 @@ private:
 
 	// weak memory - save the highest thread - for execution.cc to move
 	int highest_id;
+
+	SnapVector<int> external_readnum_thread;
 };
 
 #endif	/* __SCHEDULE_H__ */
