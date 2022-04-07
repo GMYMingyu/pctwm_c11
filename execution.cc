@@ -1013,6 +1013,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			//delete rf_set;
 		}
 		else{
+			model_print("current action is read and not reach change point  \n");
 			// only process the read when it is not a prio change point
 			rf_set = build_may_read_from(curr);
 			canprune = process_read(curr, rf_set, false); // read internally
