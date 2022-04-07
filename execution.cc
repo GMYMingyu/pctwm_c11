@@ -377,6 +377,7 @@ ModelAction * ModelExecution::convertNonAtomicStore(void * location) {
 	setAtomicStoreFlag(location);
 	ModelAction * act = new ModelAction(NONATOMIC_WRITE, memory_order_relaxed, location, value, get_thread(storethread));
 	act->set_seq_number(storeclock);
+	model_print("\n convertNonAtomicStore - set seqence number as %d \n", act->get_seq_number());
 	// weak memory - a new action - init bag flag
 	act->init_bagflag();
 	add_normal_write_to_lists(act);
@@ -792,6 +793,7 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 		newcurr->create_cv(get_parent_action(newcurr->get_tid()));
 		newcurr->init_bagflag();
 		newcurr->set_seq_number(get_next_seq_num());
+		model_print("initialize action - set seqence number as %d \n", act->get_seq_number());
 		/* Assign most recent release fence */
 		const char *type_str = newcurr->get_type_str();
 		newcurr->set_last_fence_release(get_last_fence_release(newcurr->get_tid()));
@@ -823,7 +825,7 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 		ModelAction *newcurr = *curr;
 
 		newcurr->set_seq_number(get_next_seq_num());
-		
+		model_print("initialize action - set seqence number as %d \n", act->get_seq_number());
 		// weak memory - a new action - init bag flag
 		newcurr->init_bagflag();
 		/* Always compute new clock vector */
@@ -2167,6 +2169,7 @@ ClockVector * ModelExecution::computeMinimalCV() {
 void ModelExecution::fixupLastAct(ModelAction *act) {
 	ModelAction *newact = new ModelAction(ATOMIC_NOP, std::memory_order_seq_cst, NULL, VALUE_NONE, get_thread(act->get_tid()));
 	newact->set_seq_number(get_next_seq_num());
+	model_print("\n fixupLastAct: initialize action - set seqence number as %d \n", act->get_seq_number());
 	// weak memory - a new action - init bag flag
 	newact->init_bagflag();
 	newact->create_cv(act);
