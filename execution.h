@@ -215,7 +215,7 @@ private:
 
 
 
-
+	SnapVector<int> *external_readnum_thread;
 
 
 #ifdef TLS
@@ -298,7 +298,7 @@ private:
 	bool isfinished;
 
 	int readnum, maxreads;
-	SnapVector<int> *external_readnum_thread;
+	
 };
 
 #endif	/* __EXECUTION_H__ */
