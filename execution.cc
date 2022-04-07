@@ -1021,12 +1021,14 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			model_print("current action is read and not reach change point  \n");
 
 			if(read_external_num_on_curr_thread > 0){
+				model_print("not change point: have read external. - read external\n");
 				rf_set = build_may_read_from(curr);
 				canprune = process_read(curr, rf_set, true); // read internally
 				delete rf_set;
 				scheduler->deleteone_external_readnum_thread(curr_threadid);
 			}
 			else{
+				model_print("not change point: no external read. - read local \n");
 				rf_set = build_may_read_from(curr);
 				canprune = process_read(curr, rf_set, false); // read internally
 				delete rf_set;
@@ -1038,12 +1040,13 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		
 
 		if(curr->checkexternal() && read_external_num_on_curr_thread > 0){ // we meet a change point but we still have read externally job
+			model_print("change point: but already have read external. (one add one delete - not change vect) \n");
 			rf_set = build_may_read_from(curr);
 			canprune = process_read(curr, rf_set, true); // read internally
 			delete rf_set;
 		}
 		else if(curr->checkexternal() && read_external_num_on_curr_thread ==0){
-			model_print("change point, set one external in vector \n");
+			model_print("change point: add one external-read in vector \n");
 			scheduler->add_external_readnum_thread(curr_threadid); // add the read external num on this thread
 		}
 
