@@ -128,8 +128,7 @@ public:
 		unsigned int i = id_to_int(t->get_id());
 		int idx = i;
 		if (i >= external_readnum_thread.size()){
-
-			external_readnum_thread.resize(idx + 1);
+			external_readnum_thread.resize(i + 1);
 			external_readnum_thread[idx] = 1;
 		}
 		else{
