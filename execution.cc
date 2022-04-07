@@ -795,9 +795,9 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 		/* Assign most recent release fence */
 		const char *type_str = newcurr->get_type_str();
 		newcurr->set_last_fence_release(get_last_fence_release(newcurr->get_tid()));
-		model_print("before set_external : seq_num: %d current action type is  %-14s. external_flag: %u \n",curr->get_seq_number(), type_str, newcurr->checkexternal());
+		model_print("before set_external : seq_num: %d current action type is  %-14s. external_flag: %u \n",newcurr->get_seq_number(), type_str, newcurr->checkexternal());
 		newcurr->set_external_flag();
-		model_print("after set_external : seq_num: %d current action type is  %-14s. external_flag: %u \n",curr->get_seq_number(), type_str, newcurr->checkexternal());
+		model_print("after set_external : seq_num: %d current action type is  %-14s. external_flag: %u \n",newcurr->get_seq_number(), type_str, newcurr->checkexternal());
 
 		ASSERT((*newcurr)->is_read());
 		ASSERT((*newcurr)->checkexternal());
