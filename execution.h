@@ -128,7 +128,7 @@ public:
 		unsigned int i = id_to_int(t->get_id());
 		if (i >= external_readnum_thread->size()){
 			external_readnum_thread->resize(i);
-			external_readnum_thread[i] = 1;
+			external_readnum_thread->push_back(1);
 		}
 		else{
 			int newval = (*external_readnum_thread)[i];
@@ -161,7 +161,7 @@ public:
 	int get_external_readnum_thread(Thread *t){
 		unsigned int i = id_to_int(t->get_id());
 		if (i >= external_readnum_thread->size()){
-			external_readnum_thread->resize(i);
+			external_readnum_thread.push_back(0);
 			return 0;
 		}
 		else{
@@ -215,7 +215,7 @@ private:
 
 
 
-	SnapVector<int> *external_readnum_thread;
+	
 
 
 #ifdef TLS
@@ -298,7 +298,7 @@ private:
 	bool isfinished;
 
 	int readnum, maxreads;
-	
+	SnapVector<int> *external_readnum_thread;
 };
 
 #endif	/* __EXECUTION_H__ */
