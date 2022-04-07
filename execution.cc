@@ -980,8 +980,8 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	// model_print("before add readnum:");
 	// type_str = curr->get_type_str();
 	// model_print("current action type is  %-14s. external_flag: %u \n", type_str, curr->checkexternal());
-	Thread* curr_thread = get_thread(curr);
-	int read_external_num_on_curr_thread = scheduler->get_external_readnum_thread(curr_thread);
+	uint curr_threadid = id_to_int(curr->get_tid());
+	int read_external_num_on_curr_thread = scheduler->get_external_readnum_thread(curr_threadid);
 	// if(curr->is_read() && curr->checkexternal()){
 	// 	model_print("enter externally read: meet this read agian");
 	// 	rf_set = build_may_read_from(curr);
