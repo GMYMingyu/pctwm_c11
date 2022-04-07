@@ -80,10 +80,10 @@ ModelExecution::ModelExecution(ModelChecker *m, Scheduler *scheduler) :
 	fuzzer(new Fuzzer()),
 	isfinished(false),
 	readnum(0),
-	maxreads(0),
-	external_readnum_thread(1)
+	maxreads(0)
 {	
 	/* Initialize a model-checker thread, for special ModelActions */
+	external_readnum_thread.push_back(0);
 	model_thread = new Thread(get_next_id());
 	add_thread(model_thread);
 	fuzzer->register_engine(m, this);
