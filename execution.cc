@@ -793,10 +793,11 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 		newcurr->init_bagflag();
 		newcurr->set_seq_number(get_next_seq_num());
 		/* Assign most recent release fence */
+		const char *type_str = newcurr->get_type_str();
 		newcurr->set_last_fence_release(get_last_fence_release(newcurr->get_tid()));
-		model_print("before set_external : current action type is  %-14s. external_flag: %u \n", type_str, curr->checkexternal());
+		model_print("before set_external : current action type is  %-14s. external_flag: %u \n", type_str, newcurr->checkexternal());
 		newcurr->set_external_flag();
-		model_print("after set_external : current action type is  %-14s. external_flag: %u \n", type_str, curr->checkexternal());
+		model_print("after set_external : current action type is  %-14s. external_flag: %u \n", type_str, newcurr->checkexternal());
 
 		ASSERT((*newcurr)->is_read());
 		ASSERT((*newcurr)->checkexternal());
@@ -1002,6 +1003,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			scheduler->print_lowvec();
 			//step4: meet the change point: read externally
 			ASSERT(curr->is_read());
+			type_str = curr->get_type_str();
 			model_print("before set_external : current action type is  %-14s. external_flag: %u \n", type_str, curr->checkexternal());
 			curr->set_external_flag();
 			model_print("after set_external : current action type is  %-14s. external_flag: %u \n", type_str, curr->checkexternal());
