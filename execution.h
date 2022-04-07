@@ -127,11 +127,16 @@ public:
 	void add_external_readnum_thread(Thread *t){
 		uint i = id_to_int(t->get_id());
 		int idx = i;
+		SnapVector<int> newvec;
 	
 		if (i >= external_readnum_thread.size()){
-			idx++;
-			external_readnum_thread.resize(idx);
-			external_readnum_thread[idx] = 1;
+			
+			newvec.resize(i + 1, 0);
+			for(uint j = 0; j < external_readnum_thread.size(); j++){
+				newvec[j] = external_readnum_thread[j];
+			}
+			newvec[idx] = 1;
+			external_readnum_thread = newvec;
 		}
 		else{
 			external_readnum_thread[idx] = external_readnum_thread[idx] + 1;
@@ -162,8 +167,12 @@ public:
 		uint i = id_to_int(t->get_id());
 		int idx = i;
 		if (i >= external_readnum_thread.size()){
-			idx++;
-			external_readnum_thread.resize(idx);
+			SnapVector<int> newvec;
+			newvec.resize(i + 1, 0);
+			for(uint j = 0; j < external_readnum_thread.size(); j++){
+				newvec[j] = external_readnum_thread[j];
+			}
+			external_readnum_thread = newvec;
 			return 0;
 		}
 		else{
