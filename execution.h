@@ -126,15 +126,13 @@ public:
 		// weak memory model
 	void add_external_readnum_thread(Thread *t){
 		uint i = id_to_int(t->get_id());
-		int idx = i;
-		
-	
 		if (i >= external_readnum_thread->size()){
 			external_readnum_thread->resize(i + 1);
 			external_readnum_thread[i] = 1;
 		}
 		else{
-			external_readnum_thread[idx] = external_readnum_thread[idx] + 1;
+			int newval = external_readnum_thread[i] + 1;
+			external_readnum_thread[i] = newval;
 		}
 
 	}
@@ -146,7 +144,8 @@ public:
 			}
 		else{
 			if(external_readnum_thread[i] > 0){
-				external_readnum_thread[i]--;
+				int newval = external_readnum_thread[i] - 1;
+				external_readnum_thread[i] = newval;
 				return true;
 			}
 			else return false;
@@ -164,7 +163,8 @@ public:
 			return 0;
 		}
 		else{
-			return external_readnum_thread[i];
+			int res = external_readnum_thread[i]
+			return res;
 		}
 	}
 
