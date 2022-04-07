@@ -131,8 +131,7 @@ public:
 	
 		if (i >= external_readnum_thread->size()){
 			external_readnum_thread->resize(i + 1);
-			
-			newvec[idx] = 1;
+			external_readnum_thread[i] = 1;
 		}
 		else{
 			external_readnum_thread[idx] = external_readnum_thread[idx] + 1;
@@ -142,13 +141,12 @@ public:
 
 	bool deleteone_external_readnum_thread(Thread *t){
 		uint i = id_to_int(t->get_id());
-		int idx = i;
 		if (i >= external_readnum_thread->size()){
 			return false;
 			}
 		else{
-			if(external_readnum_thread[idx] > 0){
-				external_readnum_thread[idx] = external_readnum_thread[idx] - 1;
+			if(external_readnum_thread[i] > 0){
+				external_readnum_thread[i]--;
 				return true;
 			}
 			else return false;
@@ -161,13 +159,12 @@ public:
 
 	int get_external_readnum_thread(Thread *t){
 		uint i = id_to_int(t->get_id());
-		int idx = i;
 		if (i >= external_readnum_thread->size()){
 			external_readnum_thread->resize(i + 1);
 			return 0;
 		}
 		else{
-			return external_readnum_thread[idx];
+			return external_readnum_thread[i];
 		}
 	}
 
