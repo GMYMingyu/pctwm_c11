@@ -127,7 +127,7 @@ public:
 	void add_external_readnum_thread(Thread *t){
 		unsigned int i = id_to_int(t->get_id());
 		if (i >= external_readnum_thread->size()){
-			external_readnum_thread->resize(i);
+			
 			external_readnum_thread->push_back(1);
 		}
 		else{
