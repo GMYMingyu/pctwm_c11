@@ -1035,7 +1035,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			
 		}
 
-		scheduler->print_external_readnum_thread();
+		
 
 		if(curr->checkexternal() && read_external_num_on_curr_thread > 0){ // we meet a change point but we still have read externally job
 			rf_set = build_may_read_from(curr);
@@ -1043,8 +1043,11 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			delete rf_set;
 		}
 		else if(curr->checkexternal() && read_external_num_on_curr_thread ==0){
+			model_print("change point, set one external in vector \n");
 			scheduler->add_external_readnum_thread(curr_threadid); // add the read external num on this thread
 		}
+
+		scheduler->print_external_readnum_thread();
 		
 	} else
 		ASSERT(rf_set == NULL);
