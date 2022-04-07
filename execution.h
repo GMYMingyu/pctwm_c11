@@ -132,7 +132,7 @@ public:
 		}
 		else{
 			int newval = external_readnum_thread[i] + 1;
-			external_readnum_thread[i] = newval;
+			external_readnum_thread->set(i, newval);
 		}
 
 	}
@@ -145,7 +145,7 @@ public:
 		else{
 			if(external_readnum_thread[i] > 0){
 				int newval = external_readnum_thread[i] - 1;
-				external_readnum_thread[i] = newval;
+				external_readnum_thread->set(i, newval);
 				return true;
 			}
 			else return false;
@@ -163,7 +163,7 @@ public:
 			return 0;
 		}
 		else{
-			int res = external_readnum_thread[i]
+			int res = external_readnum_thread[i];
 			return res;
 		}
 	}
