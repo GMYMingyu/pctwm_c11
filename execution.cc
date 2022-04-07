@@ -1035,6 +1035,8 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			
 		}
 
+		scheduler->print_external_readnum_thread();
+
 		if(curr->checkexternal() && read_external_num_on_curr_thread > 0){ // we meet a change point but we still have read externally job
 			rf_set = build_may_read_from(curr);
 			canprune = process_read(curr, rf_set, true); // read internally

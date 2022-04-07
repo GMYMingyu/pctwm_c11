@@ -297,6 +297,14 @@ public:
 		}
 	}
 
+	void print_external_readnum_thread(){
+		model_print("external_readnum on each thread: ");
+		for(uint i = 0; i < external_readnum_thread.size(); i++){
+			model_print("thread : %d has %d external-read. ", i, external_readnum_thread[i]);
+		}
+		model_print("\n");
+	}
+
 
 	SNAPSHOTALLOC
 private:
