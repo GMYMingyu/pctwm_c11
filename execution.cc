@@ -793,7 +793,7 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 		newcurr->create_cv(get_parent_action(newcurr->get_tid()));
 		newcurr->init_bagflag();
 		newcurr->set_seq_number(get_next_seq_num());
-		model_print("initialize action - set seqence number as %d \n", act->get_seq_number());
+		model_print("initialize action - set seqence number as %d \n", newcurr->get_seq_number());
 		/* Assign most recent release fence */
 		const char *type_str = newcurr->get_type_str();
 		newcurr->set_last_fence_release(get_last_fence_release(newcurr->get_tid()));
@@ -825,7 +825,7 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 		ModelAction *newcurr = *curr;
 
 		newcurr->set_seq_number(get_next_seq_num());
-		model_print("initialize action - set seqence number as %d \n", act->get_seq_number());
+		model_print("initialize action - set seqence number as %d \n", newcurr->get_seq_number());
 		// weak memory - a new action - init bag flag
 		newcurr->init_bagflag();
 		/* Always compute new clock vector */
@@ -2169,7 +2169,7 @@ ClockVector * ModelExecution::computeMinimalCV() {
 void ModelExecution::fixupLastAct(ModelAction *act) {
 	ModelAction *newact = new ModelAction(ATOMIC_NOP, std::memory_order_seq_cst, NULL, VALUE_NONE, get_thread(act->get_tid()));
 	newact->set_seq_number(get_next_seq_num());
-	model_print("\n fixupLastAct: initialize action - set seqence number as %d \n", act->get_seq_number());
+	model_print("\n fixupLastAct: initialize action - set seqence number as %d \n", newact->get_seq_number());
 	// weak memory - a new action - init bag flag
 	newact->init_bagflag();
 	newact->create_cv(act);
