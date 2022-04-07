@@ -81,7 +81,8 @@ ModelExecution::ModelExecution(ModelChecker *m, Scheduler *scheduler) :
 	isfinished(false),
 	readnum(0),
 	maxreads(0)
-{
+{	
+	external_readnum_thread.resize(0);
 	/* Initialize a model-checker thread, for special ModelActions */
 	model_thread = new Thread(get_next_id());
 	add_thread(model_thread);
@@ -785,28 +786,28 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 {	
 	
 	//model_print("the type of action is %u, external flag is %u \n", (*curr)->get_type_str(),(*curr)->checkexternal());
-	if((*curr)->checkexternal()){
-		model_print("initialize: enter case 1 \n");
-		model_print("had check external flag is true, it must be read action:%d \n", (*curr)->is_read());
-		model_print("initialize_curr_action: meet a read action again.\n");
-		ModelAction *newcurr = *curr;
-		newcurr->create_cv(get_parent_action(newcurr->get_tid()));
-		newcurr->init_bagflag();
-		newcurr->set_seq_number(get_next_seq_num());
-		model_print("initialize action - set seqence number as %d \n", newcurr->get_seq_number());
-		/* Assign most recent release fence */
-		const char *type_str = newcurr->get_type_str();
-		newcurr->set_last_fence_release(get_last_fence_release(newcurr->get_tid()));
-		model_print("before set_external : seq_num: %d current action type is  %-14s. external_flag: %u \n",newcurr->get_seq_number(), type_str, newcurr->checkexternal());
-		newcurr->set_external_flag();
-		model_print("after set_external : seq_num: %d current action type is  %-14s. external_flag: %u \n",newcurr->get_seq_number(), type_str, newcurr->checkexternal());
+	// if((*curr)->checkexternal()){
+	// 	model_print("initialize: enter case 1 \n");
+	// 	model_print("had check external flag is true, it must be read action:%d \n", (*curr)->is_read());
+	// 	model_print("initialize_curr_action: meet a read action again.\n");
+	// 	ModelAction *newcurr = *curr;
+	// 	newcurr->create_cv(get_parent_action(newcurr->get_tid()));
+	// 	newcurr->init_bagflag();
+	// 	newcurr->set_seq_number(get_next_seq_num());
+	// 	model_print("initialize action - set seqence number as %d \n", newcurr->get_seq_number());
+	// 	/* Assign most recent release fence */
+	// 	const char *type_str = newcurr->get_type_str();
+	// 	newcurr->set_last_fence_release(get_last_fence_release(newcurr->get_tid()));
+	// 	model_print("before set_external : seq_num: %d current action type is  %-14s. external_flag: %u \n",newcurr->get_seq_number(), type_str, newcurr->checkexternal());
+	// 	newcurr->set_external_flag();
+	// 	model_print("after set_external : seq_num: %d current action type is  %-14s. external_flag: %u \n",newcurr->get_seq_number(), type_str, newcurr->checkexternal());
 
-		ASSERT((*newcurr)->is_read());
-		ASSERT((*newcurr)->checkexternal());
-		return false;
-	}
-	else if ((*curr)->is_rmwc() || (*curr)->is_rmw()) {
-		model_print("initialize: enter case 2 \n");
+	// 	ASSERT((*newcurr)->is_read());
+	// 	ASSERT((*newcurr)->checkexternal());
+	// 	return false;
+	// }
+	if ((*curr)->is_rmwc() || (*curr)->is_rmw()) {
+		//model_print("initialize: enter case 1 \n");
 		ModelAction *newcurr = process_rmw(*curr);
 		delete *curr;
 
@@ -821,11 +822,11 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 	// 	return false;
 	// }
 	else {
-		model_print("initialize: enter case 3 \n");
+		//model_print("initialize: enter case 2 \n");
 		ModelAction *newcurr = *curr;
 
 		newcurr->set_seq_number(get_next_seq_num());
-		model_print("initialize action - set seqence number as %d \n", newcurr->get_seq_number());
+		//model_print("initialize action - set seqence number as %d \n", newcurr->get_seq_number());
 		// weak memory - a new action - init bag flag
 		newcurr->init_bagflag();
 		/* Always compute new clock vector */
@@ -947,18 +948,18 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 {
 	
 	ASSERT(curr);
-	model_print("\n new check current action. \n ");
+	//model_print("\n new check current action. \n ");
 	const char *type_str = curr->get_type_str();
 	model_print("current action seq_num: %d type is  %-14s. external_flag: %u \n", curr->get_seq_number(), type_str, curr->checkexternal());
-	bool meet_flag = false;
-	if(curr->checkexternal()){
-		meet_flag = true;
-	}
+	// bool meet_flag = false;
+	// if(curr->checkexternal()){
+	// 	meet_flag = true;
+	// }
 	
 	bool newly_explored = initialize_curr_action(&curr);
-	if(meet_flag){
-		model_print("after the initialize: the check external result is %d. \n",curr->checkexternal());
-	}
+	// if(meet_flag){
+	// 	model_print("after the initialize: the check external result is %d. \n",curr->checkexternal());
+	// }
 	DBG();
 
 	wake_up_sleeping_actions();
@@ -976,19 +977,21 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	// }
 	// else 
 
-	model_print("before add readnum:");
-	type_str = curr->get_type_str();
-	model_print("current action type is  %-14s. external_flag: %u \n", type_str, curr->checkexternal());
-	if(curr->is_read() && curr->checkexternal()){
-		model_print("enter externally read: meet this read agian");
-		rf_set = build_may_read_from(curr);
-		canprune = process_read(curr, rf_set, true); // read internally
-		model_print("before reset_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(), type_str, curr->checkexternal());
-		curr->reset_external_flag(); // back to false
-		model_print("after reset_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(), type_str, curr->checkexternal());
-		delete rf_set;
-	}
-	else if (curr->is_read() && newly_explored && !curr->checkexternal()) {
+	// model_print("before add readnum:");
+	// type_str = curr->get_type_str();
+	// model_print("current action type is  %-14s. external_flag: %u \n", type_str, curr->checkexternal());
+	Thread* curr_thread = get_thread(curr);
+	int read_external_num_on_curr_thread = get_external_readnum_thread(curr_thread);
+	// if(curr->is_read() && curr->checkexternal()){
+	// 	model_print("enter externally read: meet this read agian");
+	// 	rf_set = build_may_read_from(curr);
+	// 	canprune = process_read(curr, rf_set, true); // read internally
+	// 	model_print("before reset_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(), type_str, curr->checkexternal());
+	// 	curr->reset_external_flag(); // back to false
+	// 	model_print("after reset_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(), type_str, curr->checkexternal());
+	// 	delete rf_set;
+	// }
+	if (curr->is_read() && newly_explored) {
 		//weak memory
 		//step1: increase readnum
 		incReadnum();
@@ -996,30 +999,49 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		//step2: check if a prority change point
 		int reach_chg_idx = scheduler->find_chgidx(getReadnum());
 		if(reach_chg_idx != -1){ // we meet a priority change point - hang on this action
-			//step3: reach a priority change point - a. move thread
+			//step3: reach a priority change point - move thread
 			model_print("reach the %d change point. Change priority of thread %d. \n", reach_chg_idx, scheduler->get_highest_thread());
 			scheduler->print_highvec();
 			scheduler->print_lowvec();
-			scheduler->movethread(reach_chg_idx, scheduler->get_highest_thread());
+			scheduler->movethread(reach_chg_idx, scheduler->get_highest_thread()); 
 			scheduler->print_highvec();
 			scheduler->print_lowvec();
 			//step4: meet the change point: read externally
-			ASSERT(curr->is_read());
-			type_str = curr->get_type_str();
-			model_print("before set_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(),type_str, curr->checkexternal());
-			curr->set_external_flag();
-			model_print("after set_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(),type_str, curr->checkexternal());
-			add_hang_read_lists(curr);
+			
+			// model_print("before set_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(),type_str, curr->checkexternal());
+			curr->set_external_flag();  // set this action to read externally - for the action_select_next_thread to select second highest thread
+			
+			// model_print("after set_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(),type_str, curr->checkexternal());
+			
 			//rf_set = build_may_read_from(curr);
 			//canprune = process_read(curr, rf_set, false); // read internally
 			//delete rf_set;
 		}
-		else{
+		else{ // not a priority change point - check should we read externally or not
 			model_print("current action is read and not reach change point  \n");
-			// only process the read when it is not a prio change point
+
+			if(read_external_num_on_curr_thread > 0){
+				rf_set = build_may_read_from(curr);
+				canprune = process_read(curr, rf_set, true); // read internally
+				delete rf_set;
+				deleteone_external_readnum_thread(curr_thread);
+			}
+			else{
+				rf_set = build_may_read_from(curr);
+				canprune = process_read(curr, rf_set, false); // read internally
+				delete rf_set;
+			}
+			
+			
+		}
+
+		if(curr->checkexternal() && read_external_num_on_curr_thread > 0){ // we meet a change point but we still have read externally job
 			rf_set = build_may_read_from(curr);
-			canprune = process_read(curr, rf_set, false); // read internally
+			canprune = process_read(curr, rf_set, true); // read internally
 			delete rf_set;
+		}
+		else if(curr->checkexternal() && read_external_num_on_curr_thread ==0){
+			add_external_readnum_thread(curr_thread); // add the read external num on this thread
 		}
 		
 	} else
@@ -1027,7 +1049,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 	/* Add the action to lists if not the second part of a rmw */
 	//if (newly_explored) {
-	if (newly_explored && !(curr->is_read() && curr->checkexternal())) {
+	if (newly_explored && (!curr->checkexternal() || (curr->checkexternal() && read_external_num_on_curr_thread > 0) ) ) {
 #ifdef COLLECT_STAT
 		record_atomic_stats(curr);
 #endif
@@ -1384,28 +1406,6 @@ ClockVector * ModelExecution::get_hb_from_write(ModelAction *rf) const {
 	return vec;
 }
 
-
-/**
- * @brief add the hang read action to list - weak memory
- * 
- */
-void ModelExecution::add_hang_read_lists(ModelAction *act){
-	int tid = id_to_int(act->get_tid());
-	SnapVector<action_list_t> *vec = get_safe_ptr_vect_action(&obj_thrd_map, act->get_location());
-	if ((int)vec->size() <= tid) {
-		uint oldsize = vec->size();
-		vec->resize(priv->next_thread_id);
-		for(uint i = oldsize;i < priv->next_thread_id;i++)
-			new (&(*vec)[i]) action_list_t();
-
-		fixup_action_list(vec);
-	}
-	(*vec)[tid].addAction(act);
-	// Update thrd_last_action, the last action taken by each thread
-	if ((int)thrd_last_action.size() <= tid)
-		thrd_last_action.resize(get_num_threads());
-	thrd_last_action[tid] = act;
-}
 
 
 
@@ -2072,7 +2072,7 @@ Thread * ModelExecution::action_select_next_thread(const ModelAction *curr, bool
 		// weak memory model - return the second highest thread when the we meet a change point
 	//bool external_flag = curr->checkexternal();
 	if(curr->is_read() && external_flag){
-		model_print("now hang on: select the second highest thread.");
+		model_print("now change point: select the second highest thread.");
 		scheduler->print_current_avail_threads();
 		return get_thread(int_to_id(scheduler->get_scecond_high_thread()));
 	}
