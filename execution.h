@@ -125,8 +125,9 @@ public:
 
 		// weak memory model
 	void add_external_readnum_thread(Thread *t){
-		unsigned int i = id_to_int(t->get_id());
+		uint i = id_to_int(t->get_id());
 		int idx = i;
+	
 		if (i >= external_readnum_thread.size()){
 			i++;
 			external_readnum_thread.resize(i);
@@ -139,7 +140,7 @@ public:
 	}
 
 	bool deleteone_external_readnum_thread(Thread *t){
-		unsigned int i = id_to_int(t->get_id());
+		uint i = id_to_int(t->get_id());
 		int idx = i;
 		if (i >= external_readnum_thread.size()){
 			return false;
@@ -158,7 +159,7 @@ public:
 	}
 
 	int get_external_readnum_thread(Thread *t){
-		unsigned int i = id_to_int(t->get_id());
+		uint i = id_to_int(t->get_id());
 		int idx = i;
 		if (i >= external_readnum_thread.size()){
 			i++;
