@@ -126,25 +126,27 @@ public:
 		// weak memory model
 	void add_external_readnum_thread(Thread *t){
 		unsigned int i = id_to_int(t->get_id());
-		if (i >= external_readnum_thread.size()){
-			i = i + 1;
-			external_readnum_thread.resize(i);
-			external_readnum_thread[i] = 1;
+		int idx = i;
+		if (idx >= external_readnum_thread.size()){
+
+			external_readnum_thread.resize(idx + 1);
+			external_readnum_thread[idx] = 1;
 		}
 		else{
-			external_readnum_thread[i] = external_readnum_thread[i] + 1;
+			external_readnum_thread[idx] = external_readnum_thread[idx] + 1;
 		}
 
 	}
 
 	bool deleteone_external_readnum_thread(Thread *t){
 		unsigned int i = id_to_int(t->get_id());
-		if (i >= external_readnum_thread.size()){
+		int idx = i;
+		if (idx >= external_readnum_thread.size()){
 			return false;
 			}
 		else{
-			if(external_readnum_thread[i] > 0){
-				external_readnum_thread[i] = external_readnum_thread[i] - 1;
+			if(external_readnum_thread[idx] > 0){
+				external_readnum_thread[idx] = external_readnum_thread[idx] - 1;
 				return true;
 			}
 			else return false;
@@ -157,12 +159,13 @@ public:
 
 	int get_external_readnum_thread(Thread *t){
 		unsigned int i = id_to_int(t->get_id());
-		if (i >= external_readnum_thread.size()){
-			external_readnum_thread.resize(i + 1);
+		int idx = i;
+		if (idx >= external_readnum_thread.size()){
+			external_readnum_thread.resize(idx + 1);
 			return 0;
 		}
 		else{
-			return external_readnum_thread[i];
+			return external_readnum_thread[idx];
 		}
 	}
 
