@@ -795,9 +795,9 @@ bool ModelExecution::initialize_curr_action(ModelAction **curr)
 		/* Assign most recent release fence */
 		const char *type_str = newcurr->get_type_str();
 		newcurr->set_last_fence_release(get_last_fence_release(newcurr->get_tid()));
-		model_print("before set_external : current action type is  %-14s. external_flag: %u \n", type_str, newcurr->checkexternal());
+		model_print("before set_external : seq_num: %d current action type is  %-14s. external_flag: %u \n",curr->get_seq_number(), type_str, newcurr->checkexternal());
 		newcurr->set_external_flag();
-		model_print("after set_external : current action type is  %-14s. external_flag: %u \n", type_str, newcurr->checkexternal());
+		model_print("after set_external : seq_num: %d current action type is  %-14s. external_flag: %u \n",curr->get_seq_number(), type_str, newcurr->checkexternal());
 
 		ASSERT((*newcurr)->is_read());
 		ASSERT((*newcurr)->checkexternal());
@@ -947,7 +947,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	ASSERT(curr);
 	model_print("\n new check current action. \n ");
 	const char *type_str = curr->get_type_str();
-	model_print("current action type is  %-14s. external_flag: %u \n", type_str, curr->checkexternal());
+	model_print("current action seq_num: %d type is  %-14s. external_flag: %u \n", curr->get_seq_number(), type_str, curr->checkexternal());
 	bool meet_flag = false;
 	if(curr->checkexternal()){
 		meet_flag = true;
@@ -981,9 +981,9 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		model_print("enter externally read: meet this read agian");
 		rf_set = build_may_read_from(curr);
 		canprune = process_read(curr, rf_set, true); // read internally
-		model_print("before reset_external : current action type is  %-14s. external_flag: %u \n", type_str, curr->checkexternal());
+		model_print("before reset_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(), type_str, curr->checkexternal());
 		curr->reset_external_flag(); // back to false
-		model_print("after reset_external : current action type is  %-14s. external_flag: %u \n", type_str, curr->checkexternal());
+		model_print("after reset_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(), type_str, curr->checkexternal());
 		delete rf_set;
 	}
 	else if (curr->is_read() && newly_explored && !curr->checkexternal()) {
@@ -1004,9 +1004,9 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			//step4: meet the change point: read externally
 			ASSERT(curr->is_read());
 			type_str = curr->get_type_str();
-			model_print("before set_external : current action type is  %-14s. external_flag: %u \n", type_str, curr->checkexternal());
+			model_print("before set_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(),type_str, curr->checkexternal());
 			curr->set_external_flag();
-			model_print("after set_external : current action type is  %-14s. external_flag: %u \n", type_str, curr->checkexternal());
+			model_print("after set_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(),type_str, curr->checkexternal());
 			
 			//rf_set = build_may_read_from(curr);
 			//canprune = process_read(curr, rf_set, false); // read internally
