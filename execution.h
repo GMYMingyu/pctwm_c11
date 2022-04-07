@@ -143,9 +143,11 @@ public:
 			return false;
 			}
 		else{
-			if(external_readnum_thread[i] > 0){
-				int newval = external_readnum_thread[i] - 1;
-				external_readnum_thread->set(i, newval);
+
+			int newval = external_readnum_thread[i];
+			if(newval > 0){
+				
+				external_readnum_thread->set(i, newval - 1);
 				return true;
 			}
 			else return false;
