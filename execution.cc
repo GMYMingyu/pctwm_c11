@@ -1009,7 +1009,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			model_print("before set_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(),type_str, curr->checkexternal());
 			curr->set_external_flag();
 			model_print("after set_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(),type_str, curr->checkexternal());
-			
+			add_hang_read_lists(curr);
 			//rf_set = build_may_read_from(curr);
 			//canprune = process_read(curr, rf_set, false); // read internally
 			//delete rf_set;
