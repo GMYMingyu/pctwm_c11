@@ -161,7 +161,7 @@ public:
 	int get_external_readnum_thread(Thread *t){
 		unsigned int i = id_to_int(t->get_id());
 		if (i >= external_readnum_thread->size()){
-			external_readnum_thread.push_back(0);
+			external_readnum_thread->push_back(0);
 			return 0;
 		}
 		else{
