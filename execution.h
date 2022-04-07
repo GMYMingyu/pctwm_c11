@@ -131,7 +131,7 @@ public:
 			external_readnum_thread[i] = 1;
 		}
 		else{
-			int newval = *(external_readnum_thread)[i];
+			int newval = (*external_readnum_thread)[i];
 			external_readnum_thread->set(i, newval + 1);
 		}
 
@@ -144,7 +144,7 @@ public:
 			}
 		else{
 
-			int newval = *(external_readnum_thread)[i];
+			int newval = (*external_readnum_thread)[i];
 			if(newval > 0){
 				
 				external_readnum_thread->set(i, newval - 1);
@@ -165,7 +165,7 @@ public:
 			return 0;
 		}
 		else{
-			int res = *(external_readnum_thread)[i];
+			int res = (*external_readnum_thread)[i];
 			return res;
 		}
 	}
