@@ -82,7 +82,7 @@ ModelExecution::ModelExecution(ModelChecker *m, Scheduler *scheduler) :
 	readnum(0),
 	maxreads(0)
 {	
-	external_readnum_thread.resize(0);
+	external_readnum_thread.resize(1, 0);
 	/* Initialize a model-checker thread, for special ModelActions */
 	model_thread = new Thread(get_next_id());
 	add_thread(model_thread);
