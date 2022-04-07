@@ -1024,7 +1024,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 				rf_set = build_may_read_from(curr);
 				canprune = process_read(curr, rf_set, true); // read internally
 				delete rf_set;
-				scheduler->deleteone_external_readnum_thread(curr_thread);
+				scheduler->deleteone_external_readnum_thread(curr_threadid);
 			}
 			else{
 				rf_set = build_may_read_from(curr);
@@ -1041,7 +1041,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			delete rf_set;
 		}
 		else if(curr->checkexternal() && read_external_num_on_curr_thread ==0){
-			scheduler->add_external_readnum_thread(curr_thread); // add the read external num on this thread
+			scheduler->add_external_readnum_thread(curr_threadid); // add the read external num on this thread
 		}
 		
 	} else
