@@ -1055,7 +1055,8 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	} else
 		ASSERT(rf_set == NULL);
 
-		bool second_high = false;
+
+	bool second_high = false;
 	if( (curr->is_seqcst() && !curr->is_read() ) || (curr->is_fence() && curr->is_acquire()) ){
 		if( (curr->is_write() && curr->is_relaxed() ) || (curr->is_release() && curr->is_release()) || (curr->is_release() && (curr->is_fence())) ){
 			second_high = false;
@@ -1065,6 +1066,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			int reach_chg_idx = scheduler->find_chgidx(getReadnum());
 			if(reach_chg_idx != -1){
 				second_high = true;
+				model_print("meet the %d change point. \n", reach_chg_idx);
 			}
 		}
 	}
