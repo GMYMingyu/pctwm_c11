@@ -638,8 +638,8 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 			return canprune && (curr->get_type() == ATOMIC_READ);
 		}
 		priorset->clear();
-		(*rf_set)[index] = rf_set->back();
-		rf_set->pop_back();
+		// (*rf_set)[index] = rf_set->back();
+		// rf_set->pop_back();
 	}			
 }
 
@@ -1841,6 +1841,7 @@ void ModelExecution::add_thread(Thread *t)
 	if (i >= thread_map.size())
 		thread_map.resize(i + 1);
 	thread_map[i] = t;
+	t->init_vec();
 	if (!t->is_model_thread())
 		scheduler->add_thread(t);
 }
