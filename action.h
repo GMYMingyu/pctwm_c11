@@ -82,7 +82,6 @@ typedef enum action_type {
 	ATOMIC_NOP	// < Placeholder
 } action_type_t;
 
-
 /**
  * @brief Represents a single atomic action
  *
@@ -103,6 +102,10 @@ public:
 
 	thread_id_t get_tid() const { return tid; }
 	action_type get_type() const { return type; }
+
+	const char * get_type_str() const;
+
+
 	void set_type(action_type _type) { type = _type; }
 	void set_free() { type = READY_FREE; }
 	memory_order get_mo() const { return order; }
@@ -168,6 +171,7 @@ public:
 	bool is_conflicting_lock(const ModelAction *act) const;
 	bool could_synchronize_with(const ModelAction *act) const;
 	int getSize() const;
+
 	Thread * get_thread_operand() const;
 	void create_cv(const ModelAction *parent = NULL);
 	ClockVector * get_cv() const { return cv; }
@@ -198,9 +202,55 @@ public:
 	void setActionRef(sllnode<ModelAction *> *ref) { action_ref = ref; }
 	sllnode<ModelAction *> * getActionRef() { return action_ref; }
 
+
+	// weak memory - bag flag
+	void init_bagflag(){
+		bag_flag = false;
+		read_external_flag = false;
+	}
+
+	void set_bag(SnapVector<ModelAction*> *E){
+		bag_flag = true;
+		bag = E;
+
+	}
+
+	bool checkbag(){
+		return bag_flag;
+	}
+
+	void set_external_flag(){
+		read_external_flag = true;
+	}
+
+	void reset_external_flag(){
+		read_external_flag = false;
+	}
+
+	bool checkexternal(){
+		return read_external_flag;
+	}
+
+	void print_bag(){
+		if(bag_flag){
+			model_print("This action has bag: size is %d, ", bag->size());
+			uint baglen = bag->size();
+			for(uint i = 0; i < baglen; i++){
+				ModelAction* curr = (*bag)[i];
+				model_print("action: seqnum: %u, location: %u, value: %u. ", 
+				curr->get_seq_number(), curr->get_location(), curr->get_value());
+			}
+			model_print("\n");
+		}
+		else{
+			model_print("This action has no bag. \n");
+		}
+	}
+
+
 	SNAPSHOTALLOC
 private:
-	const char * get_type_str() const;
+	//const char * get_type_str() const;
 	const char * get_mo_str() const;
 
 	/** @brief A pointer to the memory location for this action. */
@@ -256,6 +306,11 @@ private:
 	 * should represent the action's position in the execution order.
 	 */
 	modelclock_t seq_number;
+
+	// weak memory - add bag flag and bag
+	bool bag_flag;
+	SnapVector<ModelAction* > *bag;
+	bool read_external_flag;
 };
 
 #endif	/* __ACTION_H__ */
