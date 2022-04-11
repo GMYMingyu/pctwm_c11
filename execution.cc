@@ -1055,6 +1055,24 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	} else
 		ASSERT(rf_set == NULL);
 
+		bool second_high = false;
+	if( (curr->is_seqcst() && !curr->is_read() ) || (curr->is_fence() && curr->is_acquire()) ){
+		if( (curr->is_write() && curr->is_relaxed() ) || (curr->is_release() && curr->is_release()) || (curr->is_release() && (curr->is_fence())) ){
+			second_high = false;
+		}
+		else{
+			incReadnum();
+			int reach_chg_idx = scheduler->find_chgidx(getReadnum());
+			if(reach_chg_idx != -1){
+				second_high = true;
+			}
+		}
+	}
+
+	if(second_high){
+		curr->set_external_flag();
+	}
+
 	/* Add the action to lists if not the second part of a rmw */
 	//if (newly_explored) {
 	if (newly_explored && (!curr->checkexternal() || (curr->checkexternal() && read_external_num_on_curr_thread > 0) ) ) {
