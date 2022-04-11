@@ -18,7 +18,7 @@
 #include "mutex.h"
 #include <condition_variable>
 #include "classlist.h"
-#include "action.h"
+//#include "action.h"
 #include "threads-model.h"
 
 #define INITIAL_THREAD_ID	0
@@ -149,17 +149,17 @@ private:
 		return instrnum;
 	}
 
-	void print_actset(SnapVector<ModelAction *> * act_set){
-		int len = act_set->size();
-		model_print("print act_set : current action set size: %d. - ", len);
-		for(int i = 0; i < len; i++){
-			ModelAction * act = (*act_set)[i];
-			model_print("[action on thread %d, location: %d, seq_nums: %u ]", 
-			id_to_int(act->get_tid()), act->get_location(), act->get_seq_number());
-		}
-		model_print("\n");
+	// void print_actset(SnapVector<ModelAction *> * act_set){
+	// 	int len = act_set->size();
+	// 	model_print("print act_set : current action set size: %d. - ", len);
+	// 	for(int i = 0; i < len; i++){
+	// 		ModelAction * act = (*act_set)[i];
+	// 		model_print("[action on thread %d, location: %d, seq_nums: %u ]", 
+	// 		id_to_int(act->get_tid()), act->get_location(), act->get_seq_number());
+	// 	}
+	// 	model_print("\n");
 
-	}
+	// }
 
 	// weak memory function
 	SnapVector<ModelAction *> * computeUpdate(ModelAction *rd, ModelAction * curr);

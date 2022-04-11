@@ -14,7 +14,7 @@
 #include "classlist.h"
 #include "pthread.h"
 #include <sys/epoll.h>
-#include "action.h"
+//#include "action.h"
 struct thread_params {
 	thrd_start_t func;
 	void *arg;
@@ -113,70 +113,70 @@ public:
 
 	friend void thread_startup();
 
-	//weak memory 
-	/** @brief get the local vector size on this thread */
-	uint get_localvec_size(){
-		return local_vec->size();
-	}
+	// //weak memory 
+	// /** @brief get the local vector size on this thread */
+	// uint get_localvec_size(){
+	// 	return local_vec->size();
+	// }
 	
-	SnapVector<ModelAction*> *get_local_vec(){
-		return local_vec;
-	}
+	// SnapVector<ModelAction*> *get_local_vec(){
+	// 	return local_vec;
+	// }
 
-	/** @brief update the local vector on this thread
-	 *  @param act The new ModelAction*/
-	void update_local_vec(ModelAction* act){
-		bool has_flag = false;
-		//int threadid = id_to_int(act->get_tid()); // get the thread id of the current action
-		for(uint i = 0; i < get_localvec_size(); i++){
-			ModelAction* iteract = (*local_vec)[i];
-			if(iteract->get_location() == act->get_location()){ // the same variable
-				has_flag = true; // have the variable now
-				if(iteract->get_seq_number() > act->get_seq_number()){
-					(*local_vec)[i] = act;
-				}
-				break;
-			}
-		}
-		if(!has_flag){ // does not have this variable yet
-			local_vec->push_back(act);
-		}
-	}
+	// /** @brief update the local vector on this thread
+	//  *  @param act The new ModelAction*/
+	// void update_local_vec(ModelAction* act){
+	// 	bool has_flag = false;
+	// 	//int threadid = id_to_int(act->get_tid()); // get the thread id of the current action
+	// 	for(uint i = 0; i < get_localvec_size(); i++){
+	// 		ModelAction* iteract = (*local_vec)[i];
+	// 		if(iteract->get_location() == act->get_location()){ // the same variable
+	// 			has_flag = true; // have the variable now
+	// 			if(iteract->get_seq_number() > act->get_seq_number()){
+	// 				(*local_vec)[i] = act;
+	// 			}
+	// 			break;
+	// 		}
+	// 	}
+	// 	if(!has_flag){ // does not have this variable yet
+	// 		local_vec->push_back(act);
+	// 	}
+	// }
 
-	void set_local_vec(SnapVector<ModelAction*> * newvec){
-		local_vec = new SnapVector<ModelAction *> ();
-		local_vec = newvec;
-	}
+	// void set_local_vec(SnapVector<ModelAction*> * newvec){
+	// 	local_vec = new SnapVector<ModelAction *> ();
+	// 	local_vec = newvec;
+	// }
 
-	/** @brief print the local vector*/
-	void print_local_vec(){
-		model_print("The size of localvec is %d.", local_vec->size());
-		for(uint i = 0; i < local_vec->size(); i++){
-			ModelAction* iteract = (*local_vec)[i];
-			model_print("location: %u, value: %u, seq_num: %u. ", iteract->get_location(), iteract->get_value(), iteract->get_seq_number());
-		}
-		model_print("\n");
-	}
+	// /** @brief print the local vector*/
+	// void print_local_vec(){
+	// 	model_print("The size of localvec is %d.", local_vec->size());
+	// 	for(uint i = 0; i < local_vec->size(); i++){
+	// 		ModelAction* iteract = (*local_vec)[i];
+	// 		model_print("location: %u, value: %u, seq_num: %u. ", iteract->get_location(), iteract->get_value(), iteract->get_seq_number());
+	// 	}
+	// 	model_print("\n");
+	// }
 
-	void init_vec(){
-		local_vec = new SnapVector<ModelAction *>();
-	}
+	// void init_vec(){
+	// 	local_vec = new SnapVector<ModelAction *>();
+	// }
 
-	ModelAction* get_same_location_act(ModelAction* act){
+	// ModelAction* get_same_location_act(ModelAction* act){
 		
-		model_print("thread localvec size: %d \n", local_vec->size());
-		for(uint i = 0; i < local_vec->size(); i++){
-			ModelAction* iteract = (*local_vec)[i];
-			if(act->get_location() == iteract->get_location()){
-				return iteract;
-			}
-		}
-		
-		
-		return NULL;
+	// 	model_print("thread localvec size: %d \n", local_vec->size());
+	// 	for(uint i = 0; i < local_vec->size(); i++){
+	// 		ModelAction* iteract = (*local_vec)[i];
+	// 		if(act->get_location() == iteract->get_location()){
+	// 			return iteract;
+	// 		}
+	// 	}
 		
 		
-	}
+	// 	return NULL;
+		
+		
+	// }
 
 
 #ifdef TLS
@@ -211,7 +211,7 @@ private:
 
 	// weak memory: the vector to save each variable value
 	/** @brief The local vector in one Thread */
-	SnapVector<ModelAction*> *local_vec; // the vector to save each variable newest value
+	//SnapVector<ModelAction*> *local_vec; // the vector to save each variable newest value
 
 	/** @brief The parent Thread which created this Thread */
 	Thread * const parent;
