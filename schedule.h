@@ -49,7 +49,7 @@ public:
 	void setParams(struct model_params * _params) {
 		params = _params;
 		setlowvec(params->bugdepth);
-		set_chg_pts(params->bugdepth, params->maxscheduler);
+		set_chg_pts_byread(params->bugdepth, params->maxread);
 		schelen_limit = 5 * params->maxscheduler;
 		if(params->version == 1) {
 			model_print("using pct version now. \n");
@@ -86,6 +86,35 @@ public:
 		
 	}
 
+	//pctwm
+	void set_chg_pts_byread(int bugdepth, int maxread){
+		if(bugdepth <= 1){
+			chg_pts.resize(1, rand() % maxread);
+		}
+		else{
+			chg_pts.resize(bugdepth - 1);
+			for(int i = 0; i < bugdepth - 1; i++){
+				int tmp = getRandom(maxread); // [1, MAXSCHEDULER]
+				while(chg_pts.find(tmp)){
+					tmp = getRandom(maxread);
+				}
+				chg_pts[i] = tmp;
+
+			}
+		}
+		
+	}
+
+	//pctwm - return bool: true : threadid in highvec(not change prio yet)
+	bool inhighvec(int threadid){
+		for(int i = 0; i < highsize; i++){
+			if(highvec[i] == threadid) return true;
+		}
+		return false;
+	}
+
+
+
 	int getRandom(int range){
 		int res = rand() % range;
 		res = res < 1 ? 1 : res;
@@ -120,10 +149,10 @@ public:
 		return schelen;
 	}
 
-	int find_chgidx(int schelen){
+	int find_chgidx(int currlen){ // rename the parameter to currlen - it may be readnum
 		int res = -1;
 		for(uint i = 0; i < chg_pts.size(); i++){
-			if(schelen == chg_pts[i]) res = i;
+			if(currlen == chg_pts[i]) res = i;
 		}
 		return res;
 	}
@@ -144,6 +173,136 @@ public:
 	void movethread(int lowvec_idx, int threadid);
 	void pctactive(){
 		usingpct = 1;
+	}
+
+	void print_current_avail_threads(){
+		int availnum = 0;
+		int availthreads[enabled_len];
+	
+		for (int i = 0;i < enabled_len;i++) {
+			if (enabled[i] == THREAD_ENABLED)
+				availthreads[availnum++] = i;
+		}
+
+		model_print("current %d avail threads.", availnum);
+		for(int i = 0; i < availnum; i++){
+			model_print("thread: %d, ", availthreads[i]);
+		}
+		model_print("\n");
+	}
+
+	//weak memory
+	int get_highest_thread(){
+		return highest_id;
+	}
+
+	int get_scecond_high_thread(){
+		int availnum = 0;
+		int availthreads[enabled_len];
+	
+		for (int i = 0;i < enabled_len;i++) {
+			if (enabled[i] == THREAD_ENABLED)
+				availthreads[availnum++] = i;
+		}
+		// only one thread is available
+		if(availnum == 1){
+			return availthreads[0];
+		}
+
+		int highest1 = -1;
+		int highest2 = -1;
+		
+
+		uint findhigh = 0;
+		while(findhigh < highvec.size()){
+			for(int i = 0; i < availnum; i++){
+				if(availthreads[i] == highvec[findhigh]){
+					if(highest1 != -1){
+						highest2 = availthreads[i];
+						return highest2;
+					}
+					else{
+						highest1 = availthreads[i];
+					}
+					
+				}
+			}
+		findhigh++;
+		}
+
+		if((highest1 == -1) || (highest2 == -1)){
+			uint findlow = 0;
+			while(findlow < lowvec.size()){
+				for(int i = 0; i < availnum; i++){
+					if(availthreads[i] == lowvec[findlow]){
+						if(highest1 != -1){
+							highest2 = availthreads[i];
+							return highest2;
+						}
+						else{
+							highest1 = availthreads[i];
+						}
+					
+					}
+				}
+			findlow++;
+			}
+		}
+
+		ASSERT(highest2 != -1);
+		return highest2;
+
+	}
+
+			// weak memory model
+	void add_external_readnum_thread(uint threadid){
+		
+		if (threadid >= external_readnum_thread.size()){
+			external_readnum_thread.push_back(1);
+		}
+		else{
+			
+			external_readnum_thread[threadid]++;
+		}
+
+	}
+
+	bool deleteone_external_readnum_thread(uint threadid){
+		
+		if (threadid >= external_readnum_thread.size()){
+			return false;
+			}
+		else{
+			if(external_readnum_thread[threadid] > 0){
+				external_readnum_thread[threadid]--;
+				return true;
+			}
+			else return false;
+			
+		}
+
+		return true;
+
+	}
+
+	int get_external_readnum_thread(uint threadid){
+		
+		if (threadid >= external_readnum_thread.size()){
+			external_readnum_thread.push_back(0);
+			return 0;
+		}
+		else{
+			int res = external_readnum_thread[threadid];
+			return res;
+		}
+	}
+
+	void print_external_readnum_thread(){
+		model_print("external_readnum on each thread: ");
+		for(uint i = 0; i < external_readnum_thread.size(); i++){
+			model_print("thread : %d has %d external-read. ", i, external_readnum_thread[i]);
+		}
+		model_print("\n");
 	}
 
 
@@ -171,6 +330,11 @@ private:
 	int schelen_limit;
 	bool livelock;
 	int usingpct;
+
+	// weak memory - save the highest thread - for execution.cc to move
+	int highest_id;
+
+	SnapVector<int> external_readnum_thread;
 };
 
 #endif	/* __SCHEDULE_H__ */
