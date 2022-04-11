@@ -698,26 +698,6 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 		(*rf_set)[index] = rf_set->back();
 		rf_set->pop_back();
 	
-
-
-		ASSERT(rf);
-		bool canprune = false;
-		if (r_modification_order(curr, rf, priorset, &canprune)) {
-			for(unsigned int i=0;i<priorset->size();i++) {
-				mo_graph->addEdge((*priorset)[i], rf);
-			}
-			read_from(curr, rf);
-			get_thread(curr)->set_return_value(rf->get_write_value());
-			delete priorset;
-			//Update acquire fence clock vector
-			ClockVector * hbcv = get_hb_from_write(rf);
-			if (hbcv != NULL)
-				get_thread(curr)->get_acq_fence_cv()->merge(hbcv);
-			return canprune && (curr->get_type() == ATOMIC_READ);
-		}
-		priorset->clear();
-		(*rf_set)[index] = rf_set->back();
-		rf_set->pop_back();
 	}			
 }
 
