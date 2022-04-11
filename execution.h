@@ -19,6 +19,7 @@
 #include <condition_variable>
 #include "classlist.h"
 #include "action.h"
+#include "threads-model.h"
 
 #define INITIAL_THREAD_ID	0
 #define MAIN_THREAD_ID		1
