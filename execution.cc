@@ -514,135 +514,135 @@ ModelAction * ModelExecution::convertNonAtomicStore(void * location) {
 // 	return Eres;
 // }
 
-/**
- * Processes a read model action.
- * @param curr is the read model action to process.
- * @param rf_set is the set of model actions we can possibly read from
- * @return True if the read can be pruned from the thread map list.
- * weak memory version
- */
-bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> * rf_set, bool read_external)
-{
-	SnapVector<ModelAction *> * priorset = new SnapVector<ModelAction *>();
-	bool hasnonatomicstore = hasNonAtomicStore(curr->get_location());
-	if (hasnonatomicstore) {
-		ModelAction * nonatomicstore = convertNonAtomicStore(curr->get_location());
-		rf_set->push_back(nonatomicstore);
-	}
+// /**
+//  * Processes a read model action.
+//  * @param curr is the read model action to process.
+//  * @param rf_set is the set of model actions we can possibly read from
+//  * @return True if the read can be pruned from the thread map list.
+//  * weak memory version
+//  */
+// bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> * rf_set, bool read_external)
+// {
+// 	SnapVector<ModelAction *> * priorset = new SnapVector<ModelAction *>();
+// 	bool hasnonatomicstore = hasNonAtomicStore(curr->get_location());
+// 	if (hasnonatomicstore) {
+// 		ModelAction * nonatomicstore = convertNonAtomicStore(curr->get_location());
+// 		rf_set->push_back(nonatomicstore);
+// 	}
 
-	// Remove writes that violate read modification order
-	/*
-	   uint i = 0;
-	   while (i < rf_set->size()) {
-	        ModelAction * rf = (*rf_set)[i];
-	        if (!r_modification_order(curr, rf, NULL, NULL, true)) {
-	                (*rf_set)[i] = rf_set->back();
-	                rf_set->pop_back();
-	        } else
-	                i++;
-	   }*/
+// 	// Remove writes that violate read modification order
+// 	/*
+// 	   uint i = 0;
+// 	   while (i < rf_set->size()) {
+// 	        ModelAction * rf = (*rf_set)[i];
+// 	        if (!r_modification_order(curr, rf, NULL, NULL, true)) {
+// 	                (*rf_set)[i] = rf_set->back();
+// 	                rf_set->pop_back();
+// 	        } else
+// 	                i++;
+// 	   }*/
 
-	// while(true) {
+// 	// while(true) {
 
-	// 	int index = fuzzer->selectWrite(curr, rf_set);
+// 	// 	int index = fuzzer->selectWrite(curr, rf_set);
 
-	// 	ModelAction *rf = (*rf_set)[index];
+// 	// 	ModelAction *rf = (*rf_set)[index];
 
-	// 	ASSERT(rf);
-	// 	bool canprune = false;
-	// 	if (r_modification_order(curr, rf, priorset, &canprune)) {
-	// 		for(unsigned int i=0;i<priorset->size();i++) {
-	// 			mo_graph->addEdge((*priorset)[i], rf);
-	// 		}
-	// 		read_from(curr, rf);
-	// 		get_thread(curr)->set_return_value(rf->get_write_value());
-	// 		delete priorset;
-	// 		//Update acquire fence clock vector
-	// 		ClockVector * hbcv = get_hb_from_write(rf);
-	// 		if (hbcv != NULL)
-	// 			get_thread(curr)->get_acq_fence_cv()->merge(hbcv);
-	// 		return canprune && (curr->get_type() == ATOMIC_READ);
-	// 	}
-	// 	priorset->clear();
-	// 	(*rf_set)[index] = rf_set->back();
-	// 	rf_set->pop_back();
-	// }
+// 	// 	ASSERT(rf);
+// 	// 	bool canprune = false;
+// 	// 	if (r_modification_order(curr, rf, priorset, &canprune)) {
+// 	// 		for(unsigned int i=0;i<priorset->size();i++) {
+// 	// 			mo_graph->addEdge((*priorset)[i], rf);
+// 	// 		}
+// 	// 		read_from(curr, rf);
+// 	// 		get_thread(curr)->set_return_value(rf->get_write_value());
+// 	// 		delete priorset;
+// 	// 		//Update acquire fence clock vector
+// 	// 		ClockVector * hbcv = get_hb_from_write(rf);
+// 	// 		if (hbcv != NULL)
+// 	// 			get_thread(curr)->get_acq_fence_cv()->merge(hbcv);
+// 	// 		return canprune && (curr->get_type() == ATOMIC_READ);
+// 	// 	}
+// 	// 	priorset->clear();
+// 	// 	(*rf_set)[index] = rf_set->back();
+// 	// 	rf_set->pop_back();
+// 	// }
 
 	
 
-	// weak memory
-	while(true) {
-		// step 1 : prepare
-		ModelAction *rf;
-		int index;
-		model_print("current read action location: %u, threadid : %u \n", 
-						curr->get_location(),id_to_int(curr->get_tid()));
+// 	// weak memory
+// 	while(true) {
+// 		// step 1 : prepare
+// 		ModelAction *rf;
+// 		int index;
+// 		model_print("current read action location: %u, threadid : %u \n", 
+// 						curr->get_location(),id_to_int(curr->get_tid()));
 
-		// step2: get the read action related info
-		int rd_tid = curr->get_tid();
-		Thread *rd_thr = get_thread(rd_tid);
-		model_print("In process read: current localvec size is %d.\n", rd_thr->get_localvec_size());
-		rd_thr->print_local_vec();
+// 		// step2: get the read action related info
+// 		int rd_tid = curr->get_tid();
+// 		Thread *rd_thr = get_thread(rd_tid);
+// 		model_print("In process read: current localvec size is %d.\n", rd_thr->get_localvec_size());
+// 		rd_thr->print_local_vec();
 
-		// step3: read externally or internally
-		if(read_external){ // ask to read externally
-			model_print("Read externally. \n");
-			index = fuzzer->selectWrite(curr, rf_set);
-			rf = (*rf_set)[index]; // a randomly selected write
-			computeUpdate(curr, rf); // it will not change the selection of write - but update local vec
-			//the same as original c11tester: delete this rf_set
-			(*rf_set)[index] = rf_set->back();
-			rf_set->pop_back();
+// 		// step3: read externally or internally
+// 		if(read_external){ // ask to read externally
+// 			model_print("Read externally. \n");
+// 			index = fuzzer->selectWrite(curr, rf_set);
+// 			rf = (*rf_set)[index]; // a randomly selected write
+// 			computeUpdate(curr, rf); // it will not change the selection of write - but update local vec
+// 			//the same as original c11tester: delete this rf_set
+// 			(*rf_set)[index] = rf_set->back();
+// 			rf_set->pop_back();
 
-		}
-		else{ // ask to use the local vec variable
-			rf = rd_thr->get_same_location_act(curr);
-			if(rf){ // the local vec has such variable
-				model_print("local vec has such write, seqnum:%d \n", rf->get_seq_number());
-				index = fuzzer->find_idx(rf_set, rf);
-				if(index != -1){ // to make sure this variable locally is readable
-					model_print("Read locally: localvec has such variable \n");
-					(*rf_set)[index] = rf_set->back();
-					rf_set->pop_back();
-				 	// localvec has the same variable
-				}
-			}
-			else{// the local vec has no such variable
-				model_print("localvec has no variable. randomly select from rf_set. \n");
-				model_print("rf_set size is: %u. \n", rf_set->size());
-				index = fuzzer->selectWrite(curr, rf_set);
+// 		}
+// 		else{ // ask to use the local vec variable
+// 			rf = rd_thr->get_same_location_act(curr);
+// 			if(rf){ // the local vec has such variable
+// 				model_print("local vec has such write, seqnum:%d \n", rf->get_seq_number());
+// 				index = fuzzer->find_idx(rf_set, rf);
+// 				if(index != -1){ // to make sure this variable locally is readable
+// 					model_print("Read locally: localvec has such variable \n");
+// 					(*rf_set)[index] = rf_set->back();
+// 					rf_set->pop_back();
+// 				 	// localvec has the same variable
+// 				}
+// 			}
+// 			else{// the local vec has no such variable
+// 				model_print("localvec has no variable. randomly select from rf_set. \n");
+// 				model_print("rf_set size is: %u. \n", rf_set->size());
+// 				index = fuzzer->selectWrite(curr, rf_set);
 				
-				rf = (*rf_set)[index];
-				model_print("the read external flag of action read: %u : of write action %u \n", curr->checkexternal(), rf->checkexternal());
-				(*rf_set)[index] = rf_set->back();
-				rf_set->pop_back();
-			}
+// 				rf = (*rf_set)[index];
+// 				model_print("the read external flag of action read: %u : of write action %u \n", curr->checkexternal(), rf->checkexternal());
+// 				(*rf_set)[index] = rf_set->back();
+// 				rf_set->pop_back();
+// 			}
 			
 			
 
 			
-		}
+// 		}
 
-		ASSERT(rf);
-		bool canprune = false;
-		if (r_modification_order(curr, rf, priorset, &canprune)) {
-			for(unsigned int i=0;i<priorset->size();i++) {
-				mo_graph->addEdge((*priorset)[i], rf);
-			}
-			read_from(curr, rf);
-			get_thread(curr)->set_return_value(rf->get_write_value());
-			delete priorset;
-			//Update acquire fence clock vector
-			ClockVector * hbcv = get_hb_from_write(rf);
-			if (hbcv != NULL)
-				get_thread(curr)->get_acq_fence_cv()->merge(hbcv);
-			return canprune && (curr->get_type() == ATOMIC_READ);
-		}
-		priorset->clear();
-		// (*rf_set)[index] = rf_set->back();
-		// rf_set->pop_back();
-	}			
-}
+// 		ASSERT(rf);
+// 		bool canprune = false;
+// 		if (r_modification_order(curr, rf, priorset, &canprune)) {
+// 			for(unsigned int i=0;i<priorset->size();i++) {
+// 				mo_graph->addEdge((*priorset)[i], rf);
+// 			}
+// 			read_from(curr, rf);
+// 			get_thread(curr)->set_return_value(rf->get_write_value());
+// 			delete priorset;
+// 			//Update acquire fence clock vector
+// 			ClockVector * hbcv = get_hb_from_write(rf);
+// 			if (hbcv != NULL)
+// 				get_thread(curr)->get_acq_fence_cv()->merge(hbcv);
+// 			return canprune && (curr->get_type() == ATOMIC_READ);
+// 		}
+// 		priorset->clear();
+// 		// (*rf_set)[index] = rf_set->back();
+// 		// rf_set->pop_back();
+// 	}			
+// }
 
 
 /**
