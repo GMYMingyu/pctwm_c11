@@ -417,7 +417,8 @@ Thread::Thread(thread_id_t tid) :
 	id(tid),
 	state(THREAD_READY),	/* Thread is always ready? */
 	last_action_val(0),
-	model_thread(true)
+	model_thread(true),
+	local_vec(new SnapVector<ModelAction *> ())
 {
 	// real_memset is not defined when
 	// the model thread is constructed
@@ -446,7 +447,8 @@ Thread::Thread(thread_id_t tid, thrd_t *t, void (*func)(void *), void *a, Thread
 	id(tid),
 	state(THREAD_CREATED),
 	last_action_val(VALUE_NONE),
-	model_thread(false)
+	model_thread(false),
+	local_vec(new SnapVector<ModelAction *> ())
 {
 	int ret;
 
@@ -480,7 +482,8 @@ Thread::Thread(thread_id_t tid, thrd_t *t, void *(*func)(void *), void *a, Threa
 	id(tid),
 	state(THREAD_CREATED),
 	last_action_val(VALUE_NONE),
-	model_thread(false)
+	model_thread(false),
+	local_vec(new SnapVector<ModelAction *> ())
 {
 	int ret;
 
@@ -559,3 +562,69 @@ bool Thread::is_waiting_on(const Thread *t) const
 			return true;
 	return false;
 }
+
+
+//weak memory 
+	/** @brief get the local vector size on this thread */
+	uint Thread::get_localvec_size(){
+		return local_vec->size();
+	}
+	
+	SnapVector<ModelAction*> Thread::*get_local_vec(){
+		return local_vec;
+	}
+
+	/** @brief update the local vector on this thread
+	 *  @param act The new ModelAction*/
+	void Thread::update_local_vec(ModelAction* act){
+		bool has_flag = false;
+		//int threadid = id_to_int(act->get_tid()); // get the thread id of the current action
+		for(uint i = 0; i < get_localvec_size(); i++){
+			ModelAction* iteract = (*local_vec)[i];
+			if(iteract->get_location() == act->get_location()){ // the same variable
+				has_flag = true; // have the variable now
+				if(iteract->get_seq_number() > act->get_seq_number()){
+					(*local_vec)[i] = act;
+				}
+				break;
+			}
+		}
+		if(!has_flag){ // does not have this variable yet
+			local_vec->push_back(act);
+		}
+	}
+
+	void Thread::set_local_vec(SnapVector<ModelAction*> * newvec){
+		local_vec = new SnapVector<ModelAction *> ();
+		local_vec = newvec;
+	}
+
+	/** @brief print the local vector*/
+	void Thread::print_local_vec(){
+		model_print("The size of localvec is %d.", local_vec->size());
+		for(uint i = 0; i < local_vec->size(); i++){
+			ModelAction* iteract = (*local_vec)[i];
+			model_print("location: %u, value: %u, seq_num: %u. ", iteract->get_location(), iteract->get_value(), iteract->get_seq_number());
+		}
+		model_print("\n");
+	}
+
+	void Thread::init_vec(){
+		local_vec = new SnapVector<ModelAction *>();
+	}
+
+	ModelAction* Thread::get_same_location_act(ModelAction* act){
+		
+		model_print("thread localvec size: %d \n", local_vec->size());
+		for(uint i = 0; i < local_vec->size(); i++){
+			ModelAction* iteract = (*local_vec)[i];
+			if(act->get_location() == iteract->get_location()){
+				return iteract;
+			}
+		}
+		
+		
+		return NULL;
+		
+		
+	}
