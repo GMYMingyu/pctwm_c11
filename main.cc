@@ -28,7 +28,7 @@ void param_defaults(struct model_params *params)
 	params->maxscheduler = 50;
 	params->bugdepth = 5;
 	params->version = 1;
-	params->maxread = 30;
+	params->maxinstr = 30;
 }
 
 static void print_usage(struct model_params *params)
@@ -67,7 +67,7 @@ static void print_usage(struct model_params *params)
 		"-l, --maxscheduler			 Scheduler length prevention\n"
 		"-b, --bugdepth 			 Bugdepth\n"
 		"-v, --version				 0: using original c11tester; 1: using pct\n"
-		"-e, --bound of readnums	 the bound of readnums\n",
+		"-e, --bound of instrnums	 the bound of instrnums\n",
 		params->verbose,
 		params->maxexecutions,
 		params->traceminsize,
@@ -75,7 +75,7 @@ static void print_usage(struct model_params *params)
 		params->maxscheduler,
 		params->bugdepth,
 		params->version,
-		params->maxread);
+		params->maxinstr);
 	model_print("Analysis plugins:\n");
 	for(unsigned int i=0;i<registeredanalysis->size();i++) {
 		TraceAnalysis * analysis=(*registeredanalysis)[i];
@@ -101,7 +101,7 @@ bool install_plugin(char * name) {
 
 void parse_options(struct model_params *params) {
 	//const char *shortopts = "hrnt:o:x:v:m:f:";
-	const char *shortopts = "hrnt:o:x:v:m:f:l:b:p:e:";
+	const char *shortopts = "hrnt:o:x:v:m:f:l:b:p:i:";
 	const struct option longopts[] = {
 		{"help", no_argument, NULL, 'h'},
 		{"removevisible", no_argument, NULL, 'r'},
@@ -114,7 +114,7 @@ void parse_options(struct model_params *params) {
 		{"maxscheduler", required_argument, NULL, 'l'},
 		{"bugdepth", required_argument, NULL, 'b'},
 		{"version", required_argument, NULL, 'p'},
-		{"readnum", required_argument, NULL, 'e'},
+		{"instrnum", required_argument, NULL, 'i'},
 		{0, 0, 0, 0}	/* Terminator */
 	};
 	int opt, longindex;
@@ -176,8 +176,9 @@ void parse_options(struct model_params *params) {
 		case 'p':
 			params->version = atoi(optarg);
 			break;
-		case 'e':
-			params->maxread = atoi(optarg);
+		// pctwm: the max instruction num
+		case 'i':
+			params->maxinstr = atoi(optarg);
 			break;
 		case 'r':
 			params->removevisible = true;

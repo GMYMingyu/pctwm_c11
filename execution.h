@@ -41,7 +41,11 @@ public:
 	~ModelExecution();
 
 	struct model_params * get_params() const { return params; }
-	void setParams(struct model_params * _params) {params = _params;}
+	void setParams(struct model_params * _params) {
+		params = _params;
+		maxinstr = 5 * params->maxinstr; // set the livelock bound for read nums
+		model_print("The limit of read nums is %d. \n", maxinstr);
+		}
 
 	Thread * take_step(ModelAction *curr);
 
@@ -131,6 +135,32 @@ private:
 	void removeAction(ModelAction *act);
 	void fixupLastAct(ModelAction *act);
 
+	//pctwm
+	void incInstrnum(){
+		instrnum++;
+	}
+
+	int getInstrnum(){
+		return instrnum;
+	}
+
+	void print_actset(SnapVector<ModelAction *> * act_set){
+		int len = act_set->size();
+		model_print("print act_set : current action set size: %d. - ", len);
+		for(int i = 0; i < len; i++){
+			ModelAction * act = (*act_set)[i];
+			model_print("[action on thread %d, location: %d, seq_nums: %u ]", 
+			id_to_int(act->get_tid()), act->get_location(), act->get_seq_number());
+		}
+		model_print("\n");
+
+	}
+
+	// weak memory function
+	SnapVector<ModelAction *> * computeUpdate(ModelAction *rd, ModelAction * curr);
+	SnapVector<ModelAction*> * updateVec(SnapVector<ModelAction*> *input_vec, ModelAction* curr);
+	SnapVector<ModelAction*> * maxVec(SnapVector<ModelAction*> * Eacc, SnapVector<ModelAction*> *local_vec);
+
 #ifdef TLS
 	pthread_key_t pthreadkey;
 #endif
@@ -209,6 +239,8 @@ private:
 	Thread * action_select_next_thread(const ModelAction *curr) const;
 
 	bool isfinished;
+
+	int instrnum, maxinstr;
 };
 
 #endif	/* __EXECUTION_H__ */

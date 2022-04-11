@@ -20,7 +20,7 @@ struct model_params {
 	int version;
 
 	//pctwm params
-	int maxread;
+	int maxinstr;
 };
 
 void param_defaults(struct model_params *params);

@@ -78,7 +78,9 @@ ModelExecution::ModelExecution(ModelChecker *m, Scheduler *scheduler) :
 	priv(new struct model_snapshot_members ()),
 	mo_graph(new CycleGraph()),
 	fuzzer(new Fuzzer()),
-	isfinished(false)
+	isfinished(false),
+	instrnum(0),
+	maxinstr(0)
 {
 	/* Initialize a model-checker thread, for special ModelActions */
 	model_thread = new Thread(get_next_id());
