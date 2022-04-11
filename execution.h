@@ -113,7 +113,7 @@ private:
 	modelclock_t get_next_seq_num();
 	bool next_execution();
 	bool initialize_curr_action(ModelAction **curr);
-	bool process_read(ModelAction *curr, SnapVector<ModelAction *> * rf_set);
+	bool process_read(ModelAction *curr, SnapVector<ModelAction *> * rf_set, bool read_external);
 	void process_write(ModelAction *curr);
 	void process_fence(ModelAction *curr);
 	bool process_mutex(ModelAction *curr);
