@@ -18,6 +18,7 @@
 #include "mutex.h"
 #include <condition_variable>
 #include "classlist.h"
+#include "action.h"
 
 #define INITIAL_THREAD_ID	0
 #define MAIN_THREAD_ID		1
