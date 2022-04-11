@@ -118,7 +118,7 @@ public:
 	void print_local_vec();
 	void set_local_vec(SnapVector<ModelAction*> * newvec);
 	void update_local_vec(ModelAction* act);
-	SnapVector<ModelAction*> get_local_vec();
+	SnapVector<ModelAction*> * get_local_vec() const { return local_vec; }
 	uint get_localvec_size();
 
 	friend void thread_startup();
