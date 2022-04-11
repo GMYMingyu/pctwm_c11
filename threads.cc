@@ -570,9 +570,6 @@ bool Thread::is_waiting_on(const Thread *t) const
 		return local_vec->size();
 	}
 	
-	SnapVector<ModelAction * > Thread::get_local_vec(){
-		return local_vec;
-	}
 
 	/** @brief update the local vector on this thread
 	 *  @param act The new ModelAction*/
