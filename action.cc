@@ -203,10 +203,7 @@ ModelAction::~ModelAction()
 }
 
 
-//weak memory
-bool ModelAction::checkexternal_const() const{
-	return read_external_flag;
-}
+
 int ModelAction::getSize() const {
 	return size;
 }

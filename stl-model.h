@@ -565,6 +565,10 @@ public:
 		array[index] = item;
 	}
 
+	
+
+
+
 	void insertAt(uint index, type item) {
 		resize(_size + 1);
 		for (uint i = _size - 1;i > index;i--) {
@@ -600,6 +604,8 @@ public:
 	void clear() {
 		_size = 0;
 	}
+
+	
 
 	SNAPSHOTALLOC;
 private:

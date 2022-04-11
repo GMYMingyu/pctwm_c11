@@ -123,52 +123,7 @@ public:
 
 	}
 
-		// weak memory model
-	void add_external_readnum_thread(Thread *t){
-		unsigned int i = id_to_int(t->get_id());
-		if (i >= external_readnum_thread->size()){
-			
-			external_readnum_thread->push_back(1);
-		}
-		else{
-			int newval = (*external_readnum_thread)[i];
-			external_readnum_thread->set(i, newval + 1);
-		}
 
-	}
-
-	bool deleteone_external_readnum_thread(Thread *t){
-		unsigned int i = id_to_int(t->get_id());
-		if (i >= external_readnum_thread->size()){
-			return false;
-			}
-		else{
-
-			int newval = (*external_readnum_thread)[i];
-			if(newval > 0){
-				
-				external_readnum_thread->set(i, newval - 1);
-				return true;
-			}
-			else return false;
-			
-		}
-
-		return true;
-
-	}
-
-	int get_external_readnum_thread(Thread *t){
-		unsigned int i = id_to_int(t->get_id());
-		if (i >= external_readnum_thread->size()){
-			external_readnum_thread->push_back(0);
-			return 0;
-		}
-		else{
-			int res = (*external_readnum_thread)[i];
-			return res;
-		}
-	}
 
 
 #ifdef TLS
@@ -298,7 +253,7 @@ private:
 	bool isfinished;
 
 	int readnum, maxreads;
-	SnapVector<int> *external_readnum_thread;
+	
 };
 
 #endif	/* __EXECUTION_H__ */
