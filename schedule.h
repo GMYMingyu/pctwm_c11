@@ -305,6 +305,8 @@ public:
 		model_print("\n");
 	}
 
+	
+
 
 	SNAPSHOTALLOC
 private:
@@ -335,6 +337,7 @@ private:
 	int highest_id;
 
 	SnapVector<int> external_readnum_thread;
+
 };
 
 #endif	/* __SCHEDULE_H__ */
