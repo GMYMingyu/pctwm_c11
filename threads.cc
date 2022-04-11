@@ -434,7 +434,7 @@ Thread::Thread(thread_id_t tid) :
 Thread::Thread(thread_id_t tid, thrd_t *t, void (*func)(void *), void *a, Thread *parent) :
 	parent(parent),
 	acq_fence_cv(new ClockVector()),
-	local_vec(new SnapVector<ModelAction *> ())
+	local_vec(new SnapVector<ModelAction *> ()),
 	creation(NULL),
 	pending(NULL),
 	wakeup_state(false),
@@ -469,7 +469,7 @@ Thread::Thread(thread_id_t tid, thrd_t *t, void (*func)(void *), void *a, Thread
 Thread::Thread(thread_id_t tid, thrd_t *t, void *(*func)(void *), void *a, Thread *parent) :
 	parent(parent),
 	acq_fence_cv(new ClockVector()),
-	local_vec(new SnapVector<ModelAction *> ())
+	local_vec(new SnapVector<ModelAction *> ()),
 	creation(NULL),
 	pending(NULL),
 	wakeup_state(false),
