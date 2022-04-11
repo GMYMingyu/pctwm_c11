@@ -113,7 +113,10 @@ private:
 	modelclock_t get_next_seq_num();
 	bool next_execution();
 	bool initialize_curr_action(ModelAction **curr);
-	bool process_read(ModelAction *curr, SnapVector<ModelAction *> * rf_set, bool read_external);
+	//weak memory
+	bool process_read(ModelAction *curr, SnapVector<ModelAction *> * rf_set, bool read_external);\
+	//c11tester
+	bool process_read(ModelAction *curr, SnapVector<ModelAction *> * rf_set);
 	void process_write(ModelAction *curr);
 	void process_fence(ModelAction *curr);
 	bool process_mutex(ModelAction *curr);

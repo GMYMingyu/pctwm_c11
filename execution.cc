@@ -519,6 +519,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
  * @param curr is the read model action to process.
  * @param rf_set is the set of model actions we can possibly read from
  * @return True if the read can be pruned from the thread map list.
+ * weak memory version
  */
 bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> * rf_set, bool read_external)
 {
@@ -642,6 +643,84 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 		// rf_set->pop_back();
 	}			
 }
+
+
+/**
+ * Processes a read model action.
+ * @param curr is the read model action to process.
+ * @param rf_set is the set of model actions we can possibly read from
+ * @return True if the read can be pruned from the thread map list.
+ * c11tester version
+ */
+bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> * rf_set)
+{
+	SnapVector<ModelAction *> * priorset = new SnapVector<ModelAction *>();
+	bool hasnonatomicstore = hasNonAtomicStore(curr->get_location());
+	if (hasnonatomicstore) {
+		ModelAction * nonatomicstore = convertNonAtomicStore(curr->get_location());
+		rf_set->push_back(nonatomicstore);
+	}
+
+	// Remove writes that violate read modification order
+	/*
+	   uint i = 0;
+	   while (i < rf_set->size()) {
+	        ModelAction * rf = (*rf_set)[i];
+	        if (!r_modification_order(curr, rf, NULL, NULL, true)) {
+	                (*rf_set)[i] = rf_set->back();
+	                rf_set->pop_back();
+	        } else
+	                i++;
+	   }*/
+
+	while(true) {
+
+		int index = fuzzer->selectWrite(curr, rf_set);
+
+		ModelAction *rf = (*rf_set)[index];
+
+		ASSERT(rf);
+		bool canprune = false;
+		if (r_modification_order(curr, rf, priorset, &canprune)) {
+			for(unsigned int i=0;i<priorset->size();i++) {
+				mo_graph->addEdge((*priorset)[i], rf);
+			}
+			read_from(curr, rf);
+			get_thread(curr)->set_return_value(rf->get_write_value());
+			delete priorset;
+			//Update acquire fence clock vector
+			ClockVector * hbcv = get_hb_from_write(rf);
+			if (hbcv != NULL)
+				get_thread(curr)->get_acq_fence_cv()->merge(hbcv);
+			return canprune && (curr->get_type() == ATOMIC_READ);
+		}
+		priorset->clear();
+		(*rf_set)[index] = rf_set->back();
+		rf_set->pop_back();
+	}
+
+
+		ASSERT(rf);
+		bool canprune = false;
+		if (r_modification_order(curr, rf, priorset, &canprune)) {
+			for(unsigned int i=0;i<priorset->size();i++) {
+				mo_graph->addEdge((*priorset)[i], rf);
+			}
+			read_from(curr, rf);
+			get_thread(curr)->set_return_value(rf->get_write_value());
+			delete priorset;
+			//Update acquire fence clock vector
+			ClockVector * hbcv = get_hb_from_write(rf);
+			if (hbcv != NULL)
+				get_thread(curr)->get_acq_fence_cv()->merge(hbcv);
+			return canprune && (curr->get_type() == ATOMIC_READ);
+		}
+		priorset->clear();
+		(*rf_set)[index] = rf_set->back();
+		rf_set->pop_back();
+	}			
+}
+
 
 /**
  * Processes a lock, trylock, or unlock model action.  @param curr is
@@ -1051,11 +1130,12 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	bool canprune = false;
 
 	// check if read externally now
-	bool read_external_now = false;
+	//bool read_external_now = false;
 	/* Build may_read_from set for newly-created actions */
 	if (curr->is_read() && newly_explored) {
 		rf_set = build_may_read_from(curr);
-		canprune = process_read(curr, rf_set,read_external_now);
+		canprune = process_read(curr, rf_set);
+		//canprune = process_read(curr, rf_set,read_external_now);
 		delete rf_set;
 	} else
 		ASSERT(rf_set == NULL);
