@@ -404,6 +404,7 @@ void Thread::freeResources() {
 Thread::Thread(thread_id_t tid) :
 	parent(NULL),
 	acq_fence_cv(new ClockVector()),
+	local_vec(new SnapVector<ModelAction *> ()),
 	creation(NULL),
 	pending(NULL),
 	wakeup_state(false),
@@ -417,8 +418,7 @@ Thread::Thread(thread_id_t tid) :
 	id(tid),
 	state(THREAD_READY),	/* Thread is always ready? */
 	last_action_val(0),
-	model_thread(true),
-	local_vec(new SnapVector<ModelAction *> ())
+	model_thread(true)
 {
 	// real_memset is not defined when
 	// the model thread is constructed
@@ -434,6 +434,7 @@ Thread::Thread(thread_id_t tid) :
 Thread::Thread(thread_id_t tid, thrd_t *t, void (*func)(void *), void *a, Thread *parent) :
 	parent(parent),
 	acq_fence_cv(new ClockVector()),
+	local_vec(new SnapVector<ModelAction *> ())
 	creation(NULL),
 	pending(NULL),
 	wakeup_state(false),
@@ -447,8 +448,7 @@ Thread::Thread(thread_id_t tid, thrd_t *t, void (*func)(void *), void *a, Thread
 	id(tid),
 	state(THREAD_CREATED),
 	last_action_val(VALUE_NONE),
-	model_thread(false),
-	local_vec(new SnapVector<ModelAction *> ())
+	model_thread(false)
 {
 	int ret;
 
@@ -469,6 +469,7 @@ Thread::Thread(thread_id_t tid, thrd_t *t, void (*func)(void *), void *a, Thread
 Thread::Thread(thread_id_t tid, thrd_t *t, void *(*func)(void *), void *a, Thread *parent) :
 	parent(parent),
 	acq_fence_cv(new ClockVector()),
+	local_vec(new SnapVector<ModelAction *> ())
 	creation(NULL),
 	pending(NULL),
 	wakeup_state(false),
@@ -482,8 +483,7 @@ Thread::Thread(thread_id_t tid, thrd_t *t, void *(*func)(void *), void *a, Threa
 	id(tid),
 	state(THREAD_CREATED),
 	last_action_val(VALUE_NONE),
-	model_thread(false),
-	local_vec(new SnapVector<ModelAction *> ())
+	model_thread(false)
 {
 	int ret;
 
