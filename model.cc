@@ -413,7 +413,7 @@ Thread* ModelChecker::getNextThread(Thread *old)
 		if (!thr->is_complete()) {
 			if (!thr->get_pending()) {
 				curr_thread_num = i;
-				model_print("getNextThread: find one nextThread. the thread is %d \n", id_to_int(thr->get_id()));
+				//model_print("getNextThread: find one nextThread. the thread is %d \n", id_to_int(thr->get_id()));
 				nextThread = thr;
 				break;
 			}
@@ -430,7 +430,7 @@ Thread* ModelChecker::getNextThread(Thread *old)
 
 			/* Allow pending relaxed/release stores or thread actions to perform first */
 			else if (!chosen_thread) {
-				model_print("getNextThread: empty chosen thread. \n");
+				//model_print("getNextThread: empty chosen thread. \n");
 				if (act->is_write()) {
 					std::memory_order order = act->get_mo();
 					if (order == std::memory_order_relaxed || \
@@ -548,20 +548,20 @@ bool ModelChecker::handleChosenThread(Thread *old)
 	chosen_thread->set_pending(NULL);
 	chosen_thread = execution->take_step(curr);
 
-	model_print("now the handle Chosen thread. \n");
-	if(chosen_thread != NULL){
-		model_print("current chosen thread is %d \n", id_to_int(chosen_thread->get_id()));
-	}
-	else{
-		model_print("current chosen thread is NULL \n");
-	}
+	// model_print("now the handle Chosen thread. \n");
+	// if(chosen_thread != NULL){
+	// 	model_print("current chosen thread is %d \n", id_to_int(chosen_thread->get_id()));
+	// }
+	// else{
+	// 	model_print("current chosen thread is NULL \n");
+	// }
 
 	if (should_terminate_execution()) {
 		finishRunExecution(old);
-		model_print("finish handlechosenthread. \n");
+		//model_print("finish handlechosenthread. \n");
 		return false;
 	} else {
-		model_print("not finish yet. \n");
+		//model_print("not finish yet. \n");
 		return true;
 	}
 }

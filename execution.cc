@@ -1182,7 +1182,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 				add_write_to_lists(curr);
 
 			process_thread_action(curr);
-			model_print("successfully process thread action. \n");
+			//model_print("successfully process thread action. \n");
 
 			if (curr->is_write())
 				process_write(curr);
@@ -1224,7 +1224,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		process_mutex(curr);
 	}
 
-	model_print("end the check current action. \n");
+	//model_print("end the check current action. \n");
 	return curr;
 }
 
@@ -1600,7 +1600,7 @@ void ModelExecution::add_action_to_lists(ModelAction *act, bool canprune)
 		act->setActionRef(get_safe_ptr_action(&obj_map, mutex_loc)->add_back(act));
 	}
 
-	model_print("successfully add action to list. \n");
+	//model_print("successfully add action to list. \n");
 }
 
 void insertIntoActionList(action_list_t *list, ModelAction *act) {
@@ -2070,7 +2070,7 @@ bool ModelExecution::is_enabled(thread_id_t tid) const
  */
 Thread * ModelExecution::action_select_next_thread(const ModelAction *curr, bool change_flag) const
 {	
-	model_print("now the action select next thread. \n");
+	//model_print("now the action select next thread. \n");
 	if(curr->in_count() && change_flag){
 	//if(change_flag){
 		model_print("now change point: select the new highest thread.");
@@ -2119,7 +2119,7 @@ Thread * ModelExecution::take_step(ModelAction *curr)
 		model_print("now we reselect the highest prio thread. \n");
 	}
 
-	model_print("call the action select next thread.\n");
+	//model_print("call the action select next thread.\n");
 	return action_select_next_thread(curr, change_flag);
 }
 
