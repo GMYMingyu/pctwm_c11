@@ -548,14 +548,6 @@ bool ModelChecker::handleChosenThread(Thread *old)
 	chosen_thread->set_pending(NULL);
 	chosen_thread = execution->take_step(curr);
 
-	// if we meet the change point - we still need consume the next action for a Thread
-	if(curr->checkexternal()){
-		model_print("we need consume the next action for a new thread too. \n");
-		ModelAction *curr = chosen_thread->get_pending();
-		chosen_thread->set_pending(NULL);
-		chosen_thread = execution->take_step(curr);
-	}
-
 	model_print("now the handle Chosen thread. \n");
 	if(chosen_thread != NULL){
 		model_print("current chosen thread is %d \n", id_to_int(chosen_thread->get_id()));
