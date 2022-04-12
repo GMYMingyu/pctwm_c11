@@ -1147,7 +1147,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			scheduler->print_lowvec();
 			//step4: meet the change point: move thread and return the second highest thread
 			// model_print("before set_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(),type_str, curr->checkexternal());
-			model_print("change point - change priority and move to the second highest thread. \n");
+			model_print("change point - mark this action. \n");
 			curr->set_external_flag();  
 		}
 	}
@@ -2055,7 +2055,8 @@ Thread * ModelExecution::action_select_next_thread(const ModelAction *curr, bool
 		return curr->get_thread_operand();
 	}
 
-	if(curr->in_count() && change_flag){
+	//if(curr->in_count() && change_flag){
+	if(change_flag()){
 		model_print("now change point: select the new highest thread.");
 		scheduler->print_current_avail_threads();
 		model_print("return the highest thread: %d \n", scheduler->get_highest_thread());
@@ -2083,7 +2084,12 @@ Thread * ModelExecution::take_step(ModelAction *curr)
 	if (curr_thrd->is_blocked() || curr_thrd->is_complete())
 		scheduler->remove_thread(curr_thrd);
 
+	
+	
 	bool change_flag = curr->checkexternal();
+	if(change_flag){
+		model_print("now we reselect the highest prio thread. \n");
+	}
 
 	return action_select_next_thread(curr, change_flag);
 }
