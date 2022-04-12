@@ -1152,57 +1152,80 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		}
 	}
 
-
-	/* Build may_read_from set for newly-created actions */
-	if(!curr->checkexternal()){
-		model_print("not the change point. \n");
-		if (curr->is_read() && newly_explored ) {
-			rf_set = build_may_read_from(curr);
-			//canprune = process_read(curr, rf_set);
-			canprune = process_read(curr, rf_set,read_external_now);
-			delete rf_set;
-		} else
-			ASSERT(rf_set == NULL);
+	// though we change the current thread prio and want to switch to another thread, but we may still have one enabled thread
+	int current_highid = scheduler->get_highest_thread();
+	bool continue_flag = false; // only one thread is enabled , we still process this thread
+	if(curr->set_external_flag() && current_highid == curr_threadid){
+		continue_flag = true;
 	}
-	
 
-	/* Add the action to lists if not the second part of a rmw */
-	if (newly_explored && !curr->checkexternal()) {
-		model_print("not the change point. add action to list.\n");
+
+	if(curr->in_count()){ // only the related actions
+		if((continue_flag && curr->checkexternal()) || !curr->checkexternal()){ // change the prio but only one thread or not change point
+			if (curr->is_read() && newly_explored ) {
+				rf_set = build_may_read_from(curr);
+				//canprune = process_read(curr, rf_set);
+				canprune = process_read(curr, rf_set,curr->checkexternal());
+				delete rf_set;
+			} else
+				ASSERT(rf_set == NULL);
+
+				/* Add the action to lists if not the second part of a rmw */
+			if (newly_explored) {
+					model_print("not the change point. add action to list.\n");
+			#ifdef COLLECT_STAT
+					record_atomic_stats(curr);
+			#endif
+					add_action_to_lists(curr, canprune);
+			}
+
+			if (curr->is_write())
+				add_write_to_lists(curr);
+
+			process_thread_action(curr);
+
+			if (curr->is_write())
+				process_write(curr);
+
+			if (curr->is_fence())
+				process_fence(curr);
+
+			if (curr->is_mutex_op())
+				process_mutex(curr);
+
+		}	
+		else if(curr->checkexternal() && !continue_flag){
+			model_print("change point. \n");
+			process_thread_action(curr);
+			if (curr->is_mutex_op())
+			process_mutex(curr);
+		}
+
+	}
+	else{ // not the target type of action - not change this type of action
+		if (newly_explored) {
 #ifdef COLLECT_STAT
 		record_atomic_stats(curr);
 #endif
 		add_action_to_lists(curr, canprune);
 	}
 
-	if (curr->is_write() && !curr->checkexternal()){
-		model_print("write action: not the change point. \n");
+	if (curr->is_write())
 		add_write_to_lists(curr);
-	}
 
-	
 	process_thread_action(curr);
-	model_print("successfully process thread action. \n");
-	
 
-	if (curr->is_write() && !curr->checkexternal()){
-		model_print("write action: not the change point. \n");
+	if (curr->is_write())
 		process_write(curr);
-	}
-		
 
-	if (curr->is_fence() && !curr->checkexternal()){
-		model_print("fence action: not the change point. \n");
+	if (curr->is_fence())
 		process_fence(curr);
-	}
-		
 
-	if (curr->is_mutex_op()){
-		model_print("mutex action: not the change point. \n");
+	if (curr->is_mutex_op())
 		process_mutex(curr);
 	}
-		
-	model_print("finish check current action. \n");
+
+	
 	return curr;
 }
 
