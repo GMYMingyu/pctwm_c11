@@ -1129,8 +1129,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	uint curr_threadid = id_to_int(curr->get_tid());
 	int read_external_num_on_curr_thread = scheduler->get_external_readnum_thread(curr_threadid);
 
-	// check if read externally now
-	bool read_external_now = false;
+	// check if the change point now
 	if(curr->in_count() && newly_explored){
 		//weak memory 
 		// step1: increase the instructions count
@@ -1155,7 +1154,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	// though we change the current thread prio and want to switch to another thread, but we may still have one enabled thread
 	int current_highid = scheduler->get_highest_thread();
 	bool continue_flag = false; // only one thread is enabled , we still process this thread
-	if(curr->set_external_flag() && current_highid == curr_threadid){
+	if(curr->checkexternal() && current_highid == curr_threadid){
 		continue_flag = true;
 	}
 
