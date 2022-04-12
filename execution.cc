@@ -1224,7 +1224,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		process_mutex(curr);
 	}
 
-	
+	model_print("end the check current action. \n");
 	return curr;
 }
 
