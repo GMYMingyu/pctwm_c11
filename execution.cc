@@ -1195,9 +1195,9 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		}	
 		else if(curr->checkexternal() && !continue_flag){
 			model_print("change point. \n");
-			//process_thread_action(curr);
-			// if (curr->is_mutex_op())
-			// process_mutex(curr);
+			process_thread_action(curr);
+			if (curr->is_mutex_op())
+			process_mutex(curr);
 		}
 
 	}
