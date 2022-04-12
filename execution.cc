@@ -861,6 +861,15 @@ bool ModelExecution::process_mutex(ModelAction *curr)
  */
 void ModelExecution::process_write(ModelAction *curr)
 {
+	model_print("\n Process write action. ");
+	// we meet a write action -> update the local vec
+	Thread * curr_thread = get_thread(curr);
+	SnapVector<ModelAction*> *thrd_localvec = curr_thread->get_local_vec();
+	curr_thread->set_local_vec(updateVec(thrd_localvec, curr));
+	//curr_thread->update_local_vec(curr);
+	model_print("Updates local vec in thread %d - ", id_to_int(curr_thread->get_id()));
+	curr_thread->print_local_vec();
+	s
 	w_modification_order(curr);
 	get_thread(curr)->set_return_value(VALUE_NONE);
 }
