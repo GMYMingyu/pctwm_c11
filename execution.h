@@ -141,6 +141,7 @@ private:
 	void fixupLastAct(ModelAction *act);
 
 	//pctwm
+	
 	void incInstrnum(){
 		instrnum++;
 	}
@@ -233,7 +234,7 @@ private:
 
 	Fuzzer * fuzzer;
 
-	Thread * action_select_next_thread(const ModelAction *curr) const;
+	Thread * action_select_next_thread(const ModelAction *curr, const bool move_flag) const;
 
 	bool isfinished;
 

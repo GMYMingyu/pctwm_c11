@@ -218,48 +218,6 @@ ModelAction::~ModelAction()
 }
 
 
-// weak memory related functions
-void ModelAction::init_bagflag(){
-	bag_flag = false;
-	read_external_flag = false;
-}
-
-void ModelAction::set_bag(SnapVector<ModelAction*> *E){
-	bag_flag = true;
-	bag = E;
-}
-
-bool ModelAction::checkbag(){
-	return bag_flag;
-}
-
-void ModelAction::set_external_flag(){
-	read_external_flag = true;
-}
-
-void ModelAction::reset_external_flag(){
-	read_external_flag = false;
-}
-
-bool ModelAction::checkexternal(){
-	return read_external_flag;
-}
-
-void ModelAction::print_bag(){
-	if(bag_flag){
-		model_print("This action has bag: size is %d, ", bag->size());
-		uint baglen = bag->size();
-		for(uint i = 0; i < baglen; i++){
-			ModelAction* curr = (*bag)[i];
-			model_print("action: seqnum: %u, location: %u, value: %u. ", 
-			curr->get_seq_number(), curr->get_location(), curr->get_value());
-		}
-		model_print("\n");
-	}
-	else{
-		model_print("This action has no bag. \n");
-	}
-}
 
 int ModelAction::getSize() const {
 	return size;
@@ -827,4 +785,59 @@ cdsc::mutex * ModelAction::get_mutex() const
 		return (cdsc::mutex *)get_value();
 	else
 		return NULL;
+}
+
+
+// weak memory related functions
+void ModelAction::init_bagflag(){
+	bag_flag = false;
+	read_external_flag = false;
+}
+
+void ModelAction::set_bag(SnapVector<ModelAction*> *E){
+	bag_flag = true;
+	bag = E;
+}
+
+bool ModelAction::checkbag(){
+	return bag_flag;
+}
+
+void ModelAction::set_external_flag(){
+	read_external_flag = true;
+}
+
+void ModelAction::reset_external_flag(){
+	read_external_flag = false;
+}
+
+bool ModelAction::checkexternal(){
+	return read_external_flag;
+}
+
+void ModelAction::print_bag(){
+	if(bag_flag){
+		model_print("This action has bag: size is %d, ", bag->size());
+		uint baglen = bag->size();
+		for(uint i = 0; i < baglen; i++){
+			ModelAction* curr = (*bag)[i];
+			model_print("action: seqnum: %u, location: %u, value: %u. ", 
+			curr->get_seq_number(), curr->get_location(), curr->get_value());
+		}
+		model_print("\n");
+	}
+	else{
+		model_print("This action has no bag. \n");
+	}
+}
+
+bool ModelAction::in_count() const{
+	if((type == ATOMIC_WRITE || type == ATOMIC_RMW || type == ATOMIC_INIT || type == NONATOMIC_WRITE) 
+	&& ( order == std::memory_order_relaxed  || order == std::memory_order_release || order == std::memory_order_acq_rel || order == std::memory_order_seq_cst)) return false; // write_rel/relax
+	else if(type == ATOMIC_FENCE && (order == std::memory_order_release )) return false; // fence_rel
+	// the following three types are in count
+	else if(type == ATOMIC_READ || type == ATOMIC_RMWR || type == ATOMIC_RMWRCAS || type == ATOMIC_RMW) return true; // read
+	else if(order == std::memory_order_seq_cst) return true; // sc
+	else if(type == ATOMIC_FENCE && (order == std::memory_order_acq_rel || order == std::memory_order_seq_cst)) return true; // fence_acq
+	return false;
 }

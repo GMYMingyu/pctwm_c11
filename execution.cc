@@ -1996,7 +1996,7 @@ bool ModelExecution::is_enabled(thread_id_t tid) const
  * @return The next thread to run, if the current action will determine this
  * selection; otherwise NULL
  */
-Thread * ModelExecution::action_select_next_thread(const ModelAction *curr) const
+Thread * ModelExecution::action_select_next_thread(const ModelAction *curr, bool change_flag) const
 {
 	/* Do not split atomic RMW */
 	if (curr->is_rmwr())
@@ -2007,6 +2007,12 @@ Thread * ModelExecution::action_select_next_thread(const ModelAction *curr) cons
 		return curr->get_thread_operand();
 	if (curr->get_type() == PTHREAD_CREATE) {
 		return curr->get_thread_operand();
+	}
+
+	if(curr->in_count() && change_flag){
+		model_print("now change point: select the second highest thread.");
+		scheduler->print_current_avail_threads();
+		return get_thread(int_to_id(scheduler->get_scecond_high_thread()));
 	}
 	return NULL;
 }
@@ -2030,7 +2036,9 @@ Thread * ModelExecution::take_step(ModelAction *curr)
 	if (curr_thrd->is_blocked() || curr_thrd->is_complete())
 		scheduler->remove_thread(curr_thrd);
 
-	return action_select_next_thread(curr);
+	bool change_flag = curr->checkexternal();
+
+	return action_select_next_thread(curr, change_flag);
 }
 
 /** This method removes references to an Action before we delete it. */

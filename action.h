@@ -211,7 +211,7 @@ public:
 	void reset_external_flag();
 	bool checkexternal();
 	void print_bag();
-
+	bool in_count() const;
 
 	SNAPSHOTALLOC
 private:

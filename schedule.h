@@ -249,7 +249,6 @@ public:
 			}
 		}
 
-		ASSERT(highest2 != -1);
 		return highest2;
 
 	}
