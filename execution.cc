@@ -1122,6 +1122,9 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	SnapVector<ModelAction *> * rf_set = NULL;
 	bool canprune = false;
 	
+	const char *type_str = curr->get_type_str();
+	model_print("current action type is  %-14s. sequence number is : %d \n", type_str, curr->get_seq_number());
+
 	// how many read external job on the current thread now
 	uint curr_threadid = id_to_int(curr->get_tid());
 	int read_external_num_on_curr_thread = scheduler->get_external_readnum_thread(curr_threadid);
