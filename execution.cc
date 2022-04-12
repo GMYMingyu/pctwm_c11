@@ -1136,7 +1136,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	// how many read external job on the current thread now
 	uint curr_threadid = id_to_int(curr->get_tid());
 	Thread* curr_thread = get_thread(curr);
-	int read_external_num_on_curr_thread = scheduler->get_external_readnum_thread(curr_threadid);
+	
 
 	// check if the change point now
 	if(curr->in_count() && newly_explored){
