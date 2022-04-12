@@ -1157,6 +1157,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			// model_print("before set_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(),type_str, curr->checkexternal());
 			model_print("change point - mark this action. \n");
 			curr->set_external_flag();  
+			scheduler->add_external_readnum_thread(curr_threadid);
 		}
 	}
 
@@ -1171,10 +1172,22 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	if(curr->in_count()){ // only the related actions
 		if((continue_flag && curr->checkexternal()) || !curr->checkexternal()){ // change the prio but only one thread or not change point
 			if (curr->is_read() && newly_explored ) {
-				rf_set = build_may_read_from(curr);
-				//canprune = process_read(curr, rf_set);
-				canprune = process_read(curr, rf_set,curr->checkexternal());
-				delete rf_set;
+				int read_external_num_on_curr_thread = scheduler->get_external_readnum_thread(curr_threadid);
+				if(read_external_num_on_curr_thread > 0){ // this thread has read external job
+					model_print(" have read external job. - read external\n");
+					rf_set = build_may_read_from(curr);
+					//canprune = process_read(curr, rf_set);
+					canprune = process_read(curr, rf_set, true);
+					delete rf_set;
+					scheduler->deleteone_external_readnum_thread(curr_threadid); // delete one read external job on this thread
+				}
+				else{
+					model_print(" no external read job. - read local \n");
+					rf_set = build_may_read_from(curr);
+					canprune = process_read(curr, rf_set, false); // read internally
+					delete rf_set;
+				}
+				
 			} else
 				ASSERT(rf_set == NULL);
 
