@@ -1177,10 +1177,12 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 	if (curr->is_write() && !curr->checkexternal()){
 		model_print("write action: not the change point. \n");
-		add_write_to_lists(curr);}
+		add_write_to_lists(curr);
+	}
 
 	
 	process_thread_action(curr);
+	model_print("successfully process thread action. \n");
 	
 
 	if (curr->is_write() && !curr->checkexternal()){
@@ -1200,7 +1202,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		process_mutex(curr);
 	}
 		
-
+	model_print("finish check current action. \n");
 	return curr;
 }
 
