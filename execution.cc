@@ -2059,6 +2059,7 @@ Thread * ModelExecution::action_select_next_thread(const ModelAction *curr, bool
 	if(curr->in_count() && change_flag){
 		model_print("now change point: select the second highest thread.");
 		scheduler->print_current_avail_threads();
+		model_print("return the second highest thread: %d \n", scheduler->get_scecond_high_thread());
 		return get_thread(int_to_id(scheduler->get_scecond_high_thread()));
 	}
 	return NULL;
