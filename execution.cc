@@ -2043,7 +2043,14 @@ bool ModelExecution::is_enabled(thread_id_t tid) const
  * selection; otherwise NULL
  */
 Thread * ModelExecution::action_select_next_thread(const ModelAction *curr, bool change_flag) const
-{
+{	
+	if(curr->in_count() && change_flag){
+	//if(change_flag){
+		model_print("now change point: select the new highest thread.");
+		scheduler->print_current_avail_threads();
+		model_print("return the highest thread: %d \n", scheduler->get_highest_thread());
+		return get_thread(int_to_id(scheduler->get_highest_thread()));
+	}
 	/* Do not split atomic RMW */
 	if (curr->is_rmwr())
 		return get_thread(curr);
@@ -2055,13 +2062,7 @@ Thread * ModelExecution::action_select_next_thread(const ModelAction *curr, bool
 		return curr->get_thread_operand();
 	}
 
-	//if(curr->in_count() && change_flag){
-	if(change_flag){
-		model_print("now change point: select the new highest thread.");
-		scheduler->print_current_avail_threads();
-		model_print("return the highest thread: %d \n", scheduler->get_highest_thread());
-		return get_thread(int_to_id(scheduler->get_highest_thread()));
-	}
+
 	return NULL;
 }
 
