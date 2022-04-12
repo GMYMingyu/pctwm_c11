@@ -545,6 +545,7 @@ bool ModelChecker::handleChosenThread(Thread *old)
 	ModelAction *curr = chosen_thread->get_pending();
 	chosen_thread->set_pending(NULL);
 	chosen_thread = execution->take_step(curr);
+	model_print("current chosen thread is %d \n", id_to_int(chosen_thread->get_id()));
 
 	if (should_terminate_execution()) {
 		finishRunExecution(old);
