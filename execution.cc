@@ -1179,10 +1179,9 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		model_print("write action: not the change point. \n");
 		add_write_to_lists(curr);}
 
-	if(!curr->checkexternal()){
-		model_print("not the change point. process thread action. \n");
-		process_thread_action(curr);
-	}
+	
+	process_thread_action(curr);
+	
 
 	if (curr->is_write() && !curr->checkexternal()){
 		model_print("write action: not the change point. \n");
