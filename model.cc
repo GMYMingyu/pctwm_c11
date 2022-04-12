@@ -413,6 +413,7 @@ Thread* ModelChecker::getNextThread(Thread *old)
 		if (!thr->is_complete()) {
 			if (!thr->get_pending()) {
 				curr_thread_num = i;
+				model_print("getNextThread: find one nextThread. \n");
 				nextThread = thr;
 				break;
 			}
