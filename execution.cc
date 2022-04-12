@@ -1110,7 +1110,8 @@ bool ModelExecution::check_action_enabled(ModelAction *curr) {
  * curr
  */
 ModelAction * ModelExecution::check_current_action(ModelAction *curr)
-{
+{	
+	scheduler->print_current_avail_threads();
 	ASSERT(curr);
 	bool newly_explored = initialize_curr_action(&curr);
 
