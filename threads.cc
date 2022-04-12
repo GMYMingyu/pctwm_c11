@@ -402,9 +402,9 @@ void Thread::freeResources() {
  * @param tid The thread ID to assign
  */
 Thread::Thread(thread_id_t tid) :
+	local_vec(new SnapVector<ModelAction *> ()),
 	parent(NULL),
 	acq_fence_cv(new ClockVector()),
-	local_vec(new SnapVector<ModelAction *> ()),
 	creation(NULL),
 	pending(NULL),
 	wakeup_state(false),
@@ -432,9 +432,9 @@ Thread::Thread(thread_id_t tid) :
  * @param a The parameter to pass to this function.
  */
 Thread::Thread(thread_id_t tid, thrd_t *t, void (*func)(void *), void *a, Thread *parent) :
+	local_vec(new SnapVector<ModelAction *> ()),
 	parent(parent),
 	acq_fence_cv(new ClockVector()),
-	local_vec(new SnapVector<ModelAction *> ()),
 	creation(NULL),
 	pending(NULL),
 	wakeup_state(false),
@@ -467,9 +467,9 @@ Thread::Thread(thread_id_t tid, thrd_t *t, void (*func)(void *), void *a, Thread
  * @param a The parameter to pass to this function.
  */
 Thread::Thread(thread_id_t tid, thrd_t *t, void *(*func)(void *), void *a, Thread *parent) :
+	local_vec(new SnapVector<ModelAction *> ()),
 	parent(parent),
 	acq_fence_cv(new ClockVector()),
-	local_vec(new SnapVector<ModelAction *> ()),
 	creation(NULL),
 	pending(NULL),
 	wakeup_state(false),
