@@ -624,9 +624,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 				model_print("localvec has no variable. randomly select from rf_set. \n");
 				model_print("rf_set size is: %u. \n", rf_set->size());
 				index = fuzzer->selectWrite(curr, rf_set);
-				
 				rf = (*rf_set)[index];
-				model_print("the read external flag of action read: %u : of write action %u \n", curr->checkexternal(), rf->checkexternal());
 				(*rf_set)[index] = rf_set->back();
 				rf_set->pop_back();
 			}
@@ -970,6 +968,7 @@ void ModelExecution::process_thread_action(ModelAction *curr)
 	default:
 		break;
 	}
+
 }
 
 /**
@@ -1182,6 +1181,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 				add_write_to_lists(curr);
 
 			process_thread_action(curr);
+			model_print("successfully process thread action. \n");
 
 			if (curr->is_write())
 				process_write(curr);
