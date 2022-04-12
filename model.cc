@@ -429,6 +429,7 @@ Thread* ModelChecker::getNextThread(Thread *old)
 
 			/* Allow pending relaxed/release stores or thread actions to perform first */
 			else if (!chosen_thread) {
+				model_print("getNextThread: empty chosen thread. \n");
 				if (act->is_write()) {
 					std::memory_order order = act->get_mo();
 					if (order == std::memory_order_relaxed || \
@@ -555,11 +556,12 @@ bool ModelChecker::handleChosenThread(Thread *old)
 
 	if (should_terminate_execution()) {
 		finishRunExecution(old);
+		model_print("finish handlechosenthread. \n");
 		return false;
 	} else {
+		model_print("not finish yet. \n");
 		return true;
 	}
-	model_print("successfully handle chosen thread. \n");
 }
 
 void ModelChecker::startChecker() {
