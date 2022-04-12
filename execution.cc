@@ -1575,6 +1575,8 @@ void ModelExecution::add_action_to_lists(ModelAction *act, bool canprune)
 		void *mutex_loc = (void *) act->get_value();
 		act->setActionRef(get_safe_ptr_action(&obj_map, mutex_loc)->add_back(act));
 	}
+
+	model_print("successfully add action to list. \n");
 }
 
 void insertIntoActionList(action_list_t *list, ModelAction *act) {
