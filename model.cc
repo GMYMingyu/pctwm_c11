@@ -549,6 +549,9 @@ bool ModelChecker::handleChosenThread(Thread *old)
 	if(chosen_thread != NULL){
 		model_print("current chosen thread is %d \n", id_to_int(chosen_thread->get_id()));
 	}
+	else{
+		model_print("current chosen thread is NULL \n");
+	}
 
 	if (should_terminate_execution()) {
 		finishRunExecution(old);
@@ -556,6 +559,7 @@ bool ModelChecker::handleChosenThread(Thread *old)
 	} else {
 		return true;
 	}
+	model_print("successfully handle chosen thread. \n");
 }
 
 void ModelChecker::startChecker() {
