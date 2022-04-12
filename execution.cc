@@ -1126,6 +1126,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 	// how many read external job on the current thread now
 	uint curr_threadid = id_to_int(curr->get_tid());
+	Thread* curr_thread = get_thread(curr);
 	int read_external_num_on_curr_thread = scheduler->get_external_readnum_thread(curr_threadid);
 
 	// check if the change point now
@@ -1196,8 +1197,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		else if(curr->checkexternal() && !continue_flag){
 			model_print("change point. \n");
 			process_thread_action(curr);
-			if (curr->is_mutex_op())
-			process_mutex(curr);
+			curr_thrd->set_pending(curr);
 		}
 
 	}
