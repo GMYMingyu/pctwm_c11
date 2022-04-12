@@ -1132,7 +1132,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		//weak memory 
 		// step1: increase the instructions count
 		incInstrnum();
-		model_print("Current read nums: %d. \n", getInstrnum());
+		model_print("Current instr. nums: %d. \n", getInstrnum());
 		//step2: check if a prority change point
 		int reach_chg_idx = scheduler->find_chgidx(getInstrnum());
 		if(reach_chg_idx != -1){
@@ -1144,6 +1144,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			scheduler->print_lowvec();
 			//step4: meet the change point: move thread and return the second highest thread
 			// model_print("before set_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(),type_str, curr->checkexternal());
+			model_print("change point - change priority and move to the second highest thread. \n");
 			curr->set_external_flag();  
 		}
 	}
@@ -1151,6 +1152,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 	/* Build may_read_from set for newly-created actions */
 	if(!curr->checkexternal()){
+		model_print("not the change point. \n");
 		if (curr->is_read() && newly_explored ) {
 			rf_set = build_may_read_from(curr);
 			//canprune = process_read(curr, rf_set);
@@ -1163,27 +1165,39 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 	/* Add the action to lists if not the second part of a rmw */
 	if (newly_explored && !curr->checkexternal()) {
+		model_print("not the change point. add action to list.\n");
 #ifdef COLLECT_STAT
 		record_atomic_stats(curr);
 #endif
 		add_action_to_lists(curr, canprune);
 	}
 
-	if (curr->is_write() && !curr->checkexternal())
-		add_write_to_lists(curr);
+	if (curr->is_write() && !curr->checkexternal()){
+		model_print("write action: not the change point. \n");
+		add_write_to_lists(curr);}
 
 	if(!curr->checkexternal()){
+		model_print("not the change point. process thread action. \n");
 		process_thread_action(curr);
 	}
 
-	if (curr->is_write() && !curr->checkexternal())
+	if (curr->is_write() && !curr->checkexternal()){
+		model_print("write action: not the change point. \n");
 		process_write(curr);
+	}
+		
 
-	if (curr->is_fence() && !curr->checkexternal())
+	if (curr->is_fence() && !curr->checkexternal()){
+		model_print("fence action: not the change point. \n");
 		process_fence(curr);
+	}
+		
 
-	if (curr->is_mutex_op())
+	if (curr->is_mutex_op()){
+		model_print("mutex action: not the change point. \n");
 		process_mutex(curr);
+	}
+		
 
 	return curr;
 }
