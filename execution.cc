@@ -869,7 +869,6 @@ void ModelExecution::process_write(ModelAction *curr)
 	//curr_thread->update_local_vec(curr);
 	model_print("Updates local vec in thread %d - ", id_to_int(curr_thread->get_id()));
 	curr_thread->print_local_vec();
-	s
 	w_modification_order(curr);
 	get_thread(curr)->set_return_value(VALUE_NONE);
 }
