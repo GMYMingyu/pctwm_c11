@@ -2070,6 +2070,7 @@ bool ModelExecution::is_enabled(thread_id_t tid) const
  */
 Thread * ModelExecution::action_select_next_thread(const ModelAction *curr, bool change_flag) const
 {	
+	model_print("now the action select next thread. \n");
 	if(curr->in_count() && change_flag){
 	//if(change_flag){
 		model_print("now change point: select the new highest thread.");
@@ -2118,6 +2119,7 @@ Thread * ModelExecution::take_step(ModelAction *curr)
 		model_print("now we reselect the highest prio thread. \n");
 	}
 
+	model_print("call the action select next thread.\n");
 	return action_select_next_thread(curr, change_flag);
 }
 
