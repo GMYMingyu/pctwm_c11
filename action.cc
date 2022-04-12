@@ -43,7 +43,10 @@ ModelAction::ModelAction(action_type_t type, memory_order order, void *loc,
 	type(type),
 	order(order),
 	original_order(order),
-	seq_number(ACTION_INITIAL_CLOCK)
+	seq_number(ACTION_INITIAL_CLOCK),
+	bag_flag(false),
+	read_external_flag(false),
+	bag(new SnapVector<ModelAction *> ())
 {
 	/* References to NULL atomic variables can end up here */
 	ASSERT(loc || type == ATOMIC_FENCE || type == ATOMIC_NOP);
@@ -75,7 +78,10 @@ ModelAction::ModelAction(action_type_t type, memory_order order, uint64_t value,
 	type(type),
 	order(order),
 	original_order(order),
-	seq_number(ACTION_INITIAL_CLOCK)
+	seq_number(ACTION_INITIAL_CLOCK),
+	bag_flag(false),
+	read_external_flag(false),
+	bag(new SnapVector<ModelAction *> ())
 {
 	Thread *t = thread_current();
 	this->tid = t!= NULL ? t->get_id() : -1;
@@ -106,7 +112,10 @@ ModelAction::ModelAction(action_type_t type, memory_order order, void *loc,
 	type(type),
 	order(order),
 	original_order(order),
-	seq_number(ACTION_INITIAL_CLOCK)
+	seq_number(ACTION_INITIAL_CLOCK),
+	bag_flag(false),
+	read_external_flag(false),
+	bag(new SnapVector<ModelAction *> ())
 {
 	/* References to NULL atomic variables can end up here */
 	ASSERT(loc);
@@ -140,7 +149,10 @@ ModelAction::ModelAction(action_type_t type, const char * position, memory_order
 	type(type),
 	order(order),
 	original_order(order),
-	seq_number(ACTION_INITIAL_CLOCK)
+	seq_number(ACTION_INITIAL_CLOCK),
+	bag_flag(false),
+	read_external_flag(false),
+	bag(new SnapVector<ModelAction *> ())
 {
 	/* References to NULL atomic variables can end up here */
 	ASSERT(loc);
@@ -175,7 +187,10 @@ ModelAction::ModelAction(action_type_t type, const char * position, memory_order
 	type(type),
 	order(order),
 	original_order(order),
-	seq_number(ACTION_INITIAL_CLOCK)
+	seq_number(ACTION_INITIAL_CLOCK),
+	bag_flag(false),
+	read_external_flag(false),
+	bag(new SnapVector<ModelAction *> ())
 {
 	/* References to NULL atomic variables can end up here */
 	ASSERT(loc || type == ATOMIC_FENCE);
@@ -200,6 +215,50 @@ ModelAction::~ModelAction()
 		delete cv;
 	if (rf_cv)
 		delete rf_cv;
+}
+
+
+// weak memory related functions
+void ModelAction::init_bagflag(){
+	bag_flag = false;
+	read_external_flag = false;
+}
+
+void ModelAction::set_bag(SnapVector<ModelAction*> *E){
+	bag_flag = true;
+	bag = E;
+}
+
+bool ModelAction::checkbag(){
+	return bag_flag;
+}
+
+void ModelAction::set_external_flag(){
+	read_external_flag = true;
+}
+
+void ModelAction::reset_external_flag(){
+	read_external_flag = false;
+}
+
+bool ModelAction::checkexternal(){
+	return read_external_flag;
+}
+
+void ModelAction::print_bag(){
+	if(bag_flag){
+		model_print("This action has bag: size is %d, ", bag->size());
+		uint baglen = bag->size();
+		for(uint i = 0; i < baglen; i++){
+			ModelAction* curr = (*bag)[i];
+			model_print("action: seqnum: %u, location: %u, value: %u. ", 
+			curr->get_seq_number(), curr->get_location(), curr->get_value());
+		}
+		model_print("\n");
+	}
+	else{
+		model_print("This action has no bag. \n");
+	}
 }
 
 int ModelAction::getSize() const {

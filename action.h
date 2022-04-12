@@ -204,48 +204,13 @@ public:
 
 
 	// weak memory - bag flag
-	void init_bagflag(){
-		bag_flag = false;
-		read_external_flag = false;
-	}
-
-	void set_bag(SnapVector<ModelAction*> *E){
-		bag_flag = true;
-		bag = E;
-
-	}
-
-	bool checkbag(){
-		return bag_flag;
-	}
-
-	void set_external_flag(){
-		read_external_flag = true;
-	}
-
-	void reset_external_flag(){
-		read_external_flag = false;
-	}
-
-	bool checkexternal(){
-		return read_external_flag;
-	}
-
-	void print_bag(){
-		if(bag_flag){
-			model_print("This action has bag: size is %d, ", bag->size());
-			uint baglen = bag->size();
-			for(uint i = 0; i < baglen; i++){
-				ModelAction* curr = (*bag)[i];
-				model_print("action: seqnum: %u, location: %u, value: %u. ", 
-				curr->get_seq_number(), curr->get_location(), curr->get_value());
-			}
-			model_print("\n");
-		}
-		else{
-			model_print("This action has no bag. \n");
-		}
-	}
+	void init_bagflag();
+	void set_bag(SnapVector<ModelAction*> *E);
+	bool checkbag();
+	void set_external_flag();
+	void reset_external_flag();
+	bool checkexternal();
+	void print_bag();
 
 
 	SNAPSHOTALLOC
