@@ -1172,7 +1172,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	if (curr->is_write() && !curr->checkexternal())
 		add_write_to_lists(curr);
 
-	if(!curr->checkexternal){
+	if(!curr->checkexternal()){
 		process_thread_action(curr);
 	}
 
