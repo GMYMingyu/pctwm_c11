@@ -274,8 +274,8 @@ private:
 
 	// weak memory - add bag flag and bag
 	bool bag_flag;
-	SnapVector<ModelAction* > *bag;
 	bool read_external_flag;
+	SnapVector<ModelAction* > *bag;
 };
 
 #endif	/* __ACTION_H__ */
