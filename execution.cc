@@ -1121,35 +1121,63 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 	SnapVector<ModelAction *> * rf_set = NULL;
 	bool canprune = false;
+	
+	// how many read external job on the current thread now
+	uint curr_threadid = id_to_int(curr->get_tid());
+	int read_external_num_on_curr_thread = scheduler->get_external_readnum_thread(curr_threadid);
 
 	// check if read externally now
 	bool read_external_now = false;
+	if(curr->in_count() && newly_explored){
+		//weak memory 
+		// step1: increase the instructions count
+		incInstrnum();
+		model_print("Current read nums: %d. \n", getInstrnum());
+		//step2: check if a prority change point
+		int reach_chg_idx = scheduler->find_chgidx(getInstrnum());
+		if(reach_chg_idx != -1){
+			model_print("reach the %d change point. Change priority of thread %d. \n", reach_chg_idx, scheduler->get_highest_thread());
+			scheduler->print_highvec();
+			scheduler->print_lowvec();
+			scheduler->movethread(reach_chg_idx, scheduler->get_highest_thread()); 
+			scheduler->print_highvec();
+			scheduler->print_lowvec();
+			//step4: meet the change point: move thread and return the second highest thread
+			// model_print("before set_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(),type_str, curr->checkexternal());
+			curr->set_external_flag();  
+		}
+	}
+
+
 	/* Build may_read_from set for newly-created actions */
-	if (curr->is_read() && newly_explored) {
-		rf_set = build_may_read_from(curr);
-		//canprune = process_read(curr, rf_set);
-		canprune = process_read(curr, rf_set,read_external_now);
-		delete rf_set;
-	} else
-		ASSERT(rf_set == NULL);
+	if(!curr->checkexternal()){
+		if (curr->is_read() && newly_explored ) {
+			rf_set = build_may_read_from(curr);
+			//canprune = process_read(curr, rf_set);
+			canprune = process_read(curr, rf_set,read_external_now);
+			delete rf_set;
+		} else
+			ASSERT(rf_set == NULL);
+	}
+	
 
 	/* Add the action to lists if not the second part of a rmw */
-	if (newly_explored) {
+	if (newly_explored && !curr->checkexternal()) {
 #ifdef COLLECT_STAT
 		record_atomic_stats(curr);
 #endif
 		add_action_to_lists(curr, canprune);
 	}
 
-	if (curr->is_write())
+	if (curr->is_write() && !curr->checkexternal())
 		add_write_to_lists(curr);
 
 	process_thread_action(curr);
 
-	if (curr->is_write())
+	if (curr->is_write() && !curr->checkexternal())
 		process_write(curr);
 
-	if (curr->is_fence())
+	if (curr->is_fence() && !curr->checkexternal())
 		process_fence(curr);
 
 	if (curr->is_mutex_op())
