@@ -1197,7 +1197,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		else if(curr->checkexternal() && !continue_flag){
 			model_print("change point. \n");
 			process_thread_action(curr);
-			curr_thrd->set_pending(curr);
+			curr_thread->set_pending(curr);
 		}
 
 	}
