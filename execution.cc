@@ -1136,12 +1136,14 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	SnapVector<ModelAction *> * rf_set = NULL;
 	bool canprune = false;
 	
-	const char *type_str = curr->get_type_str();
-	model_print("current action type is  %-14s. sequence number is : %d \n", type_str, curr->get_seq_number());
-
 	// how many read external job on the current thread now
 	uint curr_threadid = id_to_int(curr->get_tid());
 	Thread* curr_thread = get_thread(curr);
+
+	const char *type_str = curr->get_type_str();
+	model_print("current action type is  %-14s. on thread %d, sequence number is : %d \n", type_str, curr_threadid, curr->get_seq_number());
+
+
 	
 
 	// check if the change point now
