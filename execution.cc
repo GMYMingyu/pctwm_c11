@@ -1288,6 +1288,7 @@ ModelAction * ModelExecution::process_rmw(ModelAction *act) {
 	if (act->is_rmw()) {
 		mo_graph->addRMWEdge(lastread->get_reads_from(), lastread);
 	}
+	model_print("process_rmw: successfully process_rmw \n");
 	return lastread;
 }
 
