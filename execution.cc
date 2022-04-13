@@ -80,7 +80,8 @@ ModelExecution::ModelExecution(ModelChecker *m, Scheduler *scheduler) :
 	fuzzer(new Fuzzer()),
 	isfinished(false),
 	instrnum(0),
-	maxinstr(0)
+	maxinstr(0),
+	history_(0)
 {
 	/* Initialize a model-checker thread, for special ModelActions */
 	model_thread = new Thread(get_next_id());
@@ -1183,7 +1184,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 				int read_external_num_on_curr_thread = scheduler->get_external_readnum_thread(curr_threadid);
 				if(read_external_num_on_curr_thread > 0){ // this thread has read external job
 					model_print(" have read external job. - read external\n");
-					rf_set = build_may_read_from(curr);
+					rf_set = build_may_read_from(curr, history_);
 					//canprune = process_read(curr, rf_set);
 					canprune = process_read(curr, rf_set, true);
 					delete rf_set;
@@ -1191,7 +1192,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 				}
 				else{
 					model_print(" no external read job. - read local \n");
-					rf_set = build_may_read_from(curr);
+					rf_set = build_may_read_from(curr, history_);
 					canprune = process_read(curr, rf_set, false); // read internally
 					delete rf_set;
 				}
@@ -1829,7 +1830,7 @@ bool valequals(uint64_t val1, uint64_t val2, int size) {
  * @param curr is the current ModelAction that we are exploring; it must be a
  * 'read' operation.
  */
-SnapVector<ModelAction *> *  ModelExecution::build_may_read_from(ModelAction *curr)
+SnapVector<ModelAction *> *  ModelExecution::build_may_read_from(ModelAction *curr, int history_)
 {
 	SnapVector<simple_action_list_t> *thrd_lists = obj_wr_thrd_map.get(curr->get_location());
 	unsigned int i;
@@ -1842,12 +1843,14 @@ SnapVector<ModelAction *> *  ModelExecution::build_may_read_from(ModelAction *cu
 
 	SnapVector<ModelAction *> * rf_set = new SnapVector<ModelAction *>();
 
+
 	/* Iterate over all threads */
 	if (thrd_lists != NULL)
 		for (i = 0;i < thrd_lists->size();i++) {
 			/* Iterate over actions in thread, starting from most recent */
 			simple_action_list_t *list = &(*thrd_lists)[i];
 			sllnode<ModelAction *> * rit;
+			int search_history = 0; // the variable to save the current search history on this thread
 			for (rit = list->end();rit != NULL;rit=rit->getPrev()) {
 				ModelAction *act = rit->getVal();
 
@@ -1877,11 +1880,15 @@ SnapVector<ModelAction *> *  ModelExecution::build_may_read_from(ModelAction *cu
 				if (allow_read) {
 					/* Only add feasible reads */
 					rf_set->push_back(act);
+					
 				}
 
 				/* Include at most one act per-thread that "happens before" curr */
 				if (act->happens_before(curr))
 					break;
+
+				search_history++; // count the allow_read write operations
+				if(search_history == history_) break; // stop searching when meet the search boud
 			}
 		}
 

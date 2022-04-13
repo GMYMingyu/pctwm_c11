@@ -47,6 +47,7 @@ public:
 		params = _params;
 		maxinstr = 5 * params->maxinstr; // set the livelock bound for read nums
 		model_print("The limit of read nums is %d. \n", maxinstr);
+		history_ = params->history;
 		}
 
 	Thread * take_step(ModelAction *curr);
@@ -130,7 +131,7 @@ private:
 	ModelAction * get_last_seq_cst_write(ModelAction *curr) const;
 	ModelAction * get_last_seq_cst_fence(thread_id_t tid, const ModelAction *before_fence) const;
 	ModelAction * get_last_unlock(ModelAction *curr) const;
-	SnapVector<ModelAction *> * build_may_read_from(ModelAction *curr);
+	SnapVector<ModelAction *> * build_may_read_from(ModelAction *curr, int history);
 	ModelAction * process_rmw(ModelAction *curr);
 	bool r_modification_order(ModelAction *curr, const ModelAction *rf, SnapVector<ModelAction *> *priorset, bool *canprune);
 	void w_modification_order(ModelAction *curr);
@@ -238,7 +239,7 @@ private:
 
 	bool isfinished;
 
-	int instrnum, maxinstr;
+	int instrnum, maxinstr, history_;
 };
 
 #endif	/* __EXECUTION_H__ */
