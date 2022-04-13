@@ -21,6 +21,7 @@ struct model_params {
 
 	//pctwm params
 	int maxinstr;
+	int history;
 };
 
 void param_defaults(struct model_params *params);
