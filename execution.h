@@ -106,6 +106,24 @@ public:
 #ifdef TLS
 	pthread_key_t getPthreadKey() {return pthreadkey;}
 #endif
+	//pctwm
+	
+	void incInstrnum(){
+		instrnum++;
+	}
+
+	int getInstrnum(){
+		return instrnum;
+	}
+
+	void print_actset(SnapVector<ModelAction *> * act_set);
+
+
+
+	// weak memory function
+	SnapVector<ModelAction *> * computeUpdate(ModelAction *rd, ModelAction * curr);
+	SnapVector<ModelAction*> * updateVec(SnapVector<ModelAction*> *input_vec, ModelAction* curr);
+	SnapVector<ModelAction*> * maxVec(SnapVector<ModelAction*> * Eacc, SnapVector<ModelAction*> *local_vec);
 	SNAPSHOTALLOC
 private:
 	int get_execution_number() const;
@@ -141,24 +159,7 @@ private:
 	void removeAction(ModelAction *act);
 	void fixupLastAct(ModelAction *act);
 
-	//pctwm
-	
-	void incInstrnum(){
-		instrnum++;
-	}
 
-	int getInstrnum(){
-		return instrnum;
-	}
-
-	void print_actset(SnapVector<ModelAction *> * act_set);
-
-
-
-	// weak memory function
-	SnapVector<ModelAction *> * computeUpdate(ModelAction *rd, ModelAction * curr);
-	SnapVector<ModelAction*> * updateVec(SnapVector<ModelAction*> *input_vec, ModelAction* curr);
-	SnapVector<ModelAction*> * maxVec(SnapVector<ModelAction*> * Eacc, SnapVector<ModelAction*> *local_vec);
 
 #ifdef TLS
 	pthread_key_t pthreadkey;
