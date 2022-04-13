@@ -616,6 +616,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 				index = fuzzer->find_idx(rf_set, rf);
 				if(index != -1){ // to make sure this variable locally is readable
 					model_print("Read locally: localvec has such variable \n");
+					rf = (*rf_set)[index];
 					(*rf_set)[index] = rf_set->back();
 					rf_set->pop_back();
 				 	// localvec has the same variable
