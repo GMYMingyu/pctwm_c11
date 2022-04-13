@@ -1154,7 +1154,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	model_print("current action type is  %-14s. on thread %d, sequence number is : %d \n", type_str, curr_threadid, curr->get_seq_number());
 
 
-	
+	bool change_point = false;
 
 	// check if the change point now
 	if(curr->in_count() && newly_explored){
@@ -1175,70 +1175,79 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			// model_print("before set_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(),type_str, curr->checkexternal());
 			model_print("change point - mark this action. \n");
 			curr->set_external_flag();  
+			change_point = true;
 			scheduler->add_external_readnum_thread(curr_threadid);
 		}
 	}
 
 	// though we change the current thread prio and want to switch to another thread, but we may still have one enabled thread
 	int current_highid = scheduler->get_highest_thread();
-	bool continue_flag = false; // only one thread is enabled , we still process this thread
-	if(curr->checkexternal() && current_highid == curr_threadid){
+	bool continue_flag = false; 
+	if(change_point && current_highid == curr_threadid){// only one thread is enabled , we still process this thread
 		continue_flag = true;
 	}
 
 
 	if(curr->in_count()){ // only the related actions
-		if((continue_flag && curr->checkexternal()) || !curr->checkexternal()){ // change the prio but only one thread or not change point
-			if (curr->is_read() && newly_explored ) {
+		if(change_point && (!continue_flag)){
+			model_print("change point. \n");
+			
+			curr_thread->set_pending(curr);
+			process_thread_action(curr);
+		}
+		//((continue_flag && curr->checkexternal()) || curr->checkexternal())
+		else{ // change the prio but only one thread or not change point
+			if (curr->is_read() && newly_explored ) { // process read action
 				int read_external_num_on_curr_thread = scheduler->get_external_readnum_thread(curr_threadid);
 				if(read_external_num_on_curr_thread > 0){ // this thread has read external job
 					model_print(" have read external job. - read external\n");
 					rf_set = build_may_read_from(curr, history_);
 					//canprune = process_read(curr, rf_set);
+					curr->reset_external_flag();
 					canprune = process_read(curr, rf_set, true);
 					delete rf_set;
 					scheduler->deleteone_external_readnum_thread(curr_threadid); // delete one read external job on this thread
 				}
 				else{
+					curr->reset_external_flag();
 					model_print(" no external read job. - read local \n");
 					rf_set = build_may_read_from(curr, history_);
 					canprune = process_read(curr, rf_set, false); // read internally
 					delete rf_set;
 				}
 				
-			} else
+			} else{ // not read action
 				ASSERT(rf_set == NULL);
 
-				/* Add the action to lists if not the second part of a rmw */
-			if (newly_explored) {
-					model_print("not the change point. add action to list.\n");
-			#ifdef COLLECT_STAT
-					record_atomic_stats(curr);
-			#endif
-					add_action_to_lists(curr, canprune);
+					/* Add the action to lists if not the second part of a rmw */
+				if (newly_explored) {
+						model_print("not the change point. add action to list.\n");
+				#ifdef COLLECT_STAT
+						record_atomic_stats(curr);
+				#endif
+						add_action_to_lists(curr, canprune);
+				}
+
+				if (curr->is_write())
+					add_write_to_lists(curr);
+
+				process_thread_action(curr);
+				//model_print("successfully process thread action. \n");
+
+				if (curr->is_write())
+					process_write(curr);
+
+				if (curr->is_fence())
+					process_fence(curr);
+
+				if (curr->is_mutex_op())
+					process_mutex(curr);
 			}
 
-			if (curr->is_write())
-				add_write_to_lists(curr);
-
-			process_thread_action(curr);
-			//model_print("successfully process thread action. \n");
-
-			if (curr->is_write())
-				process_write(curr);
-
-			if (curr->is_fence())
-				process_fence(curr);
-
-			if (curr->is_mutex_op())
-				process_mutex(curr);
-
 		}	
-		else if(curr->checkexternal() && !continue_flag){
-			model_print("change point. \n");
-			process_thread_action(curr);
-			curr_thread->set_pending(curr);
-		}
+		// else if(curr->checkexternal() && !continue_flag){
+
+		// }
 
 	}
 	else{ // not the target type of action - not change this type of action
