@@ -1286,6 +1286,7 @@ ModelAction * ModelExecution::process_rmw(ModelAction *act) {
 	lastread->process_rmw(act);
 	model_print("process_rmw: process last_action \n");
 	if (act->is_rmw()) {
+		model_print("start add edge");
 		mo_graph->addRMWEdge(lastread->get_reads_from(), lastread);
 	}
 	model_print("process_rmw: successfully process_rmw \n");
