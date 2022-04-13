@@ -1140,8 +1140,8 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	model_print("current action type is  %-14s. sequence number is : %d \n", type_str, curr->get_seq_number());
 
 	// how many read external job on the current thread now
-	curr_threadid = id_to_int(curr->get_tid());
-	curr_thread = get_thread(curr);
+	uint curr_threadid = id_to_int(curr->get_tid());
+	Thread* curr_thread = get_thread(curr);
 	
 
 	// check if the change point now
