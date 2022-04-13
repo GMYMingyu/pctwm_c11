@@ -620,6 +620,14 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 					rf_set->pop_back();
 				 	// localvec has the same variable
 				}
+				else{
+					model_print("localvec has no variable. but not in the rf_set \n");
+					model_print("rf_set size is: %u. \n", rf_set->size());
+					index = fuzzer->selectWrite(curr, rf_set);
+					rf = (*rf_set)[index];
+					(*rf_set)[index] = rf_set->back();
+					rf_set->pop_back();
+				}
 			}
 			else{// the local vec has no such variable
 				model_print("localvec has no variable. randomly select from rf_set. \n");
