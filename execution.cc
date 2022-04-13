@@ -1119,6 +1119,10 @@ bool ModelExecution::check_action_enabled(ModelAction *curr) {
  */
 ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 {	
+	
+	model_print("before initialize: check external - %u. \n", curr->checkexternal());
+
+	
 	scheduler->print_current_avail_threads();
 	ASSERT(curr);
 	bool newly_explored = initialize_curr_action(&curr);
@@ -1127,6 +1131,8 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 	wake_up_sleeping_actions();
 
+	model_print("after initialize: check external - %u. \n", curr->checkexternal());
+
 	SnapVector<ModelAction *> * rf_set = NULL;
 	bool canprune = false;
 	
@@ -1134,8 +1140,8 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	model_print("current action type is  %-14s. sequence number is : %d \n", type_str, curr->get_seq_number());
 
 	// how many read external job on the current thread now
-	uint curr_threadid = id_to_int(curr->get_tid());
-	Thread* curr_thread = get_thread(curr);
+	curr_threadid = id_to_int(curr->get_tid());
+	curr_thread = get_thread(curr);
 	
 
 	// check if the change point now
