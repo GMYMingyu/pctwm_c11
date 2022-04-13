@@ -1216,34 +1216,36 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 					canprune = process_read(curr, rf_set, false); // read internally
 					delete rf_set;
 				}
-				
-			} else{ // not read action
-				ASSERT(rf_set == NULL);
-
-					/* Add the action to lists if not the second part of a rmw */
-				if (newly_explored) {
-						model_print("not the change point. add action to list.\n");
-				#ifdef COLLECT_STAT
-						record_atomic_stats(curr);
-				#endif
-						add_action_to_lists(curr, canprune);
-				}
-
-				if (curr->is_write())
-					add_write_to_lists(curr);
-
-				process_thread_action(curr);
-				//model_print("successfully process thread action. \n");
-
-				if (curr->is_write())
-					process_write(curr);
-
-				if (curr->is_fence())
-					process_fence(curr);
-
-				if (curr->is_mutex_op())
-					process_mutex(curr);
 			}
+			else  ASSERT(rf_set == NULL);
+
+			// not read action
+	
+
+				/* Add the action to lists if not the second part of a rmw */
+			if (newly_explored) {
+					model_print("not the change point. add action to list.\n");
+			#ifdef COLLECT_STAT
+					record_atomic_stats(curr);
+			#endif
+					add_action_to_lists(curr, canprune);
+			}
+
+			if (curr->is_write())
+				add_write_to_lists(curr);
+
+			process_thread_action(curr);
+			//model_print("successfully process thread action. \n");
+
+			if (curr->is_write())
+				process_write(curr);
+
+			if (curr->is_fence())
+				process_fence(curr);
+
+			if (curr->is_mutex_op())
+				process_mutex(curr);
+			
 
 		}	
 		// else if(curr->checkexternal() && !continue_flag){
