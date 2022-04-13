@@ -67,8 +67,8 @@ static void print_usage(struct model_params *params)
 		"-r, --removevisible         Free visible writes\n"
 		"-l, --maxscheduler			 Scheduler length prevention\n"
 		"-b, --bugdepth 			 Bugdepth\n"
-		"-v, --version				 0: using original c11tester; 1: using pct\n"
-		"-e, --bound of instrnums	 the bound of instrnums\n"
+		"-p, --version				 0: using original c11tester; 1: using pct\n"
+		"-i, --bound of instrnums	 the bound of instrnums\n"
 		"-y, --search rf_set	 	 the bound of searching in rf_set\n",
 		params->verbose,
 		params->maxexecutions,
