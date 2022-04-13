@@ -1280,8 +1280,11 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 /** Close out a RMWR by converting previous RMWR into a RMW or READ. */
 ModelAction * ModelExecution::process_rmw(ModelAction *act) {
+	
 	ModelAction *lastread = get_last_action(act->get_tid());
+	model_print("process_rmw: get last action \n");
 	lastread->process_rmw(act);
+	model_print("process_rmw: process last_action \n");
 	if (act->is_rmw()) {
 		mo_graph->addRMWEdge(lastread->get_reads_from(), lastread);
 	}
