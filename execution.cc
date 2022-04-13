@@ -1003,6 +1003,7 @@ void ModelExecution::process_thread_action(ModelAction *curr)
 bool ModelExecution::initialize_curr_action(ModelAction **curr)
 {
 	if ((*curr)->is_rmwc() || (*curr)->is_rmw()) {
+		model_print("meet rmwc / rmw ");
 		ModelAction *newcurr = process_rmw(*curr);
 		delete *curr;
 
