@@ -209,6 +209,7 @@ Thread * ModelChecker::get_next_thread()
 	 * Have we completed exploring the preselected path? Then let the
 	 * scheduler decide
 	 */
+	model_print("calling the get_next_thread. \n");
 	return scheduler->select_next_thread();
 }
 
