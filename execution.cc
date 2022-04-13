@@ -605,8 +605,8 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 			rf = (*rf_set)[index]; // a randomly selected write
 			computeUpdate(curr, rf); // it will not change the selection of write - but update local vec
 			//the same as original c11tester: delete this rf_set
-			(*rf_set)[index] = rf_set->back();
-			rf_set->pop_back();
+			// (*rf_set)[index] = rf_set->back();
+			// rf_set->pop_back();
 
 		}
 		else{ // ask to use the local vec variable
@@ -617,8 +617,8 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 				if(index != -1){ // to make sure this variable locally is readable
 					model_print("Read locally: localvec has such variable \n");
 					rf = (*rf_set)[index];
-					(*rf_set)[index] = rf_set->back();
-					rf_set->pop_back();
+					// (*rf_set)[index] = rf_set->back();
+					// rf_set->pop_back();
 				 	// localvec has the same variable
 				}
 				else{
@@ -626,8 +626,8 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 					model_print("rf_set size is: %u. \n", rf_set->size());
 					index = fuzzer->selectWrite(curr, rf_set);
 					rf = (*rf_set)[index];
-					(*rf_set)[index] = rf_set->back();
-					rf_set->pop_back();
+					// (*rf_set)[index] = rf_set->back();
+					// rf_set->pop_back();
 				}
 			}
 			else{// the local vec has no such variable
@@ -635,8 +635,8 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 				model_print("rf_set size is: %u. \n", rf_set->size());
 				index = fuzzer->selectWrite(curr, rf_set);
 				rf = (*rf_set)[index];
-				(*rf_set)[index] = rf_set->back();
-				rf_set->pop_back();
+				// (*rf_set)[index] = rf_set->back();
+				// rf_set->pop_back();
 			}
 			
 			
@@ -660,8 +660,8 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 			return canprune && (curr->get_type() == ATOMIC_READ);
 		}
 		priorset->clear();
-		// (*rf_set)[index] = rf_set->back();
-		// rf_set->pop_back();
+		(*rf_set)[index] = rf_set->back();
+		rf_set->pop_back();
 	}			
 }
 
