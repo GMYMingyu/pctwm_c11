@@ -491,7 +491,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 
 		if(before_flag){// iterate all actions before the current action
 			model_print("(Iteration action seq_num: %u. type: %-14s, location: %14p. threadid: %d", 
-					act->get_seq_number(), act->get_type_str(), act->get_location(), act->get_tid()));
+					act->get_seq_number(), act->get_type_str(), act->get_location(), act->get_tid());
 			model_print("value: %" PRIx64 ")\n", act->get_value());
 			if(act->is_thread_start()){//stop condition 2: reach the start of a thread
 				Eres = Eacc;
