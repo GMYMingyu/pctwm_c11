@@ -1131,7 +1131,7 @@ bool ModelExecution::check_action_enabled(ModelAction *curr) {
 ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 {	
 	
-	model_print("before initialize: check external - %u. \n", curr->checkexternal());
+	//model_print("before initialize: check external - %u. \n", curr->checkexternal());
 
 	
 	//scheduler->print_current_avail_threads();
@@ -1142,7 +1142,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 	wake_up_sleeping_actions();
 
-	model_print("after initialize: check external - %u. \n", curr->checkexternal());
+	//model_print("after initialize: check external - %u. \n", curr->checkexternal());
 
 	SnapVector<ModelAction *> * rf_set = NULL;
 	bool canprune = false;
@@ -1152,7 +1152,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	Thread* curr_thread = get_thread(curr);
 
 	const char *type_str = curr->get_type_str();
-	model_print("current action type is  %-14s. on thread %d, sequence number is : %d \n", type_str, curr_threadid, curr->get_seq_number());
+	model_print("\n current action type is  %-14s. on thread %d, sequence number is : %d \n", type_str, curr_threadid, curr->get_seq_number());
 
 
 	bool change_point = false;
