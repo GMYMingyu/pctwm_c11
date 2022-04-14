@@ -1174,9 +1174,9 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			scheduler->print_lowvec();
 			//step4: meet the change point: move thread and return the second highest thread
 			// model_print("before set_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(),type_str, curr->checkexternal());
-			// model_print("change point. ");
-			// scheduler->print_current_avail_threads();
-			model_print("change point: currently highest prio thread - thread %d. \n", scheduler->get_highest_thread());
+			model_print("change point. ");
+			scheduler->print_current_avail_threads();
+			model_print("currently highest prio thread - thread %d. \n", scheduler->get_highest_thread());
 			curr->set_external_flag();  
 			change_point = true;
 			if(curr->is_read()){ // we change the priority at a read operation
