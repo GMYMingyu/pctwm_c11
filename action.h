@@ -104,7 +104,8 @@ public:
 	action_type get_type() const { return type; }
 
 	const char * get_type_str() const;
-
+	//const char * get_type_str() const;
+	const char * get_mo_str() const;
 
 	void set_type(action_type _type) { type = _type; }
 	void set_free() { type = READY_FREE; }
@@ -215,8 +216,7 @@ public:
 
 	SNAPSHOTALLOC
 private:
-	//const char * get_type_str() const;
-	const char * get_mo_str() const;
+
 
 	/** @brief A pointer to the memory location for this action. */
 	void *location;

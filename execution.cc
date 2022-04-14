@@ -1154,7 +1154,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 	const char *type_str = curr->get_type_str();
 	const char *mo_str = curr->get_mo_str();
-	model_print("\n current action type is  %-14s. on thread %d, sequence number is : %d , mo_type is : %7s. \n", type_str, curr_threadid, curr->get_seq_number(),mo_str);
+	model_print("\n current action type is  %-14s. on thread %d, sequence number is : %d , mo_type is : %7s. \n", type_str, curr_threadid, curr->get_seq_number(), mo_str);
 
 
 	bool change_point = false;
