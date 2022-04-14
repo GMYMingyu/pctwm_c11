@@ -390,7 +390,7 @@ void ModelExecution::print_actset(SnapVector<ModelAction *> * act_set){
 	model_print("print act_set : current action set size: %d. - ", len);
 	for(int i = 0; i < len; i++){
 		ModelAction * act = (*act_set)[i];
-		model_print("[action on thread %d, location: %d, seq_nums: %u ]", 
+		model_print("[action on thread %d, location: %14p, seq_nums: %u ]", 
 		id_to_int(act->get_tid()), act->get_location(), act->get_seq_number());
 	}
 	model_print("\n");
