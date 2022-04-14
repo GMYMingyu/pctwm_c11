@@ -1228,7 +1228,6 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 				/* Add the action to lists if not the second part of a rmw */
 			if (newly_explored) {
-					model_print("add action to list.\n");
 			#ifdef COLLECT_STAT
 					record_atomic_stats(curr);
 			#endif
