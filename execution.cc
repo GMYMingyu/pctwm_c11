@@ -1134,7 +1134,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	model_print("before initialize: check external - %u. \n", curr->checkexternal());
 
 	
-	scheduler->print_current_avail_threads();
+	//scheduler->print_current_avail_threads();
 	ASSERT(curr);
 	bool newly_explored = initialize_curr_action(&curr);
 
@@ -1186,7 +1186,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	}
 
 	// though we change the current thread prio and want to switch to another thread, but we may still have one enabled thread
-	int current_highid = scheduler->get_highest_thread();
+	uint current_highid = scheduler->get_highest_thread();
 	bool continue_flag = false; 
 	if(change_point && current_highid == curr_threadid){// only one thread is enabled , we still process this thread
 		continue_flag = true;
