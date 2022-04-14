@@ -1174,10 +1174,12 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			scheduler->print_lowvec();
 			//step4: meet the change point: move thread and return the second highest thread
 			// model_print("before set_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(),type_str, curr->checkexternal());
-			model_print("change point - mark this action. \n");
+			model_print("change point - currently highest prio thread - thread %d. \n", scheduler->get_highest_thread());
 			curr->set_external_flag();  
 			change_point = true;
-			scheduler->add_external_readnum_thread(curr_threadid);
+			if(curr->is_read()){ // we change the priority at a read operation
+				scheduler->add_external_readnum_thread(curr_threadid);
+			}
 		}
 	}
 
@@ -1219,7 +1221,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			}
 			else  ASSERT(rf_set == NULL);
 
-			// not read action
+			// after processing read action
 	
 
 				/* Add the action to lists if not the second part of a rmw */
@@ -1248,9 +1250,6 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			
 
 		}	
-		// else if(curr->checkexternal() && !continue_flag){
-
-		// }
 
 	}
 	else{ // not the target type of action - not change this type of action
