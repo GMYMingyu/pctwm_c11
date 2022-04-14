@@ -821,7 +821,7 @@ void ModelAction::print_bag(){
 		uint baglen = bag->size();
 		for(uint i = 0; i < baglen; i++){
 			ModelAction* curr = (*bag)[i];
-			model_print("action: seqnum: %u, location: %u, value: %u. ", 
+			model_print("action: seqnum: %u, location: %14p, value: %u. ", 
 			curr->get_seq_number(), curr->get_location(), curr->get_value());
 		}
 		model_print("\n");
