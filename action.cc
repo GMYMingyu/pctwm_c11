@@ -832,12 +832,8 @@ void ModelAction::print_bag(){
 }
 
 bool ModelAction::in_count() const{
-	if((type == ATOMIC_WRITE || type == ATOMIC_RMW || type == ATOMIC_INIT || type == NONATOMIC_WRITE) 
-	&& ( order == std::memory_order_relaxed  || order == std::memory_order_release || order == std::memory_order_acq_rel || order == std::memory_order_seq_cst)) return false; // write_rel/relax
-	else if(type == ATOMIC_FENCE && (order == std::memory_order_release )) return false; // fence_rel
-	// the following three types are in count
-	else if(type == ATOMIC_READ || type == ATOMIC_RMWR || type == ATOMIC_RMWRCAS || type == ATOMIC_RMW) return true; // read
-	else if(order == std::memory_order_seq_cst) return true; // sc
-	else if(type == ATOMIC_FENCE && (order == std::memory_order_acq_rel || order == std::memory_order_seq_cst)) return true; // fence_acq
-	return false;
+	if(is_write() && is_seqcst()) return true; // write_seqcst 
+	else if(is_read() && is_acquire()) return true; // read_acq read_acq_rel read_seqcst
+	else if(is_fence() && is_acquire()) return true; //fence_acq fence_acq_rel fence_seqcst
+	else return false;
 }
