@@ -1204,7 +1204,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			model_print("change point. \n");
 			
 			curr_thread->set_pending(curr);
-			process_thread_action(curr);
+			//process_thread_action(curr);
 		}
 		//((continue_flag && curr->checkexternal()) || curr->checkexternal())
 		else{ // change the prio but only one thread or not change point
