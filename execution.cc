@@ -1150,6 +1150,9 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	bool canprune = false;
 	
 	// how many read external job on the current thread now
+	if(curr->checkexternal()){
+		model_print("we meet the read action - external again. \n");
+	}
 	uint curr_threadid = id_to_int(curr->get_tid());
 	Thread* curr_thread = get_thread(curr);
 
