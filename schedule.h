@@ -90,7 +90,8 @@ public:
 	void set_chg_pts_byread(int bugdepth, int maxinstr){
 		if(bugdepth <= 1){
 			uint64_t seed = 33;
-			chg_pts.resize(1, srand(seed) % maxinstr);
+			srand(seed);
+			chg_pts.resize(1,  rand() % maxinstr);
 		}
 		else{
 			chg_pts.resize(bugdepth - 1);
@@ -118,7 +119,8 @@ public:
 
 	int getRandom(int range){
 		uint64_t seed = 33;
-		int res = srand(seed) % range;
+		srand(seed);
+		int res =  rand() % range;
 		res = res < 1 ? 1 : res;
 		return res;
 	}
