@@ -89,7 +89,7 @@ public:
 	//pctwm
 	void set_chg_pts_byread(int bugdepth, int maxinstr){
 		uint64_t seed = 33;
-		srand(seed);
+		srandom(seed);
 		if(bugdepth <= 1){
 			chg_pts.resize(1,  rand() % maxinstr);
 		}
@@ -119,7 +119,7 @@ public:
 
 	int getRandom(int range){
 		uint64_t seed = 33;
-		srand(seed);
+		srandom(seed);
 		int res =  rand() % range;
 		res = res < 1 ? 1 : res;
 		return res;
