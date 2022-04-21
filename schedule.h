@@ -291,7 +291,7 @@ public:
 	void add_external_readnum_thread(uint threadid){
 		
 		if (threadid >= external_readnum_thread.size()){
-			int diff = threadid  - external_readnum_thread.size();
+			int diff = threadid  - external_readnum_thread.size() + 1;
 			for(int i = 0; i < diff; i++){
 				external_readnum_thread.push_back(0);
 			}
