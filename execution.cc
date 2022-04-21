@@ -1225,6 +1225,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 					canprune = process_read(curr, rf_set, true);
 					delete rf_set;
 					scheduler->deleteone_external_readnum_thread(curr_threadid); // delete one read external job on this thread
+					scheduler->print_external_readnum_thread();
 				}
 				else{
 					curr->reset_external_flag();
