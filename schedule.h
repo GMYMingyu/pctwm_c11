@@ -88,9 +88,9 @@ public:
 
 	//pctwm
 	void set_chg_pts_byread(int bugdepth, int maxinstr){
+		uint64_t seed = 33;
+		srand(seed);
 		if(bugdepth <= 1){
-			uint64_t seed = 33;
-			srand(seed);
 			chg_pts.resize(1,  rand() % maxinstr);
 		}
 		else{
