@@ -291,12 +291,12 @@ public:
 	void add_external_readnum_thread(uint threadid){
 		
 		if (threadid >= external_readnum_thread.size()){
-			external_readnum_thread.push_back(1);
-		}
-		else{
-			
-			external_readnum_thread[threadid]++;
-		}
+			int diff = threadid  - external_readnum_thread.size();
+			for(int i = 0; i < diff; i++){
+				external_readnum_thread.push_back(0);
+			}
+		external_readnum_thread[threadid]++;
+		
 
 	}
 
