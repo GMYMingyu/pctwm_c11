@@ -70,7 +70,7 @@ public:
 
 	void set_chg_pts(int bugdepth, int maxscheduler){
 		if(bugdepth <= 1){
-			chg_pts.resize(1, rand() % maxscheduler);
+			chg_pts.resize(1, srand() % maxscheduler);
 		}
 		else{
 			chg_pts.resize(bugdepth - 1);
@@ -89,7 +89,7 @@ public:
 	//pctwm
 	void set_chg_pts_byread(int bugdepth, int maxinstr){
 		if(bugdepth <= 1){
-			chg_pts.resize(1, rand() % maxinstr);
+			chg_pts.resize(1, srand() % maxinstr);
 		}
 		else{
 			chg_pts.resize(bugdepth - 1);
@@ -116,7 +116,7 @@ public:
 
 
 	int getRandom(int range){
-		int res = rand() % range;
+		int res = srand() % range;
 		res = res < 1 ? 1 : res;
 		return res;
 	}
