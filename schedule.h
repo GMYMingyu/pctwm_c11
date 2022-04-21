@@ -68,28 +68,28 @@ public:
 		
 	}
 
-	void set_chg_pts(int bugdepth, int maxscheduler){
-		if(bugdepth <= 1){
-			chg_pts.resize(1, srand() % maxscheduler);
-		}
-		else{
-			chg_pts.resize(bugdepth - 1);
-			for(int i = 0; i < bugdepth - 1; i++){
-				int tmp = getRandom(maxscheduler); // [1, MAXSCHEDULER]
-				while(chg_pts.find(tmp)){
-					tmp = getRandom(maxscheduler);
-				}
-				chg_pts[i] = tmp;
+	// void set_chg_pts(int bugdepth, int maxscheduler){
+	// 	if(bugdepth <= 1){
+	// 		chg_pts.resize(1, srand() % maxscheduler);
+	// 	}
+	// 	else{
+	// 		chg_pts.resize(bugdepth - 1);
+	// 		for(int i = 0; i < bugdepth - 1; i++){
+	// 			int tmp = getRandom(maxscheduler); // [1, MAXSCHEDULER]
+	// 			while(chg_pts.find(tmp)){
+	// 				tmp = getRandom(maxscheduler);
+	// 			}
+	// 			chg_pts[i] = tmp;
 
-			}
-		}
+	// 		}
+	// 	}
 		
-	}
+	// }
 
 	//pctwm
 	void set_chg_pts_byread(int bugdepth, int maxinstr){
 		if(bugdepth <= 1){
-			chg_pts.resize(1, srand() % maxinstr);
+			chg_pts.resize(1, srand(10) % maxinstr);
 		}
 		else{
 			chg_pts.resize(bugdepth - 1);
@@ -116,7 +116,7 @@ public:
 
 
 	int getRandom(int range){
-		int res = srand() % range;
+		int res = srand(10) % range;
 		res = res < 1 ? 1 : res;
 		return res;
 	}
