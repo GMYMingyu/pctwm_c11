@@ -494,6 +494,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 					act->get_seq_number(), act->get_type_str(), act->get_location(), act->get_tid());
 			model_print("value: %" PRIx64 ")\n", act->get_value());
 			if(act->is_thread_start()){//stop condition 2: reach the start of a thread
+				model_print("meet the thread start. \n");
 				Eres = Eacc;
 				break;
 			}
@@ -502,6 +503,8 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 			}
 			else if(act->is_read() && act->checkbag()){// stop condtion1: reach an action with bag
 				Eres = maxVec(Eacc, rd_localvec); // merge the accumulate vector with local vector
+				model_print("meet one read with bag. break. \n");
+				break;
 			}
 			else if(act->is_write()){
 				if((act->is_release() || act->is_seqcst()) && (rd->is_acquire() || rd->is_seqcst())){
