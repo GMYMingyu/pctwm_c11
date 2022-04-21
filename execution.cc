@@ -1194,6 +1194,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			if(curr->is_read()){ // we change the priority at a read operation
 				scheduler->add_external_readnum_thread(curr_threadid);
 			}
+			scheduler->print_external_readnum_thread();
 		}
 	}
 
