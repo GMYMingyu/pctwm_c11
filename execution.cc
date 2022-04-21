@@ -484,6 +484,9 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	for (rit = wr_list->end();rit != NULL;rit=rit->getPrev()) { // get all actions before current action
 		ModelAction *act = rit->getVal();
 		
+		const char *type_str = act->get_type_str();
+		const char *mo_str = act->get_mo_str();
+		model_print("\n current action type is  %-14s. on thread %d, sequence number is : %d , mo_type is : %7s. \n", type_str, id_to_int(act->get_tid()), act->get_seq_number(), mo_str);
 		if(act == curr){
 			before_flag = true;
 			model_print("action before the write:");
