@@ -295,6 +295,7 @@ public:
 			for(int i = 0; i < diff; i++){
 				external_readnum_thread.push_back(0);
 			}
+		}
 		external_readnum_thread[threadid]++;
 		
 
