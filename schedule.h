@@ -88,39 +88,36 @@ public:
 
 	//pctwm
 	void set_chg_pts_byread(int bugdepth, int maxinstr){
-		SnapVector<int> tmp_pts;
+		
 		if(bugdepth <= 1){
-			tmp_pts.resize(1,  rand() % maxinstr);
+			chg_pts.resize(1,  rand() % maxinstr);
 		}
 		else{
-			tmp_pts.resize(bugdepth - 1);
+			chg_pts.resize(bugdepth - 1);
 			for(int i = 0; i < bugdepth - 1; i++){
 				int tmp = getRandom(maxinstr); // [1, MAXSCHEDULER]
-				while(tmp_pts.find(tmp)){
+				while(chg_pts.find(tmp)){
 					tmp = getRandom(maxinstr);
 				}
-				tmp_pts[i] = tmp;
+				chg_pts[i] = tmp;
 
+			}
+			for(int i = 0; i < bugdepth - 1; i++){
+				for(int j = 1; j < bugdepth - 2; j++){
+					if(chg_pts[j - 1] > chg_pts[j]){
+						int tmp = chg_pts[j - 1];
+						chg_pts[j - 1] = chg_pts[j];
+						chg_pts[j] = tmp;
+					}
+				}
 			}
 		}
 		
 		// resort 
 		
-		for(int i = 0; i < bugdepth - 1; i++){
-			for(int j = 1; j < bugdepth - 2; j++){
-				if(tmp_pts[j - 1] > tmp_pts[j]){
-					int tmp = tmp_pts[j - 1];
-					tmp_pts[j - 1] = tmp_pts[j];
-					tmp_pts[j] = tmp;
-				}
-			}
 
-		}
-		chg_pts.resize(bugdepth - 1);
 		
-		for(int i = 0; i < bugdepth - 1; i++){
-			chg_pts[i] = tmp_pts[i];
-		}
+		
 		
 	}
 
