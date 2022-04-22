@@ -103,7 +103,7 @@ public:
 
 			}
 			for(int i = 0; i < bugdepth - 1; i++){
-				for(int j = 1; j < bugdepth - 2; j++){
+				for(int j = 1; j < bugdepth - 1; j++){
 					if(chg_pts[j - 1] > chg_pts[j]){
 						int tmp = chg_pts[j - 1];
 						chg_pts[j - 1] = chg_pts[j];
