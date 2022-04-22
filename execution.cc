@@ -486,15 +486,17 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 		
 		const char *type_str = act->get_type_str();
 		const char *mo_str = act->get_mo_str();
-		model_print("\n current action type is  %-14s. on thread %d, sequence number is : %d , mo_type is : %7s. \n", type_str, id_to_int(act->get_tid()), act->get_seq_number(), mo_str);
+		
 		if(act == curr){
 			before_flag = true;
 			model_print("action before the write:");
 		}
 
+		model_print("\n computeUpdate: iteration action type is  %-14s. on thread %d, sequence number is : %d , mo_type is : %7s. \n", type_str, id_to_int(act->get_tid()), act->get_seq_number(), mo_str);
+
 		if(before_flag){// iterate all actions before the current action
-			model_print("(Iteration action seq_num: %u. type: %-14s, location: %14p. threadid: %d", 
-					act->get_seq_number(), act->get_type_str(), act->get_location(), act->get_tid());
+			// model_print("(Iteration action seq_num: %u. type: %-14s, location: %14p. threadid: %d", 
+			// 		act->get_seq_number(), act->get_type_str(), act->get_location(), act->get_tid());
 			model_print("value: %" PRIx64 ")\n", act->get_value());
 			if(act->is_thread_start()){//stop condition 2: reach the start of a thread
 				model_print("meet the thread start. \n");
@@ -522,12 +524,12 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 		}
 	}
 	model_print("\n");
-	model_print("computeUpdate: iteration bag result: Eres size is %d", Eres->size());
+	model_print("End computeUpdate: iteration bag result: Eres size is %d", Eres->size());
 	print_actset(Eres);
 
 	rd_localvec = maxVec(Eres, rd_localvec);
 	rd_thr->set_local_vec(rd_localvec);
-	model_print("Process read computeUpdate updates localvec in thread %d", rd_tid);
+	model_print("Process read - computeUpdate - also updates localvec in thread %d", rd_tid);
 	rd_thr->print_local_vec();
 	
 	rd->set_bag(Eres);
