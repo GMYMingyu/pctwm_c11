@@ -117,7 +117,10 @@ public:
 
 		}
 		chg_pts.resize(bugdepth - 1);
-		chg_pts = tmp_pts;
+		
+		for(int i = 0; i < bugdepth - 1; i++){
+			chg_pts[i] = tmp_pts[i];
+		}
 		
 	}
 
