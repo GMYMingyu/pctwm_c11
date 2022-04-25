@@ -831,6 +831,10 @@ void ModelAction::print_bag(){
 	}
 }
 
+SnapVector<ModelAction*> *get_bag(){
+	return bag;
+}
+
 bool ModelAction::in_count() const{
 	if(is_write() && is_seqcst()) return true; // write_seqcst 
 	else if(is_read()) return true; // all read

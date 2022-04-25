@@ -494,7 +494,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 
 		model_print("\n computeUpdate: iteration action type is  %-14s. on thread %d, sequence number is : %d , mo_type is : %7s. \n", type_str, id_to_int(act->get_tid()), act->get_seq_number(), mo_str);
 
-		if(before_flag){// iterate all actions before the current action
+		if(before_flag && act != curr){// iterate all actions before the current action
 			// model_print("(Iteration action seq_num: %u. type: %-14s, location: %14p. threadid: %d", 
 			// 		act->get_seq_number(), act->get_type_str(), act->get_location(), act->get_tid());
 			model_print("value: %" PRIx64 ")\n", act->get_value());
@@ -503,21 +503,19 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 				Eres = Eacc;
 				break;
 			}
-			else if(!act->is_write() && (act->is_read() && !act->checkbag())){
-				continue;
-			}
+			// else if(!act->is_write() && (act->is_read() && !act->checkbag())){
+			// 	continue;
+			// }
 			else if(act->is_read() && act->checkbag()){// stop condtion1: reach an action with bag
+				Eacc = maxVec(Eacc, act->get_bag());
 				Eres = maxVec(Eacc, rd_localvec); // merge the accumulate vector with local vector
 				model_print("meet one read with bag. break. \n");
 				break;
 			}
-			else if(act->is_write()){
-				if((act->is_release() || act->is_seqcst()) && (rd->is_acquire() || rd->is_seqcst())){
-					continue;
-				}
-				else{
+			else if(act->is_write() && (act->is_release() || act->is_seqcst())){
+				
 					Eacc = updateVec(Eacc, act);
-				}
+
 			}
 
 
