@@ -832,7 +832,7 @@ void ModelAction::print_bag(){
 }
 
 SnapVector<ModelAction*> *get_bag(){
-	return bag;
+	return *bag;
 }
 
 bool ModelAction::in_count() const{
