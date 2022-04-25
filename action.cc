@@ -831,7 +831,7 @@ void ModelAction::print_bag(){
 	}
 }
 
-SnapVector<ModelAction*> * get_bag(){
+SnapVector<ModelAction*> * ModelAction::get_bag(){
 	return bag;
 }
 
