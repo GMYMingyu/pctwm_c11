@@ -613,6 +613,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 			rf = (*rf_set)[index]; // a randomly selected write
 			rd_thr->update_local_vec(rf);
 			if(curr->could_synchronize_with(rf)){
+				model_print("could synchronize with the write. start looping. \n");
 				computeUpdate(curr, rf); // it will not change the selection of write - but update local vec
 			}
 			
