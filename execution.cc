@@ -613,7 +613,12 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 			model_print("Read externally. \n");
 			index = fuzzer->selectWrite(curr, rf_set);
 			rf = (*rf_set)[index]; // a randomly selected write
-			computeUpdate(curr, rf); // it will not change the selection of write - but update local vec
+			rd_thr->update_local_vec(rf);
+			if(curr->could_synchronize_with(rf)){
+				computeUpdate(curr, rf); // it will not change the selection of write - but update local vec
+			}
+			
+			
 			//the same as original c11tester: delete this rf_set
 			// (*rf_set)[index] = rf_set->back();
 			// rf_set->pop_back();
