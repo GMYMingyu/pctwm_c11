@@ -311,10 +311,10 @@ public:
 		if (threadid >= external_readnum_thread.size()){
 			int diff = threadid  - external_readnum_thread.size() + 1;
 			for(int i = 0; i < diff; i++){
-				external_readnum_thread.push_back(0);
+				external_readnum_thread.push_back(false);
 			}
 		}
-		external_readnum_thread[threadid]++;
+		external_readnum_thread[threadid] = true;
 		
 
 	}
@@ -326,7 +326,7 @@ public:
 			}
 		else{
 			if(external_readnum_thread[threadid] > 0){
-				external_readnum_thread[threadid]--;
+				external_readnum_thread[threadid] = false;
 				return true;
 			}
 			else return false;
@@ -337,22 +337,27 @@ public:
 
 	}
 
-	int get_external_readnum_thread(uint threadid){
+	bool get_external_readnum_thread(uint threadid){
 		
 		if (threadid >= external_readnum_thread.size()){
-			external_readnum_thread.push_back(0);
-			return 0;
+			external_readnum_thread.push_back(false);
+			return false;
 		}
 		else{
-			int res = external_readnum_thread[threadid];
-			return res;
+			return external_readnum_thread[threadid];
 		}
 	}
 
 	void print_external_readnum_thread(){
-		model_print("external_readnum on each thread: ");
+		model_print("external_readnum job each thread: ");
 		for(uint i = 0; i < external_readnum_thread.size(); i++){
-			model_print("thread : %d has %d external-read. ", i, external_readnum_thread[i]);
+			if(external_readnum_thread[i]){
+				model_print("thread : %d need read externally. ", i);
+			}
+			else{
+				model_print("thread : %d does not need read externally. ", i);
+			}
+			
 		}
 		model_print("\n");
 	}
@@ -388,7 +393,7 @@ private:
 	// weak memory - save the highest thread - for execution.cc to move
 	int highest_id;
 
-	SnapVector<int> external_readnum_thread;
+	SnapVector<bool> external_readnum_thread;
 
 };
 

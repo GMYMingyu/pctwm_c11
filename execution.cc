@@ -1219,7 +1219,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		else{ // change the prio but only one thread or not change point
 			if (curr->is_read() && newly_explored ) { // process read action
 				int read_external_num_on_curr_thread = scheduler->get_external_readnum_thread(curr_threadid);
-				if(read_external_num_on_curr_thread > 0){ // this thread has read external job
+				if(read_external_num_on_curr_thread){ // this thread has read external job
 					model_print("we meet a pending read again have read external job. - read external\n");
 					rf_set = build_may_read_from(curr, history_);
 					//canprune = process_read(curr, rf_set);
