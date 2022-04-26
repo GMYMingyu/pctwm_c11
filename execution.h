@@ -122,7 +122,7 @@ public:
 
 	// weak memory function
 	SnapVector<ModelAction *> * computeUpdate(ModelAction *rd, ModelAction * curr);
-	napVector<ModelAction *> * computeUpdate_fence(ModelAction *fence_acq, ModelAction * fence_rel);
+	SnapVector<ModelAction *> * computeUpdate_fence(ModelAction *fence_acq, ModelAction * fence_rel);
 	SnapVector<ModelAction*> * updateVec(SnapVector<ModelAction*> *input_vec, ModelAction* curr);
 	SnapVector<ModelAction*> * maxVec(SnapVector<ModelAction*> * Eacc, SnapVector<ModelAction*> *local_vec);
 	SNAPSHOTALLOC
