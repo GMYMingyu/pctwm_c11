@@ -556,7 +556,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 
 	rd_localvec = maxVec(Eres, rd_localvec);
 	rd_thr->set_local_vec(rd_localvec);
-	model_print("After process read, the thread local vec becomes \t",);
+	model_print("After process read, the thread local vec becomes \t");
 	rd_thr->print_local_vec();
 	
 	rd->set_bag(Eres);
