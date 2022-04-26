@@ -481,6 +481,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	action_list_t *wr_list = &(*thrd_lists)[wr_tid]; // get the thread of write action
 	sllnode<ModelAction *> * rit;
 	bool before_flag = false;
+	updateVec(Eres, curr);
 	for (rit = wr_list->end();rit != NULL;rit=rit->getPrev()) { // get all actions before current action
 		ModelAction *act = rit->getVal();
 		
@@ -612,6 +613,11 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 			index = fuzzer->selectWrite(curr, rf_set);
 			rf = (*rf_set)[index]; // a randomly selected write
 			rd_thr->update_local_vec(rf);
+
+			SnapVector<ModelAction *> * tmp_bag = new SnapVector<ModelAction *> ();
+			updateVec(tmp_bag, rf);
+			curr->set_bag(tmp_bag); // set the bag of this read with bag
+			rd_thr->update_local_vec(rf);// update the localvec on this thread based on the write
 			if(curr->could_synchronize_with(rf)){
 				model_print("could synchronize with the write. start looping. \n");
 				computeUpdate(curr, rf); // it will not change the selection of write - but update local vec
