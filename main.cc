@@ -26,10 +26,10 @@ void param_defaults(struct model_params *params)
 	params->removevisible = false;
 	params->nofork = false;
 	params->maxscheduler = 30;
-	params->bugdepth = 4;
+	params->bugdepth = 5;
 	params->version = 1;
-	params->maxinstr = 20;
-	params->history = 20;
+	params->maxinstr = 15;
+	params->history = 10;
 }
 
 static void print_usage(struct model_params *params)
