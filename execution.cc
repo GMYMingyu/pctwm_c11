@@ -521,6 +521,9 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 
 
 		}
+		if(rit->getPrev() == NULL){
+			model_print("meet the end.\n");
+		}
 	}
 	model_print("\n");
 	model_print("End computeUpdate: iteration bag result: Eres size is %d", Eres->size());
