@@ -128,6 +128,16 @@ static simple_action_list_t * get_safe_ptr_action(HashTable<const void *, simple
 	return tmp;
 }
 
+// static simple_action_list_t * get_safe_ptr_action_thread(HashTable<const void *, simple_action_list_t *, uintptr_t, 2> * hash, void * ptr)
+// {
+// 	simple_action_list_t *tmp = hash->get(ptr);
+// 	if (tmp == NULL) {
+// 		tmp = new simple_action_list_t();
+// 		hash->put(ptr, tmp);
+// 	}
+// 	return tmp;
+// }
+
 static SnapVector<simple_action_list_t> * get_safe_ptr_vect_action(HashTable<const void *, SnapVector<simple_action_list_t> *, uintptr_t, 2> * hash, void * ptr)
 {
 	SnapVector<simple_action_list_t> *tmp = hash->get(ptr);
@@ -452,6 +462,15 @@ SnapVector<ModelAction*> * ModelExecution::maxVec(SnapVector<ModelAction*> * Eac
 	return local_vec;
 }
 
+
+// for (it = action_trace.end();it != NULL;it = it->getPrev()) {
+// 		if (counter > length)
+// 			break;
+
+// 		ModelAction * act = it->getVal();
+// 		list.push_front(act);
+// 		counter++;
+// 	}
 // // weak memory implementation test - func3
 // /**
 //  * Iterate all actions on the current thread to build the bag for this action
@@ -478,12 +497,13 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 
 	// the thread of write action - iteration
 	int wr_tid = curr->get_tid(); // get the current thread id
-	action_list_t *wr_list = &(*thrd_lists)[wr_tid]; // get the thread of write action
-	sllnode<ModelAction *> * rit;
+	// action_list_t *wr_list = &(*thrd_lists)[wr_tid]; // get the thread of write action
+	// sllnode<ModelAction *> * rit;
 	bool before_flag = false;
 	updateVec(Eres, curr);
-	for (rit = wr_list->end();rit != NULL;rit=rit->getPrev()) { // get all actions before current action
-		ModelAction *act = rit->getVal();
+	sllnode<ModelAction*> *it;
+	for (it = action_trace.end();it != NULL;it = it->getPrev()) { // get all actions before current action
+		ModelAction *act = it->getVal();
 		
 		const char *type_str = act->get_type_str();
 		const char *mo_str = act->get_mo_str();
@@ -495,7 +515,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 
 		model_print("\n computeUpdate: iteration action type is  %-14s. on thread %d, sequence number is : %d , location: %14p, mo_type is : %7s. \n", type_str, id_to_int(act->get_tid()), act->get_seq_number(),act->get_location(),  mo_str);
 
-		if(before_flag && act != curr){// iterate all actions before the current action
+		if(before_flag && act != curr && act->get_tid() == curr->get_tid()){// iterate all actions before the current action
 			// model_print("(Iteration action seq_num: %u. type: %-14s, location: %14p. threadid: %d", 
 			// 		act->get_seq_number(), act->get_type_str(), act->get_location(), act->get_tid());
 			model_print("value: %" PRIx64 ")\n", act->get_value());
