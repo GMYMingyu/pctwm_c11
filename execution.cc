@@ -493,7 +493,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 			model_print("action before the write:");
 		}
 
-		model_print("\n computeUpdate: iteration action type is  %-14s. on thread %d, sequence number is : %d , mo_type is : %7s. \n", type_str, id_to_int(act->get_tid()), act->get_seq_number(), mo_str);
+		model_print("\n computeUpdate: iteration action type is  %-14s. on thread %d, sequence number is : %d , location: %14p, mo_type is : %7s. \n", type_str, id_to_int(act->get_tid()), act->get_seq_number(),act->get_location(),  mo_str);
 
 		if(before_flag && act != curr){// iterate all actions before the current action
 			// model_print("(Iteration action seq_num: %u. type: %-14s, location: %14p. threadid: %d", 
