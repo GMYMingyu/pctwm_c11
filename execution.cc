@@ -1059,7 +1059,7 @@ void ModelExecution::process_fence(ModelAction *curr)
 				const char *relmo_str = curr_rel->get_mo_str();
 
 				model_print("The fence_acq type is: %7s, the fence_rel type is %7s. ",acqmo_str, relmo_str);
-				if(curr->could_synchronize_with(curr_rel)){
+				if(curr->is_acquire() && curr_rel->is_release()){
 					SnapVector<ModelAction* > * tmp_bag = computeUpdate_fence(curr, curr_rel);
 					fence_bag = maxVec(tmp_bag, fence_bag);
 
