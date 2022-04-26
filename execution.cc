@@ -514,8 +514,8 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 				break;
 			}
 			else if(act->is_write() && (act->is_release() || act->is_seqcst())){
-				
-					Eacc = updateVec(Eacc, act);
+				Eacc = updateVec(Eacc, act);
+				Eres = Eacc;
 
 			}
 
