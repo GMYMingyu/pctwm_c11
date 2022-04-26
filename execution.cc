@@ -442,24 +442,32 @@ SnapVector<ModelAction*> * ModelExecution::updateVec(SnapVector<ModelAction*> *i
 //  */
 SnapVector<ModelAction*> * ModelExecution::maxVec(SnapVector<ModelAction*> * Eacc, SnapVector<ModelAction*> *local_vec){
 	uint Eacc_len = Eacc->size();
+	uint local_vec_len = local_vec->size();
+	SnapVector<ModelAction* > * res = new SnapVector<ModelAction *> ();
 	
 	for(uint i = 0; i < Eacc_len; i++){
 		ModelAction* act1 = (*Eacc)[i]; // the variable in accumulate vector
-		uint localvec_idx = local_vec->get_index(act1);
-		static const uint NoVariable = -1;
-		if(localvec_idx != NoVariable){// have this variable
-			ModelAction* act2 = (*local_vec)[localvec_idx]; // the same variable
-			if(act1->get_seq_number() > act2->get_seq_number()){
-				(*local_vec)[localvec_idx] = act1;
-			}
-		}
-		else{
-			local_vec->push_back(act1);
-		}
+		res = updateVec(res, act1);
+		// uint localvec_idx = local_vec->get_index(act1);
+		// static const uint NoVariable = -1;
+		// if(localvec_idx != NoVariable){// have this variable
+		// 	ModelAction* act2 = (*local_vec)[localvec_idx]; // the same variable
+		// 	if(act1->get_seq_number() > act2->get_seq_number()){
+		// 		(*local_vec)[localvec_idx] = act1;
+		// 	}
+		// }
+		// else{
+		// 	local_vec->push_back(act1);
+		// }
 		
 	}
 
-	return local_vec;
+	for(uint i = 0; i < local_vec_len; i++){
+		ModelAction* act2 = (*local_vec)[i];
+		res = updateVec(res, act2);
+	}
+
+	return res;
 }
 
 
