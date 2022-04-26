@@ -499,7 +499,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 			// model_print("(Iteration action seq_num: %u. type: %-14s, location: %14p. threadid: %d", 
 			// 		act->get_seq_number(), act->get_type_str(), act->get_location(), act->get_tid());
 			model_print("value: %" PRIx64 ")\n", act->get_value());
-			if(act->is_thread_start()){//stop condition 2: reach the start of a thread
+			if(rit->getPrev() == NULL){//stop condition 2: reach the start of a thread
 				model_print("meet the thread start. \n");
 				Eres = Eacc;
 				break;
@@ -521,9 +521,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 
 
 		}
-		if(rit->getPrev() == NULL){
-			model_print("meet the end.\n");
-		}
+
 	}
 	model_print("\n");
 	model_print("End computeUpdate: iteration bag result: Eres size is %d", Eres->size());
