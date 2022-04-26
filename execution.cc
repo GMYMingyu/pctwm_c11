@@ -482,7 +482,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 {	
 	ASSERT(rd->is_read()); // the inital read action
 	ASSERT(curr->is_write()); // the randomly selected write action
-	model_print("Start updating the bag for read action %d. \n", rd->get_seq_number());
+	
 	SnapVector<ModelAction *> * Eres = new SnapVector<ModelAction *>(); // the result E
 	SnapVector<ModelAction *> * Eacc = new SnapVector<ModelAction *>(); // the accumulate bag 
 	
@@ -496,11 +496,15 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	print_actset(rd_localvec);
 
 	// the thread of write action - iteration
-	int wr_tid = curr->get_tid(); // get the current thread id
+	// int wr_tid = curr->get_tid(); // get the current thread id
 	// action_list_t *wr_list = &(*thrd_lists)[wr_tid]; // get the thread of write action
 	// sllnode<ModelAction *> * rit;
 	bool before_flag = false;
 	updateVec(Eres, curr);
+	model_print("first put the write action in Eres. \n");
+	print_actset(Eres);
+	
+	model_print("Start updating the bag for read action %d. \n", rd->get_seq_number());
 	sllnode<ModelAction*> *it;
 	for (it = action_trace.end();it != NULL;it = it->getPrev()) { // get all actions before current action
 		ModelAction *act = it->getVal();
@@ -521,7 +525,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 			// model_print("(Iteration action seq_num: %u. type: %-14s, location: %14p. threadid: %d", 
 			// 		act->get_seq_number(), act->get_type_str(), act->get_location(), act->get_tid());
 			model_print("value: %" PRIx64 ")\n", act->get_value());
-			if(it->getPrev() == NULL){//stop condition 2: reach the start of a thread
+			if(act->is_thread_start()){//stop condition 2: reach the start of a thread
 				model_print("meet the thread start. \n");
 				Eres = Eacc;
 				break;
@@ -532,10 +536,11 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 			else if(act->is_read() && act->checkbag()){// stop condtion1: reach an action with bag
 				Eacc = maxVec(Eacc, act->get_bag());
 				Eres = maxVec(Eacc, rd_localvec); // merge the accumulate vector with local vector
-				model_print("meet one read with bag. break. \n");
+				model_print("meet one read with bag. break. ");
 				break;
 			}
 			else if(act->is_write() && (act->is_release() || act->is_seqcst())){
+				model_print("meet a write which is release. ");
 				Eacc = updateVec(Eacc, act);
 				Eres = Eacc;
 
