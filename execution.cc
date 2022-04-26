@@ -556,7 +556,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 
 	rd_localvec = maxVec(Eres, rd_localvec);
 	Eres = rd_localvec;
-	
+
 	rd_thr->set_local_vec(rd_localvec);
 	model_print("After process read, the thread local vec becomes \t");
 	rd_thr->print_local_vec();
@@ -642,7 +642,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 
 		// step3: read externally or internally
 		if(read_external){ // ask to read externally
-			model_print("Read externally. \n");
+			model_print("Process read: read externally. \n");
 			index = fuzzer->selectWrite(curr, rf_set);
 			rf = (*rf_set)[index]; // a randomly selected write
 			rd_thr->update_local_vec(rf);
@@ -664,11 +664,12 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 		}
 		else{ // ask to use the local vec variable
 			rf = rd_thr->get_same_location_act(curr);
+			model_print("Process read: read locally. \n");
 			if(rf){ // the local vec has such variable
 				model_print("local vec has such write, seqnum:%d \n", rf->get_seq_number());
 				index = fuzzer->find_idx(rf_set, rf);
 				if(index != -1){ // to make sure this variable locally is readable
-					model_print("Read locally: localvec has such variable \n");
+					model_print("localvec has such variable \n");
 					rf = (*rf_set)[index];
 					// (*rf_set)[index] = rf_set->back();
 					// rf_set->pop_back();
