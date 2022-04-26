@@ -500,9 +500,9 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	// action_list_t *wr_list = &(*thrd_lists)[wr_tid]; // get the thread of write action
 	// sllnode<ModelAction *> * rit;
 	bool before_flag = false;
-	updateVec(Eres, curr);
-	model_print("first put the write action in Eres. \n");
-	print_actset(Eres);
+	updateVec(Eacc, curr);
+	model_print("first put the write action in Eacc. \n");
+	print_actset(Eacc);
 	
 	model_print("Start updating the bag for read action %d. \n", rd->get_seq_number());
 	sllnode<ModelAction*> *it;
