@@ -1055,6 +1055,10 @@ void ModelExecution::process_fence(ModelAction *curr)
 			ModelAction* curr_rel = get_last_fence_release(int_to_id(i));
 			if(curr_rel != NULL){
 				model_print("Thread %d last release fence is %d",i, curr_rel->get_seq_number());
+				const char *acqmo_str = curr->get_mo_str();
+				const char *relmo_str = curr_rel->get_mo_str();
+
+				model_print("The fence_acq type is: %7s, the fence_rel type is %7s. ",acqmo_str, relmo_str);
 				if(curr->could_synchronize_with(curr_rel)){
 					SnapVector<ModelAction* > * tmp_bag = computeUpdate_fence(curr, curr_rel);
 					fence_bag = maxVec(tmp_bag, fence_bag);
@@ -1065,7 +1069,7 @@ void ModelExecution::process_fence(ModelAction *curr)
 		int acq_tid = curr->get_tid();
 		Thread *acq_thr = get_thread(acq_tid);
 		fence_bag = maxVec(fence_bag, acq_thr->get_local_vec());
-		
+
 		curr->set_bag(fence_bag);
 		acq_thr->set_local_vec(fence_bag);
 		
