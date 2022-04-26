@@ -1080,6 +1080,8 @@ void ModelExecution::process_fence(ModelAction *curr)
 
 		curr->set_bag(fence_bag);
 		acq_thr->set_local_vec(fence_bag);
+		model_print("\n finish update in process fence. ");
+		acq_thr->print_local_vec();
 		
 	}
 }
