@@ -570,6 +570,99 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	return Eres;
 }
 
+
+
+
+
+SnapVector<ModelAction *> *  ModelExecution::computeUpdate_fence(ModelAction *fence_acq, ModelAction * fence_rel)
+{	
+	ASSERT(fence_acq->is_acquire()); // the inital read action
+	ASSERT(fence_rel->is_release()); // the randomly selected write action
+	
+	SnapVector<ModelAction *> * Eres = new SnapVector<ModelAction *>(); // the result E
+	SnapVector<ModelAction *> * Eacc = new SnapVector<ModelAction *>(); // the accumulate bag 
+	
+
+	// the thread of read action - get local vector
+	int acq_tid = fence_acq->get_tid();
+	Thread *acq_thr = get_thread(acq_tid);
+	SnapVector<ModelAction *> * acq_localvec = acq_thr->get_local_vec();
+	model_print("computeUpdate for fence %u on thread %d : the localvec on read action's thread, size: %d.\n ", 
+			fence_acq->get_seq_number(), acq_tid, acq_localvec->size());
+	print_actset(acq_localvec);
+
+	// the thread of write action - iteration
+	// int wr_tid = curr->get_tid(); // get the current thread id
+	// action_list_t *wr_list = &(*thrd_lists)[wr_tid]; // get the thread of write action
+	// sllnode<ModelAction *> * rit;
+	bool before_flag = false;
+	
+	
+	model_print("Start updating the bag for fence_acq action %d. \n", fence_acq->get_seq_number());
+	sllnode<ModelAction*> *it;
+	for (it = action_trace.end();it != NULL;it = it->getPrev()) { // get all actions before current action
+		ModelAction *act = it->getVal();
+		
+		const char *type_str = act->get_type_str();
+		const char *mo_str = act->get_mo_str();
+		
+		if(act == fence_rel){
+			before_flag = true;
+			model_print("action before the fence_release:");
+		}
+
+		
+
+		if(before_flag && act != fence_rel && act->get_tid() == fence_rel->get_tid()){// iterate all actions before the current action
+			model_print("\n computeUpdate: iteration action type is  %-14s. on thread %d, sequence number is : %d , location: %14p, mo_type is : %7s. \n", 
+					type_str, id_to_int(act->get_tid()), act->get_seq_number(),act->get_location(),  mo_str);
+			// model_print("(Iteration action seq_num: %u. type: %-14s, location: %14p. threadid: %d", 
+			// 		act->get_seq_number(), act->get_type_str(), act->get_location(), act->get_tid());
+			model_print("value: %" PRIx64 ")\n", act->get_value());
+			if(act->is_thread_start()){//stop condition 2: reach the start of a thread
+				model_print("meet the thread start. \n");
+				Eres = Eacc;
+				break;
+			}
+			// else if(!act->is_write() && (act->is_read() && !act->checkbag())){
+			// 	continue;
+			// }
+			else if(act->is_read() && act->checkbag()){// stop condtion1: reach an action with bag
+				Eacc = maxVec(Eacc, act->get_bag());
+				Eres = maxVec(Eacc, acq_localvec); // merge the accumulate vector with local vector
+				model_print("meet one read with bag. break. ");
+				break;
+			}
+			else if(act->is_write() && (act->is_release() || act->is_seqcst())){
+				model_print("meet a write which is release. ");
+				Eacc = updateVec(Eacc, act);
+				Eres = Eacc;
+
+			}
+
+
+		}
+
+	}
+	model_print("\n");
+	model_print("End computeUpdate: iteration bag result: Eres size is %d \n", Eres->size());
+	print_actset(Eres);
+
+	acq_localvec = maxVec(Eres, acq_localvec);
+	Eres = acq_localvec;
+
+	// acq_thr->set_local_vec(acq_localvec);
+	// model_print("After process fence, the thread local vec becomes \t");
+	// acq_thr->print_local_vec();
+	
+	// fence_acq->set_bag(Eres);
+	// model_print("After process fence, the action set a bag. \t");
+	// fence_acq->print_bag();
+
+	// model_print("\n \n");
+	
+	return Eres;
+}
 // /**
 //  * Processes a read model action.
 //  * @param curr is the read model action to process.
@@ -956,13 +1049,25 @@ void ModelExecution::process_fence(ModelAction *curr)
 	model_print("meet a fence action. \n");
 	if (curr->is_acquire()) {
 		curr->get_cv()->merge(get_thread(curr)->get_acq_fence_cv());
+		SnapVector<ModelAction* > * fence_bag = new SnapVector<ModelAction *> ();
 		for(unsigned int i = 0; i < get_num_threads(); i++){
 			model_print("calling the get last fence release. \n");
 			ModelAction* curr_rel = get_last_fence_release(int_to_id(i));
 			if(curr_rel != NULL){
 				model_print("Thread %d last release fence is %d",i, curr_rel->get_seq_number());
+				if(curr->could_synchronize_with(curr_rel)){
+					SnapVector<ModelAction* > * tmp_bag = computeUpdate_fence(curr, curr_rel);
+					fence_bag = maxVec(tmp_bag, fence_bag);
+
+				}
 			}
 		}
+		int acq_tid = curr->get_tid();
+		Thread *acq_thr = get_thread(acq_tid);
+		fence_bag = maxVec(fence_bag, acq_thr->get_local_vec());
+		
+		curr->set_bag(fence_bag);
+		acq_thr->set_local_vec(fence_bag);
 		
 	}
 }
