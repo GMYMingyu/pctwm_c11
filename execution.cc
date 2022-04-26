@@ -954,6 +954,13 @@ void ModelExecution::process_fence(ModelAction *curr)
 	 */
 	if (curr->is_acquire()) {
 		curr->get_cv()->merge(get_thread(curr)->get_acq_fence_cv());
+		for(unsigned int i = 0; i < get_num_threads(); i++){
+			ModelAction* curr_rel = get_last_fence_release(int_to_id(i));
+			if(curr_rel != NULL){
+				model_print("Thread %d last release fence is %d",i, curr_rel->get_seq_number());
+			}
+		}
+		
 	}
 }
 
