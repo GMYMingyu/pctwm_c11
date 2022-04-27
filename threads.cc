@@ -601,7 +601,7 @@ bool Thread::is_waiting_on(const Thread *t) const
 		model_print("The size of localvec is %d.", local_vec->size());
 		for(uint i = 0; i < local_vec->size(); i++){
 			ModelAction* iteract = (*local_vec)[i];
-			model_print("[location: %7s,  seq_num: %u. ", iteract->get_location(), iteract->get_seq_number());
+			model_print("[location: %14p,  seq_num: %u. ", iteract->get_location(), iteract->get_seq_number());
 			model_print("value: %" PRIx64 "]\t", iteract->get_value());
 		}
 		model_print("\n");
