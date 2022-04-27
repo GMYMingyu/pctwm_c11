@@ -359,7 +359,7 @@ Thread * Scheduler::select_next_thread()
 		// print_lowvec();
 
 		if(usingpct == 1){//pct
-			if(execution->getInstrnum() <= schelen_limit){
+			if(execution->getInstrnum() <= schelen_limit || ( execution->getInstrnum() >= schelen_limit + 2 )){
 				int threadpct = find_highest(thread_list, avail_threads);
 				highest_id = threadpct; // update the selection of scheduler - highest priority thread
 				thread = execution->getFuzzer()->selectThreadbyid(threadpct);
