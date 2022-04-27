@@ -1381,7 +1381,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	}
 
 
-	if(curr->in_count()){ // only the related actions
+	if(curr->in_count() && getInstrnum() <= maxinstr){ // only the related actions
 		if(change_point && (!continue_flag)){
 			model_print("change point. \n");
 			
@@ -1413,6 +1413,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			else  ASSERT(rf_set == NULL);
 
 			// after processing read action
+
 	
 
 				/* Add the action to lists if not the second part of a rmw */
@@ -1443,6 +1444,24 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 	}
 	else{ // not the target type of action - not change this type of action
+
+		// larger than the maxinstr
+		if(curr->is_read() ){
+			model_print("larger than the maxinstr. \n");
+			SnapVector<ModelAction *> * rf_set = NULL;
+			bool canprune = false;
+			if (newly_explored) {
+				rf_set = build_may_read_from(curr);
+				//canprune = process_read(curr, rf_set);
+				canprune = process_read(curr, rf_set);
+				delete rf_set;
+			} else
+				ASSERT(rf_set == NULL);
+		}
+
+
+
+
 		if (newly_explored) {
 #ifdef COLLECT_STAT
 		record_atomic_stats(curr);
