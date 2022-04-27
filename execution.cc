@@ -1451,7 +1451,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			SnapVector<ModelAction *> * rf_set = NULL;
 			bool canprune = false;
 			if (newly_explored) {
-				rf_set = build_may_read_from(curr);
+				rf_set = build_may_read_from(curr, history_);
 				//canprune = process_read(curr, rf_set);
 				canprune = process_read(curr, rf_set);
 				delete rf_set;
