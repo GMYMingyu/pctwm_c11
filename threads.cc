@@ -602,7 +602,7 @@ bool Thread::is_waiting_on(const Thread *t) const
 		for(uint i = 0; i < local_vec->size(); i++){
 			ModelAction* iteract = (*local_vec)[i];
 			model_print("[location: %7s,  seq_num: %u. ", iteract->get_location(), iteract->get_seq_number())
-			model_print("value: %" PRIx64 "] \t", iteract->get_value(),;
+			model_print("value: %" PRIx64 "]\t", iteract->get_value(),;
 		}
 		model_print("\n");
 	}
