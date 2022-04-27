@@ -359,22 +359,24 @@ Thread * Scheduler::select_next_thread()
 		// print_lowvec();
 
 		if(usingpct == 1){//pct
-			if(execution->getInstrnum() <= schelen_limit || ( execution->getInstrnum() >= schelen_limit + 2 )){
-				int threadpct = find_highest(thread_list, avail_threads);
-				highest_id = threadpct; // update the selection of scheduler - highest priority thread
-				thread = execution->getFuzzer()->selectThreadbyid(threadpct);
-				// if(find_chgidx(getSchelen()) != -1){ // reach change point - move thread
-				// 	movethread(find_chgidx(getSchelen()), threadpct);
-				// }	
-			}
-			else{
+			
+			if( execution->getInstrnum() % schelen_limit == 0){
 				if(!livelock){
 					model_print("Reaching livelock! \n");
 					livelock = true;
 				}
 				model_print("scheduler: randomly select thread \n");
 				thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
+				
 				model_print("switch to another thread. thread %d \n", id_to_int(thread->get_id()));
+			}
+			else{//(execution->getInstrnum() <= schelen_limit ){
+				int threadpct = find_highest(thread_list, avail_threads);
+				highest_id = threadpct; // update the selection of scheduler - highest priority thread
+				thread = execution->getFuzzer()->selectThreadbyid(threadpct);
+				// if(find_chgidx(getSchelen()) != -1){ // reach change point - move thread
+				// 	movethread(find_chgidx(getSchelen()), threadpct);
+				// }	
 			}
 		}
 		else{ //usingpct = 0; original pct
