@@ -81,7 +81,9 @@ ModelExecution::ModelExecution(ModelChecker *m, Scheduler *scheduler) :
 	isfinished(false),
 	instrnum(0),
 	maxinstr(0),
-	history_(0)
+	history_(0),
+	suspend_chgpt(0),
+	enabled_threads(0)
 {
 	/* Initialize a model-checker thread, for special ModelActions */
 	model_thread = new Thread(get_next_id());
@@ -494,7 +496,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 	SnapVector<ModelAction *> * Eres = new SnapVector<ModelAction *>(); // the result E
 	SnapVector<ModelAction *> * Eacc = new SnapVector<ModelAction *>(); // the accumulate bag 
 	
-	SnapVector<action_list_t> *thrd_lists = obj_thrd_map.get(curr->get_location()); // get all actions on one thread
+	//SnapVector<action_list_t> *thrd_lists = obj_thrd_map.get(curr->get_location()); // get all actions on one thread
 
 	// the thread of read action - get local vector
 	int rd_tid = rd->get_tid();
@@ -652,6 +654,14 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate_fence(ModelAction *fe
 				Eacc = updateVec(Eacc, act);
 				Eres = Eacc;
 
+			}
+			else if(act->is_fence() && act->is_acquire()){
+				if(act->checkbag()){
+					model_print("meet a fence_acquire with a bag. ");
+					Eacc = maxVec(Eacc, act->get_bag());
+					Eres = Eacc;
+				}
+				break;
 			}
 
 
@@ -1350,6 +1360,16 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 	bool change_point = false;
 
+	//count how many enabled threads now
+	enabled_threads = 0;
+	for (int i = 0;i < get_num_threads();i++) {
+		if (enabled[i] == THREAD_ENABLED)
+			enabled_threads++;
+	}
+
+
+	
+
 	// check if the change point now
 	if(curr->in_count() && newly_explored){
 		//weak memory 
@@ -1358,7 +1378,10 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		model_print("Current instr. nums: %d. \n", getInstrnum());
 		//step2: check if a prority change point
 		int reach_chg_idx = scheduler->find_chgidx(getInstrnum());
-		if(reach_chg_idx != -1){
+
+
+
+		if(reach_chg_idx != -1 && enabled_threads >= 2){
 			model_print("reach the %d change point. Change priority of thread %d. \n", reach_chg_idx, scheduler->get_highest_thread());
 			scheduler->print_highvec();
 			scheduler->print_lowvec();
@@ -1377,6 +1400,28 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			}
 			scheduler->print_external_readnum_thread();
 		}
+		else if(reach_chg_idx == -1 && suspend_chgpt >= 1){
+			model_print("the suspend change point. \n");
+			scheduler->print_highvec();
+			scheduler->print_lowvec();
+			scheduler->movethread(reach_chg_idx, scheduler->get_highest_thread()); 
+			scheduler->print_highvec();
+			scheduler->print_lowvec();
+			//step4: meet the change point: move thread and return the second highest thread
+			// model_print("before set_external : seq_num: %d, current action type is  %-14s. external_flag: %u \n", curr->get_seq_number(),type_str, curr->checkexternal());
+			model_print("change point. ");
+			scheduler->print_current_avail_threads();
+			model_print("currently highest prio thread - thread %d. \n", scheduler->get_highest_thread());
+			curr->set_external_flag();  
+			change_point = true;
+			if(curr->is_read()){ // we change the priority at a read operation
+				scheduler->add_external_readnum_thread(curr_threadid);
+			}
+			scheduler->print_external_readnum_thread();
+		}
+		else if(reach_chg_idx != -1 && enabled_threads <= 1){
+			suspend_chgpt++;
+		}
 	}
 
 	// though we change the current thread prio and want to switch to another thread, but we may still have one enabled thread
@@ -1386,6 +1431,11 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		continue_flag = true;
 	}
 
+	bool process_suspend = false;
+	if(scheduler->find_chgidx(getInstrnum()) == -1 && suspend_chgpt >= 1){ //not the change point but has suspend_chgpts
+		process_suspend = true;
+	}
+
 
 	if(curr->in_count() && getInstrnum() <= 2 * maxinstr){ // only the related actions
 		if(change_point && (!continue_flag)){
@@ -1393,6 +1443,11 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			
 			curr_thread->set_pending(curr);
 			//process_thread_action(curr);
+		}
+		else if(process_suspend){
+			model_print("process suspend change point. \n");
+			curr_thread->set_pending(curr);
+			suspend_chgpt--;
 		}
 		//((continue_flag && curr->checkexternal()) || curr->checkexternal())
 		else{ // change the prio but only one thread or not change point
