@@ -47,10 +47,15 @@ Scheduler::Scheduler() :
 	schelen_limit(0),
 	livelock(false),
 	//weak memory: save the highest thread by scheduler
-	highest_id(0)
+	highest_id(0),
+	enabled_threads(0)
 {
 }
 
+int_least8_t Scheduler::get_enabled_num()
+{
+	return enabled_threads;
+}
 
 // randomly insert thread to high prio vector when it appears - randomly assign prio
 void Scheduler::highvec_addthread(Thread *t){
@@ -330,12 +335,21 @@ Thread * Scheduler::select_next_thread()
 	int thread_list[enabled_len], sleep_list[enabled_len];
 	Thread * thread;
 
+	enabled_threads = 0;
+
 	for (int i = 0;i < enabled_len;i++) {
-		if (enabled[i] == THREAD_ENABLED)
+		if (enabled[i] == THREAD_ENABLED){
 			thread_list[avail_threads++] = i;
-		else if (enabled[i] == THREAD_SLEEP_SET)
+			enabled_threads++;
+		}
+			
+		else if (enabled[i] == THREAD_SLEEP_SET){
 			sleep_list[sleep_threads++] = i;
+		}
+			
 	}
+
+	
 
 	if (avail_threads == 0 && !execution->getFuzzer()->has_paused_threads()) {
 		if (sleep_threads != 0) {

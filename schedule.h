@@ -43,6 +43,7 @@ public:
 	bool is_sleep_set(thread_id_t tid) const;
 	bool all_threads_sleeping() const;
 	void set_scheduler_thread(thread_id_t tid);
+	void get_enabled_num();
 
 	// related funcs
 
@@ -394,6 +395,7 @@ private:
 	int highest_id;
 
 	SnapVector<bool> external_readnum_thread;
+	int enabled_threads;
 
 };
 

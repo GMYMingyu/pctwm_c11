@@ -242,7 +242,7 @@ private:
 	bool isfinished;
 
 	int instrnum, maxinstr, history_, suspend_chgpt;
-	int enabled_threads;
+	
 };
 
 #endif	/* __EXECUTION_H__ */

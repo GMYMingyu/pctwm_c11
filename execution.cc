@@ -82,8 +82,7 @@ ModelExecution::ModelExecution(ModelChecker *m, Scheduler *scheduler) :
 	instrnum(0),
 	maxinstr(0),
 	history_(0),
-	suspend_chgpt(0),
-	enabled_threads(0)
+	suspend_chgpt(0)
 {
 	/* Initialize a model-checker thread, for special ModelActions */
 	model_thread = new Thread(get_next_id());
@@ -1361,13 +1360,8 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	bool change_point = false;
 
 	//count how many enabled threads now
-	enabled_threads = 0;
-	for (uint i = 0; i < get_num_threads(); i++) {
-		Thread* curr_thread = get_thread(int_to_id(i));
-		if (curr_thread->get_state() == THREAD_READY)
-			enabled_threads++;
-	}
-	model_print("current %d threads are available. \n", enabled_threads);
+
+	model_print("current %d threads are available. \n", scheduler->get_enabled_num());
 
 	
 
@@ -1382,7 +1376,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 
 
-		if(reach_chg_idx != -1 && enabled_threads >= 2){
+		if(reach_chg_idx != -1 && scheduler->get_enabled_num() >= 2){
 			model_print("reach the %d change point. Change priority of thread %d. \n", reach_chg_idx, scheduler->get_highest_thread());
 			scheduler->print_highvec();
 			scheduler->print_lowvec();
@@ -1420,7 +1414,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			}
 			scheduler->print_external_readnum_thread();
 		}
-		else if(reach_chg_idx != -1 && enabled_threads <= 1){
+		else if(reach_chg_idx != -1 && scheduler->get_enabled_num() <= 1){
 			suspend_chgpt++;
 		}
 	}
