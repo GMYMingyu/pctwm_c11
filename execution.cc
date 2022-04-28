@@ -1363,10 +1363,11 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	//count how many enabled threads now
 	enabled_threads = 0;
 	for (int i = 0;i < get_num_threads();i++) {
-		if (enabled[i] == THREAD_ENABLED)
+		Thread* curr_thread = get_thread(i);
+		if (curr_thread->get_state() == THREAD_ENABLED)
 			enabled_threads++;
 	}
-
+	model_print("current %d threads are available. \n", enabled_threads);
 
 	
 
