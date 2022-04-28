@@ -551,8 +551,14 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 				model_print("meet a write which is release. ");
 				Eacc = updateVec(Eacc, act);
 				Eres = Eacc;
-
 			}
+			else if(act->is_fence() && act->is_acquire() && act->checkbag()){
+				model_print("meet a fence_acquire with bag. ");
+				Eacc = maxVec(Eacc, act->get_bag());
+				Eres = Eacc;
+				break; // stop condition 3: meet a fence_acquire with bag
+			}
+
 
 
 		}
