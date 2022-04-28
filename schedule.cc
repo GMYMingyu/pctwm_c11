@@ -391,7 +391,9 @@ Thread * Scheduler::select_next_thread()
 				model_print("get the highest thread. \n");
 				int threadpct = find_highest(thread_list, avail_threads);
 				highest_id = threadpct; // update the selection of scheduler - highest priority thread
+				
 				thread = execution->getFuzzer()->selectThreadbyid(threadpct);
+				model_print("the thread state is %14s", thread->get_state());
 				// if(find_chgidx(getSchelen()) != -1){ // reach change point - move thread
 				// 	movethread(find_chgidx(getSchelen()), threadpct);
 				// }	
