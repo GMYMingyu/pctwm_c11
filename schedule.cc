@@ -136,7 +136,7 @@ int Scheduler::find_highest(int* availthreads, int availnum){
 	for(uint i = 0; i < highvec.size(); i ++){
 		for(int j = 0; j < availnum; j++){
 			if(availthreads[i] == highvec[i]){
-				model_print("meet a available highest thread. \n");
+				model_print("meet a available highest thread. %d\n", highvec[i]);
 				resid = highvec[i];
 				highvec_flag = true;
 			}
