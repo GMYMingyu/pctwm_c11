@@ -1415,6 +1415,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			scheduler->print_external_readnum_thread();
 		}
 		else if(reach_chg_idx != -1 && scheduler->get_enabled_num() <= 1){
+			model_print("meet a change point but only one thread available. \n");
 			suspend_chgpt++;
 		}
 	}
