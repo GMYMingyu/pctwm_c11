@@ -1395,7 +1395,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			}
 			scheduler->print_external_readnum_thread();
 		}
-		else if(reach_chg_idx == -1 && suspend_chgpt >= 1){
+		else if(reach_chg_idx == -1 && suspend_chgpt >= 1 && scheduler->get_enabled_num() >= 2){
 			model_print("the suspend change point. \n");
 			scheduler->print_highvec();
 			scheduler->print_lowvec();
