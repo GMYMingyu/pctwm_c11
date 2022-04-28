@@ -354,7 +354,7 @@ Thread * Scheduler::select_next_thread()
 	
 
 	if (avail_threads == 0 && !execution->getFuzzer()->has_paused_threads()) {
-		model_print("no avaial threads \n");
+		
 		if (sleep_threads != 0) {
 			// No threads available, but some threads sleeping. Wake up one of them
 			thread = execution->getFuzzer()->selectThread(sleep_list, sleep_threads);
@@ -365,7 +365,7 @@ Thread * Scheduler::select_next_thread()
 		}
 	} else {
 		// Some threads are available
-
+		model_print("have avaial threads \n");
 		incSchelen();
 		// model_print("limitation for shcelen: %d - prevent live lock \n", schelen_limit);
 		// model_print("current length: %d \n", getSchelen());
