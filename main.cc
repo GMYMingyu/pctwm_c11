@@ -28,7 +28,7 @@ void param_defaults(struct model_params *params)
 	params->maxscheduler = 20;
 	params->bugdepth = 6;
 	params->version = 1;
-	params->maxinstr = 15;
+	params->maxinstr = 28;
 	params->history = 10;
 }
 
@@ -66,10 +66,15 @@ static void print_usage(struct model_params *params)
 		"                            Default: %u\n"
 		"-r, --removevisible         Free visible writes\n"
 		"-l, --maxscheduler			 Scheduler length prevention\n"
+		"                            Default: %u\n"
 		"-b, --bugdepth 			 Bugdepth\n"
+		"                            Default: %u\n"
 		"-p, --version				 0: using original c11tester; 1: using pct\n"
+		"                            Default: %u\n"
 		"-i, --bound of instrnums	 the bound of instrnums\n"
-		"-y, --search rf_set	 	 the bound of searching in rf_set\n",
+		"                            Default: %u\n"
+		"-y, --search rf_set	 	 the bound of searching in rf_set\n"
+		"                            Default: %u\n",
 		params->verbose,
 		params->maxexecutions,
 		params->traceminsize,

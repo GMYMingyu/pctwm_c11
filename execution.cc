@@ -764,7 +764,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 
 		}
 		else{ // ask to use the local vec variable
-			rf = rd_thr->get_same_location_act(curr);
+			rf = rd_thr->get_same_location_act(curr); // the local vec doesnot have the variable(location)
 			model_print("Process read: read locally. \n");
 			if(rf){ // the local vec has such variable
 				model_print("local vec has such write, seqnum:%d \n", rf->get_seq_number());
@@ -1381,7 +1381,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	}
 
 
-	if(curr->in_count() && getInstrnum() <= maxinstr){ // only the related actions
+	if(curr->in_count() && getInstrnum() <= 2 * maxinstr){ // only the related actions
 		if(change_point && (!continue_flag)){
 			model_print("change point. \n");
 			
