@@ -43,7 +43,7 @@ public:
 	bool is_sleep_set(thread_id_t tid) const;
 	bool all_threads_sleeping() const;
 	void set_scheduler_thread(thread_id_t tid);
-	void get_enabled_num();
+	int get_enabled_num();
 
 	// related funcs
 
