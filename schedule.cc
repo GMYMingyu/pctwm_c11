@@ -349,6 +349,8 @@ Thread * Scheduler::select_next_thread()
 			
 	}
 
+	model_print("enter the action_select.");
+
 	
 
 	if (avail_threads == 0 && !execution->getFuzzer()->has_paused_threads()) {
