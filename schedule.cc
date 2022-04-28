@@ -407,7 +407,7 @@ Thread * Scheduler::select_next_thread()
 				model_print("select the %d thread. \n", highest_id);
 				thread = execution->get_thread(highest_id);
 				//thread = execution->getFuzzer()->selectThreadbyid(threadpct);
-				model_print("the thread state is %14s", thread->get_state());
+				model_print("successfully get the thread");
 				// if(find_chgidx(getSchelen()) != -1){ // reach change point - move thread
 				// 	movethread(find_chgidx(getSchelen()), threadpct);
 				// }	
