@@ -361,7 +361,7 @@ Thread * Scheduler::select_next_thread()
 		if(usingpct == 1){//pct
 			
 			if( execution->getInstrnum() % schelen_limit == 0){
-				if(!livelock){
+				if(execution->getInstrnum() != 0 && !livelock){
 					model_print("Reaching livelock! \n");
 					livelock = true;
 				}
