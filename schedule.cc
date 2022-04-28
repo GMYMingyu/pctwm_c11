@@ -133,17 +133,26 @@ int Scheduler::find_highest(int* availthreads, int availnum){
 	bool highvec_flag = false;
 	bool lowvec_flag = false;
 
-	int findhigh = 0;
-	while(findhigh < highsize && !highvec_flag){
-		for(int i = 0; i < availnum; i++){
-			if(availthreads[i] == highvec[findhigh]){
-				highvec_flag = true; // highvec has thread available
-				resid = highvec[findhigh];
+	for(uint i = 0; i < highvec.size(); i ++){
+		for(int j = 0; j < availnum; j++){
+			if(availthreads[i] == highvec[i]){
+				highvec_flag = true;
+				resid = highvec[i];
 			}
 		}
-		findhigh++;
-
 	}
+
+	// int findhigh = 0;
+	// while(findhigh < highsize && !highvec_flag){
+	// 	for(int i = 0; i < availnum; i++){
+	// 		if(availthreads[i] == highvec[findhigh]){
+	// 			highvec_flag = true; // highvec has thread available
+	// 			resid = highvec[findhigh];
+	// 		}
+	// 	}
+	// 	findhigh++;
+
+	// }
 
 
 	if(!highvec_flag){//highvec has no available thread
@@ -340,7 +349,6 @@ Thread * Scheduler::select_next_thread()
 	for (int i = 0;i < enabled_len;i++) {
 		if (enabled[i] == THREAD_ENABLED){
 			thread_list[avail_threads++] = i;
-			enabled_threads++;
 		}
 			
 		else if (enabled[i] == THREAD_SLEEP_SET){
@@ -348,6 +356,8 @@ Thread * Scheduler::select_next_thread()
 		}
 			
 	}
+
+	enabled_threads = avail_threads;
 
 	model_print("enter the action_select.");
 
