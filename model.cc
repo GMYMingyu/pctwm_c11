@@ -547,6 +547,7 @@ bool ModelChecker::handleChosenThread(Thread *old)
 	}
 
 	// Consume the next action for a Thread
+	model_print("get the pending action. \n");
 	ModelAction *curr = chosen_thread->get_pending();
 	chosen_thread->set_pending(NULL);
 	chosen_thread = execution->take_step(curr);
