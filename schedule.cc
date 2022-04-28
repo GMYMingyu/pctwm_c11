@@ -52,7 +52,7 @@ Scheduler::Scheduler() :
 {
 }
 
-int_least8_t Scheduler::get_enabled_num()
+int Scheduler::get_enabled_num()
 {
 	return enabled_threads;
 }
