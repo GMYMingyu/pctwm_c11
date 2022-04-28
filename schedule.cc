@@ -129,13 +129,13 @@ void Scheduler::print_avails(int* availthreads, int availnum){
 
 // find the highest prio thread in avail threads
 int Scheduler::find_highest(int* availthreads, int availnum){
-	int resid = 0;
+	int resid = -1;
 	bool highvec_flag = false;
 	bool lowvec_flag = false;
 
 	for(uint i = 0; i < highvec.size(); i ++){
 		for(int j = 0; j < availnum; j++){
-			if(availthreads[i] == highvec[i]){
+			if(availthreads[j] == highvec[i]){
 				model_print("meet a available highest thread. %d\n", highvec[i]);
 				resid = highvec[i];
 				highvec_flag = true;
