@@ -400,7 +400,7 @@ Thread * Scheduler::select_next_thread()
 			else{//(execution->getInstrnum() <= schelen_limit ){
 				print_highvec();
 				print_lowvec();
-				print_avails();
+				print_avails(thread_list, avail_threads);
 				model_print("get the highest thread. \n");
 				int threadpct = find_highest(thread_list, avail_threads);
 				highest_id = threadpct; // update the selection of scheduler - highest priority thread
