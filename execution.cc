@@ -1422,6 +1422,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		}
 		else if(reach_chg_idx == -1 && suspend_chgpt >= 1 && scheduler->get_enabled_num() >= 2){
 			model_print("the suspend change point. \n");
+			print_suspend();
 			reach_chg_idx = suspend_chgpts[0];
 			suspend_chgpts_delete();
 			scheduler->print_highvec();
