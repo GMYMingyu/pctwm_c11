@@ -1447,6 +1447,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			suspend_chgpts.push_back(reach_chg_idx);
 			print_suspend();
 			suspend_chgpt++;
+			model_print("current suspend change points num: %d", suspend_chgpt);
 		}
 	}
 
@@ -1458,8 +1459,10 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	}
 
 	bool process_suspend = false;
-	if(scheduler->find_chgidx(getInstrnum()) != -1 && suspend_chgpt >= 1 && scheduler->get_enabled_num() >= 2){ //not the change point but has suspend_chgpts
+	if(scheduler->find_chgidx(getInstrnum()) == -1 &&suspend_chgpt >= 1 && scheduler->get_enabled_num() >= 2){ //not the change point but has suspend_chgpts
 		process_suspend = true;
+		suspend_chgpt--;
+		model_print("current suspend change points num: %d", suspend_chgpt);
 	}
 
 
@@ -1473,7 +1476,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		else if(process_suspend){
 			model_print("process suspend change point. \n");
 			curr_thread->set_pending(curr);
-			suspend_chgpt--;
+			
 		}
 		//((continue_flag && curr->checkexternal()) || curr->checkexternal())
 		else{ // change the prio but only one thread or not change point
