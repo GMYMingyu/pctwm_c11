@@ -1335,7 +1335,7 @@ void ModelExecution::suspend_chgpts_delete(){
 void ModelExecution::print_suspend(){
 	int curr_size = suspend_chgpts.size();
 	model_print("current suspend change points: ");
-	for(int i = 0; i < curr_size(); i++){
+	for(int i = 0; i < curr_size; i++){
 		model_print("[%d] ", suspend_chgpts[i]);
 	}
 	model_print("\n");
