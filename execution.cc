@@ -1389,7 +1389,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 	if(curr->in_count() && getInstrnum() <= 2 * maxinstr){ // only the related actions
 		if(change_point && (!continue_flag)){
-			model_print("change point. \n");
+			model_print("now we are at the %d change point. \n", scheduler->find_chgidx(getInstrnum()));
 			
 			curr_thread->set_pending(curr);
 			//process_thread_action(curr);
