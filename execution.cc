@@ -1387,7 +1387,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	}
 
 
-	if(curr->in_count() && ( getInstrnum() <= 2 * maxinstr || ( getInstrnum() % (2 * maxinstr) != 0 )){ // only the related actions
+	if(curr->in_count() && ( getInstrnum() <= 2 * maxinstr || ( getInstrnum() % (2 * maxinstr) != 0 ))){ // only the related actions
 		if(change_point && (!continue_flag)){
 			model_print("now we are at the %d change point. \n", scheduler->find_chgidx(getInstrnum()));
 			
