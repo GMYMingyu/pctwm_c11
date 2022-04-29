@@ -1458,7 +1458,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	}
 
 	bool process_suspend = false;
-	if(scheduler->find_chgidx(getInstrnum()) == -1 && suspend_chgpt >= 1 && scheduler->get_enabled_num() >= 2){ //not the change point but has suspend_chgpts
+	if(scheduler->find_chgidx(getInstrnum()) != -1 && suspend_chgpt >= 1 && scheduler->get_enabled_num() >= 2){ //not the change point but has suspend_chgpts
 		process_suspend = true;
 	}
 
