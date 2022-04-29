@@ -125,6 +125,8 @@ public:
 	SnapVector<ModelAction *> * computeUpdate_fence(ModelAction *fence_acq, ModelAction * fence_rel);
 	SnapVector<ModelAction*> * updateVec(SnapVector<ModelAction*> *input_vec, ModelAction* curr);
 	SnapVector<ModelAction*> * maxVec(SnapVector<ModelAction*> * Eacc, SnapVector<ModelAction*> *local_vec);
+	void suspend_chgpts_delete();
+	void print_suspend();
 	SNAPSHOTALLOC
 private:
 	int get_execution_number() const;
@@ -242,7 +244,7 @@ private:
 	bool isfinished;
 
 	int instrnum, maxinstr, history_, suspend_chgpt;
-	
+	SnapVector<int> suspend_chgpts;
 };
 
 #endif	/* __EXECUTION_H__ */

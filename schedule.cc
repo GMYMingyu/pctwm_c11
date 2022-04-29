@@ -114,6 +114,7 @@ void Scheduler::movethread(int lowvec_idx, int threadid){
 
 	//step4: update low vector
 	lowvec[lowvec_idx] = threadid;
+	print_lowvec();
 
 
 }

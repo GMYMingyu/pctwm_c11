@@ -86,6 +86,7 @@ ModelExecution::ModelExecution(ModelChecker *m, Scheduler *scheduler) :
 {
 	/* Initialize a model-checker thread, for special ModelActions */
 	model_thread = new Thread(get_next_id());
+	suspend_chgpts.resize(0);
 	add_thread(model_thread);
 	fuzzer->register_engine(m, this);
 	scheduler->register_engine(this);
@@ -1315,6 +1316,30 @@ bool ModelExecution::check_action_enabled(ModelAction *curr) {
 	return true;
 }
 
+
+void ModelExecution::suspend_chgpts_delete(){
+	int curr_size = suspend_chgpts.size();
+	if(curr_size == 1){
+		suspend_chgpts.resize(0);
+	}
+	else if(curr_size >= 2){
+		for(int i = 0; i < curr_size - 1; i++){
+			suspend_chgpts[i] = suspend_chgpts[i + 1];
+			suspend_chgpts.resize(curr_size - 1);
+		}
+	}
+
+}
+
+
+void ModelExecution::print_suspend(){
+	int curr_size = suspend_chgpts.size();
+	model_print("current suspend change points: ");
+	for(int i = 0; i < curr_size(); i++){
+		model_print("[%d] ", suspend_chgpts[i]);
+	}
+	model_print("\n");
+}
 /**
  * This is the heart of the model checker routine. It performs model-checking
  * actions corresponding to a given "current action." Among other processes, it
@@ -1397,6 +1422,8 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		}
 		else if(reach_chg_idx == -1 && suspend_chgpt >= 1 && scheduler->get_enabled_num() >= 2){
 			model_print("the suspend change point. \n");
+			reach_chg_idx = suspend_chgpts[0];
+			suspend_chgpts_delete();
 			scheduler->print_highvec();
 			scheduler->print_lowvec();
 			scheduler->movethread(reach_chg_idx, scheduler->get_highest_thread()); 
@@ -1416,6 +1443,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		}
 		else if(reach_chg_idx != -1 && scheduler->get_enabled_num() <= 1){
 			model_print("meet a change point but only one thread available. \n");
+			suspend_chgpts.insert(reach_chg_idx);
 			suspend_chgpt++;
 		}
 	}
