@@ -1447,7 +1447,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			suspend_chgpts.push_back(reach_chg_idx);
 			print_suspend();
 			suspend_chgpt++;
-			model_print("current suspend change points num: %d", suspend_chgpt);
+			model_print("current suspend change points num: %d \n", suspend_chgpt);
 		}
 	}
 
@@ -1462,7 +1462,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	if(scheduler->find_chgidx(getInstrnum()) == -1 &&suspend_chgpt >= 1 && scheduler->get_enabled_num() >= 2){ //not the change point but has suspend_chgpts
 		process_suspend = true;
 		suspend_chgpt--;
-		model_print("current suspend change points num: %d", suspend_chgpt);
+		model_print("current suspend change points num: %d \n", suspend_chgpt);
 	}
 
 
