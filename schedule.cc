@@ -118,6 +118,46 @@ void Scheduler::movethread(int lowvec_idx, int threadid){
 
 }
 
+int Scheduler::get_highest_thread(){
+		int availnum = 0;
+		int availthreads[enabled_len];
+	
+		for (int i = 0;i < enabled_len;i++) {
+			if (enabled[i] == THREAD_ENABLED)
+				availthreads[availnum++] = i;
+		}
+		// only one thread is available
+		if(availnum == 1){
+			model_print("scheduler:get highest prority thread: %d(only one available))", availthreads[0]);
+			return availthreads[0];
+		}
+
+		uint findhigh = 0;
+		while(findhigh < highvec.size()){
+			for(int i = 0; i < availnum; i++){
+				if(availthreads[i] == highvec[findhigh]){
+					model_print("scheduler:get highest prority thread: %d(find in highvec))", availthreads[i]);
+					return availthreads[i];
+				}
+			}
+		findhigh++;
+		}
+
+		uint findlow = 0;
+		while(findlow < lowvec.size()){
+			for(int i = 0; i < availnum; i++){
+				if(availthreads[i] == lowvec[findlow]){
+					model_print("scheduler:get highest prority thread: %d(find in lowvec))", availthreads[i]);
+					return availthreads[i];
+				}
+			}
+		findlow++;
+		}
+
+		return -1;
+		
+	}
+
 
 void Scheduler::print_avails(int* availthreads, int availnum){
 	model_print("Currently avail threads: ");

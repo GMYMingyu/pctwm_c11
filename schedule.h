@@ -211,42 +211,7 @@ public:
 	}
 
 	//weak memory
-	int get_highest_thread(){
-		int availnum = 0;
-		int availthreads[enabled_len];
-	
-		for (int i = 0;i < enabled_len;i++) {
-			if (enabled[i] == THREAD_ENABLED)
-				availthreads[availnum++] = i;
-		}
-		// only one thread is available
-		if(availnum == 1){
-			return availthreads[0];
-		}
-
-		uint findhigh = 0;
-		while(findhigh < highvec.size()){
-			for(int i = 0; i < availnum; i++){
-				if(availthreads[i] == highvec[findhigh]){
-					return availthreads[i];
-				}
-			}
-		findhigh++;
-		}
-
-		uint findlow = 0;
-		while(findlow < lowvec.size()){
-			for(int i = 0; i < availnum; i++){
-				if(availthreads[i] == lowvec[findlow]){
-					return availthreads[i];
-				}
-			}
-		findlow++;
-		}
-
-		return -1;
-		
-	}
+	int get_highest_thread();
 
 
 	int get_scecond_high_thread(){
