@@ -1443,7 +1443,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		}
 		else if(reach_chg_idx != -1 && scheduler->get_enabled_num() <= 1){
 			model_print("meet a change point but only one thread available. \n");
-			suspend_chgpts.insert(reach_chg_idx);
+			suspend_chgpts.push_back(reach_chg_idx);
 			suspend_chgpt++;
 		}
 	}
