@@ -131,7 +131,6 @@ void Scheduler::print_avails(int* availthreads, int availnum){
 int Scheduler::find_highest(int* availthreads, int availnum){
 	int resid = -1;
 	bool highvec_flag = false;
-	bool lowvec_flag = false;
 
 	for(uint i = 0; i < highvec.size(); i ++){
 		
@@ -161,17 +160,16 @@ int Scheduler::find_highest(int* availthreads, int availnum){
 
 
 	if(!highvec_flag){//highvec has no available thread
-		uint findlow = 0;
-		while(findlow < lowvec.size() && !lowvec_flag){
-			for(int i = 0; i < availnum; i++){
-				if(availthreads[i] == lowvec[findlow]){
-					lowvec_flag = true; // highvec has thread available
-					resid = lowvec[findlow];
-					model_print("meet a available highest thread in low-prio vector. %d\n", lowvec[findlow]);
+		for(uint i = 0; i < lowvec.size(); i ++){
+		
+			for(int j = 0; j < availnum; j++){
+				if(availthreads[j] == lowvec[i]){
+					model_print("meet a available highest thread. %d\n", lowvec[i]);
+					resid = lowvec[i];
+					// highvec_flag = true;
 					break;
 				}
 			}
-			findlow++;
 		}
 	}
 	model_print("find_highest: %d \n", resid);
