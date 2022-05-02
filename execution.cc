@@ -693,7 +693,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 		rf_set->push_back(nonatomicstore);
 	}
 
-	SnapVector<ModelAction*> * tmpbag;
+	SnapVector<ModelAction*> * tmpbag = new SnapVector<ModelAction *> ();
 
 	if(curr->is_seqcst()){
 		model_print("for seqcst read: first find the last sc and put the bag. \n");
