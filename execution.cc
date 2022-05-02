@@ -533,7 +533,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 			// model_print("(Iteration action seq_num: %u. type: %-14s, location: %14p. threadid: %d", 
 			// 		act->get_seq_number(), act->get_type_str(), act->get_location(), act->get_tid());
 			model_print("value: %" PRIx64 ")\n", act->get_value());
-			if(act->is_thread_start()){//stop condition 2: reach the start of a thread
+			if(act->is_thread_start()){//stop condition 1: reach the start of a thread
 				model_print("meet the thread start. \n");
 				Eres = Eacc;
 				break;
@@ -541,23 +541,29 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 			// else if(!act->is_write() && (act->is_read() && !act->checkbag())){
 			// 	continue;
 			// }
-			else if(act->is_read() && act->checkbag()){// stop condtion1: reach an action with bag
+			else if(act->checkbag()){// stop condtion2: reach an action with bag ( read, sc, fence)
 				Eacc = maxVec(Eacc, act->get_bag());
 				Eres = maxVec(Eacc, rd_localvec); // merge the accumulate vector with local vector
-				model_print("meet one read with bag. break. ");
+				model_print("meet one action with bag. break. ");
 				break;
 			}
-			else if(act->is_write() && (act->is_release() || act->is_seqcst())){
+			else if(act->is_write() && act->is_release()){ //is_release includes: release,acq_rel, seq_cst
 				model_print("meet a write which is release. ");
 				Eacc = updateVec(Eacc, act);
 				Eres = Eacc;
 			}
-			else if(act->is_fence() && act->is_acquire() && act->checkbag()){
-				model_print("meet a fence_acquire with bag. ");
-				Eacc = maxVec(Eacc, act->get_bag());
-				Eres = Eacc;
-				break; // stop condition 3: meet a fence_acquire with bag
-			}
+			// else if(act->is_fence() && act->is_acquire() && act->checkbag()){
+			// 	model_print("meet a fence_acquire with bag. ");
+			// 	Eacc = maxVec(Eacc, act->get_bag());
+			// 	Eres = Eacc;
+			// 	break; // stop condition 3: meet a fence_acquire with bag
+			// }
+			// else if(act->is_seqcst() &&(act->is_read() || act->is_write())){
+			// 	model_print("meet a sc write/read with bag. ");
+			// 	Eacc = maxVec(Eacc, act->get_bag());
+			// 	Eres = Eacc;
+			// 	break; // stop condition 4: meet a fence_acquire with bag
+			// }
 
 
 
@@ -633,7 +639,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate_fence(ModelAction *fe
 			// model_print("(Iteration action seq_num: %u. type: %-14s, location: %14p. threadid: %d", 
 			// 		act->get_seq_number(), act->get_type_str(), act->get_location(), act->get_tid());
 			model_print("value: %" PRIx64 ")\n", act->get_value());
-			if(act->is_thread_start()){//stop condition 2: reach the start of a thread
+			if(act->is_thread_start()){//stop condition 1: reach the start of a thread
 				model_print("meet the thread start. \n");
 				Eres = Eacc;
 				break;
@@ -641,18 +647,23 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate_fence(ModelAction *fe
 			// else if(!act->is_write() && (act->is_read() && !act->checkbag())){
 			// 	continue;
 			// }
-			else if(act->is_read() && act->checkbag()){// stop condtion1: reach an action with bag
+			else if(act->checkbag()){// stop condtion2: reach an action with bag(read or sc)
 				Eacc = maxVec(Eacc, act->get_bag());
 				Eres = maxVec(Eacc, acq_localvec); // merge the accumulate vector with local vector
 				model_print("meet one read with bag. break. ");
 				break;
 			}
-			else if(act->is_write() && (act->is_release() || act->is_seqcst())){
+			else if(act->is_write() && act->is_release()){ // is_release include: release, acq_rel, seq_cst
 				model_print("meet a write which is release. ");
 				Eacc = updateVec(Eacc, act);
 				Eres = Eacc;
-
 			}
+			// else if(act->is_seqcst() && (act->is_read() || act->is_write())){// stop condtion3: reach an sc_action with bag
+			// 	Eacc = maxVec(Eacc, act->get_bag());
+			// 	Eres = maxVec(Eacc, acq_localvec); // merge the accumulate vector with local vector
+			// 	model_print("meet one read with bag. break. ");
+			// 	break;
+			// }
 
 
 		}
