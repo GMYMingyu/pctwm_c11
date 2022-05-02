@@ -1116,7 +1116,7 @@ void ModelExecution::process_fence(ModelAction *curr)
 		Thread *acq_thr = get_thread(acq_tid);
 		fence_bag = maxVec(fence_bag, acq_thr->get_local_vec());
 		if(curr->is_seqcst()){
-			fence_bag = maxVec(curr->get_bag(), fence_bag()); // if this is a fence_seqcst, update the result with last sc action
+			fence_bag = maxVec(curr->get_bag(), fence_bag); // if this is a fence_seqcst, update the result with last sc action
 		}
 		curr->set_bag(fence_bag);
 		acq_thr->set_local_vec(fence_bag);
