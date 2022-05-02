@@ -125,6 +125,7 @@ public:
 	SnapVector<ModelAction *> * computeUpdate_fence(ModelAction *fence_acq, ModelAction * fence_rel);
 	SnapVector<ModelAction*> * updateVec(SnapVector<ModelAction*> *input_vec, ModelAction* curr);
 	SnapVector<ModelAction*> * maxVec(SnapVector<ModelAction*> * Eacc, SnapVector<ModelAction*> *local_vec);
+	SnapVector<ModelAction *> * computeBag_sc(ModelAction *curr);
 	SNAPSHOTALLOC
 private:
 	int get_execution_number() const;

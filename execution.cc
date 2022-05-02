@@ -1033,6 +1033,11 @@ bool ModelExecution::process_mutex(ModelAction *curr)
 void ModelExecution::process_write(ModelAction *curr)
 {
 	model_print("\n Process write action. ");
+	if(curr->is_seqcst()){
+		SnapVector<ModelAction*> * tmp_bag = updateVec(curr->get_bag(), curr);
+		curr->set_bag(tmp_bag);
+		model_print("set a bag for write_sc. \n");
+	}
 	// we meet a write action -> update the local vec
 	Thread * curr_thread = get_thread(curr);
 	SnapVector<ModelAction*> *thrd_localvec = curr_thread->get_local_vec();
@@ -1308,6 +1313,28 @@ bool ModelExecution::check_action_enabled(ModelAction *curr) {
 	return true;
 }
 
+
+ModelAction * ModelExecution::computeBag_sc(ModelAction *curr){
+	// first get the last sc action with bag
+	sllnode<ModelAction*> *it;
+	for (it = action_trace.end();it != NULL;it = it->getPrev()) { // get all actions before current action
+		ModelAction *act = it->getVal();
+		bool before_flag = false;
+		if(act == curr){
+			before_flag = true;
+		}
+
+		if(before_flag){
+			if(act->is_seqcst() && act->checkbag()){ // meet a sc action with bag
+				model_print("we meet a sc action with bag. \n");
+				curr->set_bag(act->get_bag());
+			}
+		}
+	
+	}
+	return curr->get_bag();
+}
+
 /**
  * This is the heart of the model checker routine. It performs model-checking
  * actions corresponding to a given "current action." Among other processes, it
@@ -1399,6 +1426,11 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 		}
 		//((continue_flag && curr->checkexternal()) || curr->checkexternal())
 		else{ // change the prio but only one thread or not change point
+			if(curr->is_seqcst()){ // first process the seqcst actions
+				computeBag_sc(curr); // give all sc curr a bag
+			}
+
+			// process a read action
 			if (curr->is_read() && newly_explored ) { // process read action
 				int read_external_num_on_curr_thread = scheduler->get_external_readnum_thread(curr_threadid);
 				if(read_external_num_on_curr_thread){ // this thread has read external job
@@ -1419,7 +1451,9 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 					delete rf_set;
 				}
 			}
-			else  ASSERT(rf_set == NULL);
+			else{
+				ASSERT(rf_set == NULL);
+			}  
 
 			// after processing read action
 
