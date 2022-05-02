@@ -1314,7 +1314,7 @@ bool ModelExecution::check_action_enabled(ModelAction *curr) {
 }
 
 
-ModelAction * ModelExecution::computeBag_sc(ModelAction *curr){
+SnapVector<ModelAction*> * ModelExecution::computeBag_sc(ModelAction *curr){
 	// first get the last sc action with bag
 	sllnode<ModelAction*> *it;
 	for (it = action_trace.end();it != NULL;it = it->getPrev()) { // get all actions before current action
