@@ -784,6 +784,14 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 
 		}
 		else{ // ask to use the local vec variable
+			// for read local: first update the localvec and bag with last sc
+			if(curr->is_seqcst()){ // if is read_sc one more step
+				model_print("for the read_sc, one more step. \n");
+				curr->set_bag(tmpbag);
+				rd_thr->set_local_vec(curr->get_bag());
+			}
+
+			// then process the read
 			rf = rd_thr->get_same_location_act(curr); // the local vec doesnot have the variable(location)
 			model_print("Process read: read locally. \n");
 			if(rf){ // the local vec has such variable
