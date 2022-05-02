@@ -693,6 +693,13 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 		rf_set->push_back(nonatomicstore);
 	}
 
+	SnapVector<ModelAction*> * tmpbag;
+
+	if(curr->is_seqcst()){
+		model_print("for seqcst read: first find the last sc and put the bag. \n");
+		tmpbag = computeBag_sc(curr);
+	}
+
 	// Remove writes that violate read modification order
 	/*
 	   uint i = 0;
@@ -761,6 +768,13 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 			if(curr->could_synchronize_with(rf)){
 				model_print("could synchronize with the write. start looping. \n");
 				computeUpdate(curr, rf); // it will not change the selection of write - but update local vec
+			}
+
+
+			if(curr->is_seqcst()){ // if is read_sc one more step
+				model_print("for the read_sc, one more step. \n");
+				curr->set_bag(maxVec(curr->get_bag(), tmpbag));
+				rd_thr->set_local_vec(curr->get_bag());
 			}
 			
 			
@@ -1066,6 +1080,7 @@ void ModelExecution::process_fence(ModelAction *curr)
 	 */
 
 	model_print("meet a fence action. \n");
+
 	if (curr->is_acquire()) {
 		curr->get_cv()->merge(get_thread(curr)->get_acq_fence_cv());
 		SnapVector<ModelAction* > * fence_bag = new SnapVector<ModelAction *> ();
@@ -1087,10 +1102,14 @@ void ModelExecution::process_fence(ModelAction *curr)
 				}
 			}
 		}
+
+		
 		int acq_tid = curr->get_tid();
 		Thread *acq_thr = get_thread(acq_tid);
 		fence_bag = maxVec(fence_bag, acq_thr->get_local_vec());
-
+		if(curr->is_seqcst()){
+			fence_bag = maxVec(curr->get_bag(), fence_bag()); // if this is a fence_seqcst, update the result with last sc action
+		}
 		curr->set_bag(fence_bag);
 		acq_thr->set_local_vec(fence_bag);
 		model_print("\n finish update in process fence. ");
@@ -1505,30 +1524,30 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 
 
 
-		if (newly_explored) {
-#ifdef COLLECT_STAT
-		record_atomic_stats(curr);
-#endif
-		add_action_to_lists(curr, canprune);
-	}
+			if (newly_explored) {
+	#ifdef COLLECT_STAT
+			record_atomic_stats(curr);
+	#endif
+			add_action_to_lists(curr, canprune);
+		}
 
-	if (curr->is_write())
-		add_write_to_lists(curr);
+		if (curr->is_write())
+			add_write_to_lists(curr);
 
-	process_thread_action(curr);
+		process_thread_action(curr);
 
-	if (curr->is_write())
-		process_write(curr);
+		if (curr->is_write())
+			process_write(curr);
 
-	if (curr->is_fence())
-		process_fence(curr);
+		if (curr->is_fence())
+			process_fence(curr);
 
-	if (curr->is_mutex_op())
-		process_mutex(curr);
-	}
+		if (curr->is_mutex_op())
+			process_mutex(curr);
+		}
 
-	//model_print("end the check current action. \n");
-	return curr;
+		//model_print("end the check current action. \n");
+		return curr;
 }
 
 /** Close out a RMWR by converting previous RMWR into a RMW or READ. */
