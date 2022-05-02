@@ -1066,16 +1066,17 @@ void ModelExecution::process_fence(ModelAction *curr)
 		SnapVector<ModelAction* > * fence_bag = new SnapVector<ModelAction *> ();
 		for(unsigned int i = 0; i < get_num_threads(); i++){
 			model_print("calling the get last fence release. \n");
-			ModelAction* curr_rel = get_last_fence_release(int_to_id(i));
-			if(curr_rel != NULL){
-				model_print("Thread %d last release fence is %d",i, curr_rel->get_seq_number());
+			ModelAction* last_rel = get_last_fence_release(int_to_id(i)); // get the last fence_release action on each thread
+			if(last_rel != NULL){
+				model_print("Thread %d last release fence is %d",i, last_rel->get_seq_number());
 				const char *acqmo_str = curr->get_mo_str();
-				const char *relmo_str = curr_rel->get_mo_str();
-				const char *reltype_str = curr_rel->get_type_str();
+				const char *relmo_str = last_rel->get_mo_str();
+				const char *reltype_str = last_rel->get_type_str();
 
 				model_print("The fence_acq type is: %7s, the fence_rel type is %7s, action type is %7s. ",acqmo_str, relmo_str, reltype_str);
-				if(curr->is_acquire() && curr_rel->is_release()){
-					SnapVector<ModelAction* > * tmp_bag = computeUpdate_fence(curr, curr_rel);
+				if(curr->could_synchronize_with(last_rel)){
+					model_print("these two fence are synchronized\n");
+					SnapVector<ModelAction* > * tmp_bag = computeUpdate_fence(curr, last_rel);
 					fence_bag = maxVec(tmp_bag, fence_bag);
 
 				}

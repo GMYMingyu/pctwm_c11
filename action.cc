@@ -512,6 +512,7 @@ bool ModelAction::could_synchronize_with(const ModelAction *act) const
 
 	// Explore interleavings of seqcst writes/fences to guarantee total
 	// order of seq_cst operations that don't commute
+	// fence_seqcst can synchronize with write/fence_seqcst
 	if ((could_be_write() || act->could_be_write() || is_fence() || act->is_fence()) && is_seqcst() && act->is_seqcst())
 		return true;
 
