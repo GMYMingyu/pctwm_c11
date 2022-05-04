@@ -357,19 +357,20 @@ Thread * Scheduler::select_next_thread()
 		// print_lowvec();
 
 		if(usingpct == 1){//pct
-			if(getSchelen() <= schelen_limit){
-				int threadpct = find_highest(thread_list, avail_threads);
-				thread = execution->getFuzzer()->selectThreadbyid(threadpct);
-				if(find_chgidx(getSchelen()) != -1){ // reach change point - move thread
-					movethread(find_chgidx(getSchelen()), threadpct);
-				}	
-			}
-			else{
+			
+			if(getSchelen() % schelen_limit == 0 && getSchelen() != 0){
 				if(!livelock){
 					model_print("Reaching livelock! \n");
 					livelock = true;
 				}
 				thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
+			}
+			else{
+				int threadpct = find_highest(thread_list, avail_threads);
+				thread = execution->getFuzzer()->selectThreadbyid(threadpct);
+				if(find_chgidx(getSchelen()) != -1){ // reach change point - move thread
+					movethread(find_chgidx(getSchelen()), threadpct);
+				}	
 			}
 		}
 		else{ //usingpct = 0; original pct
