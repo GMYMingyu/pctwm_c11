@@ -107,6 +107,7 @@ public:
 		// uint64_t seed = scheduler_get_nanotime();
 		// seed = seed % 20;
 		// model_print("seed: %lu \n", seed);
+		srand(10);
 		
 
 		// srandom(seed);
