@@ -49,7 +49,116 @@ Scheduler::Scheduler() :
 {
 }
 
+void Scheduler::setParams(struct model_params * _params) {
+		params = _params;
+		setlowvec(params->bugdepth);
+		set_chg_pts(params->bugdepth, params->maxscheduler);
+		schelen_limit = 5 * params->maxscheduler;
+		if(params->version == 1) {
+			model_print("using pct version now. \n");
+			pctactive();
+		}
+		else model_print("using c11tester original version now. \n");
+		print_chg();
+	}
 
+void Scheduler::setlowvec(int bugdepth){
+	if(bugdepth > 1){
+		lowvec.resize(bugdepth - 1,-1);
+	}
+	else lowvec.resize(1);
+	
+}
+
+void Scheduler::set_chg_pts(int bugdepth, int maxscheduler){
+		if(bugdepth <= 1){
+			chg_pts.resize(1, getRandom(maxscheduler));
+		}
+		else{
+			chg_pts.resize(bugdepth - 1);
+			for(int i = 0; i < bugdepth - 1; i++){
+				int tmp = getRandom(maxscheduler); // [1, MAXSCHEDULER]
+				while(chg_pts.find(tmp)){
+					tmp = getRandom(maxscheduler);
+				}
+				chg_pts[i] = tmp;
+
+			}
+
+			for(int i = 0; i < bugdepth - 1; i++){
+				for(int j = 1; j < bugdepth - 1; j++){
+					if(chg_pts[j - 1] > chg_pts[j]){
+						int tmp = chg_pts[j - 1];
+						chg_pts[j - 1] = chg_pts[j];
+						chg_pts[j] = tmp;
+					}
+				}
+			}
+		}
+		
+	}
+
+
+int Scheduler::getRandom(int range){
+	// uint64_t seed = scheduler_get_nanotime();
+	// seed = seed % 20;
+	// model_print("seed: %lu \n", seed);
+	// srand(randomnum);
+	
+
+	// srandom(seed);
+	// srandom(20);
+			
+	int tmp = random();
+	model_print("seed: %lu \n", tmp);
+	int res = tmp % range;
+	res = res < 1 ? 1 : res;
+	return res;
+}
+
+
+void Scheduler::print_chg(){
+	model_print("Change Priority Points:  ");
+	for(uint64_t i = 0; i < chg_pts.size(); i++){
+		model_print("[%u]: %d  ", i, chg_pts[i]);
+	}
+	model_print("\n");
+
+}
+
+
+void Scheduler::print_lowvec(){
+	model_print("Low priority threads:  ");
+	for(uint64_t i = 0; i < lowvec.size(); i++){
+		model_print("[%u]: %d  ", i, lowvec[i]);
+	}
+	model_print("\n");
+
+}
+
+void Scheduler::incSchelen(){
+	schelen++;
+}
+
+int Scheduler::getSchelen(){
+	return schelen;
+}
+
+int Scheduler::find_chgidx(int schelen){
+	int res = -1;
+	for(uint i = 0; i < chg_pts.size(); i++){
+		if(schelen == chg_pts[i]) res = i;
+	}
+	return res;
+}
+
+void Scheduler::print_highvec(){
+	model_print("high priority vector: ");
+	for(int i = 0; i < highsize; i++){
+		model_print("[%d] : %d", i, highvec[i]);
+	}
+	model_print("\n");
+}
 // randomly insert thread to high prio vector when it appears - randomly assign prio
 void Scheduler::highvec_addthread(Thread *t){
 		int threadid = id_to_int(t->get_id());	
