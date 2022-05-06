@@ -5,8 +5,9 @@
 #include "action.h"
 
 int Fuzzer::selectWrite(ModelAction *read, SnapVector<ModelAction *> * rf_set) {
-	int random_index = random() % rf_set->size();
-	model_print("randomly write index: %d \n", random_index);
+	int tmp =  random();
+	model_print("randomly write index: %d \n", tmp);
+	int random_index = tmp% rf_set->size();
 	return random_index;
 }
 
