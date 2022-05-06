@@ -7,6 +7,15 @@
 #include "model.h"
 #include "execution.h"
 #include "fuzzer.h"
+#include <cstdlib>
+
+uint64_t get_nanotime()
+{
+	struct timespec currtime;
+	clock_gettime(CLOCK_MONOTONIC, &currtime);
+
+	return currtime.tv_nsec;
+}
 
 /**
  * Format an "enabled_type_t" for printing
@@ -64,6 +73,9 @@ void Scheduler::highvec_addthread(Thread *t){
 		
 		highvec.resize(highsize);
 		
+		uint64_t seed = get_nanotime();
+		// uint64_t seed = 33;
+		srandom(seed);
 		int tmp = rand() % highsize;
 		if(tmp >= highsize - 1){
 			for(int i = 0; i < highsize - 1; i++){

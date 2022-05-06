@@ -573,16 +573,16 @@ void ModelChecker::startChecker() {
 	startExecution();
 	//Need to initial random number generator state to avoid resets on rollback
 	//initstate(423121, random_state, sizeof(random_state));
-	// uint64_t seed = get_nanotime();
-	uint64_t seed = 33;
+	uint64_t seed = get_nanotime();
+	// uint64_t seed = 33;
 	srandom(seed);
 
 	snapshot = take_snapshot();
 
 	//reset random number generator state
 	//setstate(random_state);
-	// seed = get_nanotime();
-	seed = 33;
+	seed = get_nanotime();
+	// seed = 33;
 	srandom(seed);
 
 	install_trace_analyses(get_execution());
