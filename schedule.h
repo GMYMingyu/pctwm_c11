@@ -140,7 +140,9 @@ public:
 
 	int getRandom(int range){
 
-		uint64_t seed = scheduler_get_nanotime() % 15;
+		uint64_t seed = scheduler_get_nanotime();
+		seed = seed % 15;
+
 		srandom(seed);
 				
 		int res =  rand() % range;
