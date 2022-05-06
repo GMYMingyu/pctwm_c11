@@ -36,6 +36,7 @@ public:
 	ModelChecker();
 	~ModelChecker();
 	model_params * getParams();
+	uint64_t get_nanotime();
 
 	/** Exit the model checker, intended for pluggins. */
 	void exit_model_checker();
@@ -86,6 +87,7 @@ private:
 	modelclock_t checkfree;
 
 	unsigned int get_num_threads() const;
+
 
 	void finish_execution(bool moreexecutions);
 	bool should_terminate_execution();
