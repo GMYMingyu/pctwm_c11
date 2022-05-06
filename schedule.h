@@ -45,6 +45,13 @@ public:
 	void set_scheduler_thread(thread_id_t tid);
 
 	// related funcs
+	uint64_t scheduler_get_nanotime()
+	{
+		struct timespec currtime;
+		clock_gettime(CLOCK_MONOTONIC, &currtime);
+
+		return currtime.tv_nsec;
+	}
 
 	void setParams(struct model_params * _params) {
 		params = _params;
