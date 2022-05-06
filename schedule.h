@@ -110,6 +110,7 @@ public:
 		
 
 		// srandom(seed);
+		srandom(20);
 				
 		int tmp = rand();
 		model_print("seed: %lu \n", tmp);
