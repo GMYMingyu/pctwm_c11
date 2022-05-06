@@ -6,6 +6,7 @@
 
 int Fuzzer::selectWrite(ModelAction *read, SnapVector<ModelAction *> * rf_set) {
 	int random_index = random() % rf_set->size();
+	model_print("randomly write index: %d \n", random_index);
 	return random_index;
 }
 
