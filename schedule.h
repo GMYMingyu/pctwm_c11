@@ -82,9 +82,9 @@ public:
 		else{
 			chg_pts.resize(bugdepth - 1);
 			for(int i = 0; i < bugdepth - 1; i++){
-				int tmp = getRandom(maxscheduler); // [1, MAXSCHEDULER]
+				int tmp = getRandom(maxscheduler, i); // [1, MAXSCHEDULER]
 				while(chg_pts.find(tmp)){
-					tmp = getRandom(maxscheduler);
+					tmp = getRandom(maxscheduler, i);
 				}
 				chg_pts[i] = tmp;
 
@@ -103,11 +103,11 @@ public:
 		
 	}
 
-	int getRandom(int range){
+	int getRandom(int range, int random){
 		// uint64_t seed = scheduler_get_nanotime();
 		// seed = seed % 20;
 		// model_print("seed: %lu \n", seed);
-		srand(10);
+		srand(random);
 		
 
 		// srandom(seed);
