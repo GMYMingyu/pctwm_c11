@@ -68,8 +68,8 @@ void Scheduler::highvec_addthread(Thread *t){
 		highvec.resize(highsize);
 		// uint64_t seed = 33
 
-		uint64_t seed = scheduler_get_nanotime();
-		srandom(seed);
+		// uint64_t seed = scheduler_get_nanotime();
+		// srandom(seed);
 
 		int tmp = random() % highsize;	
 		if(tmp >= highsize - 1){
