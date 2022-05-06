@@ -113,7 +113,7 @@ public:
 		// srandom(seed);
 		// srandom(20);
 				
-		int tmp = random();
+		int tmp = rand();
 		model_print("seed: %lu \n", tmp);
 		int res = tmp % range;
 		res = res < 1 ? 1 : res;
