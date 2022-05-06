@@ -4,7 +4,7 @@
 
 #ifndef __SCHEDULE_H__
 #define __SCHEDULE_H__
-
+#include <cstdlib>
 #include "mymemory.h"
 #include "modeltypes.h"
 #include "classlist.h"
@@ -45,6 +45,13 @@ public:
 	void set_scheduler_thread(thread_id_t tid);
 
 	// related funcs
+	uint64_t scheduler_get_nanotime()
+	{
+		struct timespec currtime;
+		clock_gettime(CLOCK_MONOTONIC, &currtime);
+
+		return currtime.tv_nsec;
+	}
 
 	void setParams(struct model_params * _params) {
 		params = _params;
@@ -70,7 +77,7 @@ public:
 
 	void set_chg_pts(int bugdepth, int maxscheduler){
 		if(bugdepth <= 1){
-			chg_pts.resize(1, rand() % maxscheduler);
+			chg_pts.resize(1, getRandom(maxscheduler));
 		}
 		else{
 			chg_pts.resize(bugdepth - 1);
@@ -97,6 +104,12 @@ public:
 	}
 
 	int getRandom(int range){
+		uint64_t seed = scheduler_get_nanotime();
+		// seed = seed % 20;
+
+		srandom(seed);
+				
+
 		int res = rand() % range;
 		res = res < 1 ? 1 : res;
 		return res;
