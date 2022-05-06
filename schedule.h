@@ -77,7 +77,7 @@ public:
 
 	void set_chg_pts(int bugdepth, int maxscheduler){
 		if(bugdepth <= 1){
-			chg_pts.resize(1, getRandom(maxscheduler));
+			chg_pts.resize(1, getRandom(maxscheduler, 1));
 		}
 		else{
 			chg_pts.resize(bugdepth - 1);
