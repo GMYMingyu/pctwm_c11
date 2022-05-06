@@ -145,7 +145,7 @@ public:
 
 		srandom(seed);
 				
-		int res =  random() % range;
+		int res =  rand() % range;
 		res = res < 1 ? 1 : res;
 		return res;
 	}
