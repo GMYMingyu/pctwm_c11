@@ -110,7 +110,7 @@ public:
 		srandom(seed);
 				
 
-		int res = rand() % range;
+		int res = random() % range;
 		res = res < 1 ? 1 : res;
 		return res;
 	}
