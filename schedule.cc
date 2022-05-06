@@ -191,34 +191,7 @@ void Scheduler::highvec_addthread(Thread *t){
 		
 	};
 
-// move highest prio thread to low prio vector according to its index
-void Scheduler::movethread(int lowvec_idx, int threadid){
-	//first:find the threadid
-	
-	bool inhigh = false;
-	for(int i = 0; i < highsize; i++){
-		if(highvec[i] == threadid){//find the thread in highvec
-			highvec[i] = -1;
-			inhigh = true;
-			break;
-		}
-	}
 
-	if(!inhigh){//does not find the thread in highvec, find in lowvec
-		for(uint i = 0; i < lowvec.size(); i++){
-			if(lowvec[i] == threadid){
-				lowvec[i] = -1;
-				break;
-			}
-		}
-	}
-	//model_print("move_highest thread %d to lowvec %d \n", moveid, lowvec_idx);
-
-	//step4: update low vector
-	lowvec[lowvec_idx] = threadid;
-
-
-}
 
 
 void Scheduler::print_avails(int* availthreads, int availnum){
@@ -265,6 +238,38 @@ int Scheduler::find_highest(int* availthreads, int availnum){
 	return resid;
 }
 
+// move highest prio thread to low prio vector according to its index
+void Scheduler::movethread(int lowvec_idx, int threadid){
+	//first:find the threadid
+	
+	bool inhigh = false;
+	for(int i = 0; i < highsize; i++){
+		if(highvec[i] == threadid){//find the thread in highvec
+			highvec[i] = -1;
+			inhigh = true;
+			break;
+		}
+	}
+
+	if(!inhigh){//does not find the thread in highvec, find in lowvec
+		for(uint i = 0; i < lowvec.size(); i++){
+			if(lowvec[i] == threadid){
+				lowvec[i] = -1;
+				break;
+			}
+		}
+	}
+	//model_print("move_highest thread %d to lowvec %d \n", moveid, lowvec_idx);
+
+	//step4: update low vector
+	lowvec[lowvec_idx] = threadid;
+
+
+}
+
+void Scheduler::pctactive(){
+	usingpct = 1;
+}
 
 /**
  * @brief Register the ModelExecution engine
