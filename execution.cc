@@ -1366,6 +1366,7 @@ SnapVector<ModelAction*> * ModelExecution::computeBag_sc(ModelAction *curr){
 			if(act->is_seqcst() && act->checkbag()){ // meet a sc action with bag
 				model_print("we meet a sc action with bag. \n");
 				curr->set_bag(act->get_bag());
+				break; // break the loop if meet one sc action with bag
 			}
 		}
 	
