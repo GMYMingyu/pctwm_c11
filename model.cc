@@ -22,13 +22,13 @@
 ModelChecker *model = NULL;
 int inside_model = 0;
 
-// uint64_t get_nanotime()
-// {
-// 	struct timespec currtime;
-// 	clock_gettime(CLOCK_MONOTONIC, &currtime);
+uint64_t get_nanotime()
+{
+	struct timespec currtime;
+	clock_gettime(CLOCK_MONOTONIC, &currtime);
 
-// 	return currtime.tv_nsec;
-// }
+	return currtime.tv_nsec;
+}
 
 void placeholder(void *) {
 	ASSERT(0);
