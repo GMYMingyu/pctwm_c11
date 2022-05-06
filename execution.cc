@@ -1368,6 +1368,11 @@ SnapVector<ModelAction*> * ModelExecution::computeBag_sc(ModelAction *curr){
 				curr->set_bag(act->get_bag());
 				break; // break the loop if meet one sc action with bag
 			}
+			if(act->is_thread_start()){ // meet the thread start and still no sc action - give the empty
+				SnapVector<ModelAction*> * empty_bag = new SnapVector<ModelAction *> ();
+				curr->set_bag(empty_bag);
+				break;
+			}
 		}
 	
 	}
