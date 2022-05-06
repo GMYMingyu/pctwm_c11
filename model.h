@@ -36,7 +36,6 @@ public:
 	ModelChecker();
 	~ModelChecker();
 	model_params * getParams();
-	uint64_t get_nanotime();
 
 	/** Exit the model checker, intended for pluggins. */
 	void exit_model_checker();
