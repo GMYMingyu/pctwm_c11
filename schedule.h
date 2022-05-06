@@ -104,10 +104,11 @@ public:
 	}
 
 	int getRandom(int range){
-		// uint64_t seed = scheduler_get_nanotime();
-		// // seed = seed % 20;
+		uint64_t seed = scheduler_get_nanotime();
+		model_print("seed: %lu \n", seed);
+		// seed = seed % 20;
 
-		// srandom(seed);
+		srandom(seed);
 				
 
 		int res = rand() % range;
