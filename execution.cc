@@ -2166,6 +2166,7 @@ SnapVector<ModelAction *> *  ModelExecution::build_may_read_from(ModelAction *cu
 
 
 	/* Iterate over all threads */
+	int old_size = 0;
 	if (thrd_lists != NULL)
 		for (i = 0;i < thrd_lists->size();i++) {
 			model_print("search on %d threads. current is the %dth thread.\n", thrd_lists->size(), i);
@@ -2204,14 +2205,19 @@ SnapVector<ModelAction *> *  ModelExecution::build_may_read_from(ModelAction *cu
 					rf_set->push_back(act);
 					search_history++; 
 					if(search_history == history_) {
-						model_print("meet the search bound. ");
+						model_print("add %d reads, meet the search bound. \n", rf_set->size() - old_size());
+						old_size = rf_set->size();
 						break; // stop searching when meet the search boud
 					}
 				}
 
 				/* Include at most one act per-thread that "happens before" curr */
-				if (act->happens_before(curr))
+				if (act->happens_before(curr)){
+					model_print("meet the hb curr, add %d reads, meet the search bound. \n", rf_set->size() - old_size());
+					old_size = rf_set->size();
 					break;
+				}
+					
 
 				// count the allow_read write operations
 				
