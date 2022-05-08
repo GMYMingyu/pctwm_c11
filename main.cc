@@ -26,7 +26,7 @@ void param_defaults(struct model_params *params)
 	params->removevisible = false;
 	params->nofork = false;
 	params->maxscheduler = 38;
-	params->bugdepth = 16;
+	params->bugdepth = 14;
 	params->version = 1;
 	params->maxinstr = 38;
 	params->history = 2;
