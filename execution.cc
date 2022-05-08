@@ -2213,7 +2213,7 @@ SnapVector<ModelAction *> *  ModelExecution::build_may_read_from(ModelAction *cu
 
 				/* Include at most one act per-thread that "happens before" curr */
 				if (act->happens_before(curr)){
-					model_print("meet the hb curr, add %d reads, meet the search bound. \n", rf_set->size() - old_size);
+					model_print("meet the hb curr, add %d reads. \n", rf_set->size() - old_size);
 					old_size = rf_set->size();
 					break;
 				}
