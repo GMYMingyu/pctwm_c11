@@ -25,10 +25,10 @@ void param_defaults(struct model_params *params)
 	params->checkthreshold = 500000;
 	params->removevisible = false;
 	params->nofork = false;
-	params->maxscheduler = 65;
+	params->maxscheduler = 70;
 	params->bugdepth = 11;
 	params->version = 1;
-	params->maxinstr = 65;
+	params->maxinstr = 55;
 	params->history = 2;
 }
 
