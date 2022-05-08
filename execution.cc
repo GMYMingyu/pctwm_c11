@@ -2168,6 +2168,7 @@ SnapVector<ModelAction *> *  ModelExecution::build_may_read_from(ModelAction *cu
 	/* Iterate over all threads */
 	if (thrd_lists != NULL)
 		for (i = 0;i < thrd_lists->size();i++) {
+			model_print("search on %d threads. current is the %dth thread.\n", thrd_lists->size(), i);
 			/* Iterate over actions in thread, starting from most recent */
 			simple_action_list_t *list = &(*thrd_lists)[i];
 			sllnode<ModelAction *> * rit;
