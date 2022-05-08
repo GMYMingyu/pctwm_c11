@@ -2202,6 +2202,10 @@ SnapVector<ModelAction *> *  ModelExecution::build_may_read_from(ModelAction *cu
 					/* Only add feasible reads */
 					rf_set->push_back(act);
 					search_history++; 
+					if(search_history == history_) {
+						model_print("meet the search bound. ");
+						break; // stop searching when meet the search boud
+					}
 				}
 
 				/* Include at most one act per-thread that "happens before" curr */
@@ -2209,7 +2213,7 @@ SnapVector<ModelAction *> *  ModelExecution::build_may_read_from(ModelAction *cu
 					break;
 
 				// count the allow_read write operations
-				if(search_history == history_) break; // stop searching when meet the search boud
+				
 			}
 		}
 
