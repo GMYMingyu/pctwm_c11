@@ -2218,7 +2218,7 @@ SnapVector<ModelAction *> *  ModelExecution::build_may_read_from(ModelAction *cu
 		curr->print();
 		model_print("End printing read_from_past\n");
 	}
-	model_print("rf_set size is : %d \n", rf_set->size());
+	model_print("build_may_read_from, current history is: %d, rf_set size is : %d \n", history_, rf_set->size());
 	return rf_set;
 }
 
