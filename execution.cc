@@ -2201,14 +2201,14 @@ SnapVector<ModelAction *> *  ModelExecution::build_may_read_from(ModelAction *cu
 				if (allow_read) {
 					/* Only add feasible reads */
 					rf_set->push_back(act);
-					
+					search_history++; 
 				}
 
 				/* Include at most one act per-thread that "happens before" curr */
 				if (act->happens_before(curr))
 					break;
 
-				search_history++; // count the allow_read write operations
+				// count the allow_read write operations
 				if(search_history == history_) break; // stop searching when meet the search boud
 			}
 		}
