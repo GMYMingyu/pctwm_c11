@@ -25,7 +25,7 @@ void param_defaults(struct model_params *params)
 	params->checkthreshold = 500000;
 	params->removevisible = false;
 	params->nofork = false;
-	params->maxscheduler = 16;
+	// params->maxscheduler = 16;
 	params->bugdepth = 6;
 	params->version = 1;
 	params->maxinstr = 16;
@@ -65,8 +65,8 @@ static void print_usage(struct model_params *params)
 		"-f, --freqfree=NUM          Frequency to free actions\n"
 		"                            Default: %u\n"
 		"-r, --removevisible         Free visible writes\n"
-		"-l, --maxscheduler			 Scheduler length prevention\n"
-		"                            Default: %u\n"
+		// "-l, --maxscheduler			 Scheduler length prevention\n"
+		// "                            Default: %u\n"
 		"-b, --bugdepth 			 Bugdepth\n"
 		"                            Default: %u\n"
 		"-p, --version				 0: using original c11tester; 1: using pct\n"
@@ -79,7 +79,7 @@ static void print_usage(struct model_params *params)
 		params->maxexecutions,
 		params->traceminsize,
 		params->checkthreshold,
-		params->maxscheduler,
+		// params->maxscheduler,
 		params->bugdepth,
 		params->version,
 		params->maxinstr,
@@ -109,7 +109,8 @@ bool install_plugin(char * name) {
 
 void parse_options(struct model_params *params) {
 	//const char *shortopts = "hrnt:o:x:v:m:f:";
-	const char *shortopts = "hrnt:o:x:v:m:f:l:b:p:i:y:";
+	// const char *shortopts = "hrnt:o:x:v:m:f:l:b:p:i:y:";
+	const char *shortopts = "hrnt:o:x:v:m:f:b:p:i:y:";
 	const struct option longopts[] = {
 		{"help", no_argument, NULL, 'h'},
 		{"removevisible", no_argument, NULL, 'r'},
@@ -119,7 +120,7 @@ void parse_options(struct model_params *params) {
 		{"verbose", optional_argument, NULL, 'v'},
 		{"minsize", required_argument, NULL, 'm'},
 		{"freqfree", required_argument, NULL, 'f'},
-		{"maxscheduler", required_argument, NULL, 'l'},
+		// {"maxscheduler", required_argument, NULL, 'l'},
 		{"bugdepth", required_argument, NULL, 'b'},
 		{"version", required_argument, NULL, 'p'},
 		{"instrnum", required_argument, NULL, 'i'},
@@ -176,9 +177,9 @@ void parse_options(struct model_params *params) {
 		case 'f':
 			params->checkthreshold = atoi(optarg);
 			break;
-		case 'l':
-			params->maxscheduler = atoi(optarg);
-			break;
+		// case 'l':
+		// 	params->maxscheduler = atoi(optarg);
+		// 	break;
 		case 'b':
 			params->bugdepth = atoi(optarg);
 			break;

@@ -71,7 +71,7 @@ void print_params(struct model_params *params){
 		"-x, --maxexec=NUM           Maximum number of executions. Default: 10 Now: %u\n"
 		"-m, --minsize=NUM           Minimum number of actions to keep Default: 0 Now: %u\n"
 		"-f, --freqfree=NUM          Frequency to free actions Default:500000 Now: %u\n"
-		"-l, --maxscheduler=NUM		 Scheduler length limitation Default:50 Now: %u\n"
+		//"-l, --maxscheduler=NUM		 Scheduler length limitation Default:50 Now: %u\n"
 		"-b, --bugdepth=NUM			 bugdepth Default:5 Now: %u\n"
 		"-p, --version=NUM			 c11testerversion Default:0 Now: %u\n"
 		"-i, --maxinstr=NUM			 read num bounds: Default:30 Now: %u\n"
@@ -80,7 +80,7 @@ void print_params(struct model_params *params){
 		params->maxexecutions,
 		params->traceminsize,
 		params->checkthreshold,
-		params->maxscheduler,
+		// params->maxscheduler,
 		params->bugdepth,
 		params->version,
 		params->maxinstr,

@@ -67,7 +67,7 @@ Scheduler::Scheduler() :
 		params = _params;
 		setlowvec(params->bugdepth);
 		set_chg_pts_byread(params->bugdepth, params->maxinstr);
-		schelen_limit = 2 * params->maxscheduler;
+		schelen_limit = 2 * params->maxinstr;
 		if(params->version == 1) {
 			model_print("using pct version now. \n");
 			pctactive();
