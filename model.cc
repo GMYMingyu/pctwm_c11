@@ -126,6 +126,7 @@ ModelChecker::ModelChecker() :
 	
 	execution->setParams(&params);
 	scheduler->setParams(&params);
+	scheduler->print_chg();
 	initRaceDetector();
 	/* Configure output redirection for the model-checker */
 	install_handler();
