@@ -28,7 +28,7 @@ void param_defaults(struct model_params *params)
 	// params->maxscheduler = 16;
 	params->bugdepth = 4;
 	params->version = 1;
-	params->maxinstr = 15;
+	params->maxinstr = 14;
 	params->history = 5;
 }
 
