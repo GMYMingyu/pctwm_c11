@@ -55,11 +55,11 @@ void Scheduler::setParams(struct model_params * _params) {
 		// srand(seed);
 		params = _params;
 		setlowvec(params->bugdepth);
-		if(params->seed != 0){
-			uint64_t seed = params->seed;
-			model_print("current seed is %d. \n", seed);
-			srand(seed);
-		}
+		// if(params->seed != 0){
+		// 	uint64_t seed = params->seed;
+		// 	model_print("current seed is %d. \n", seed);
+		// 	srand(seed);
+		// }
 		set_chg_pts(params->bugdepth, params->maxscheduler);
 		
 		
