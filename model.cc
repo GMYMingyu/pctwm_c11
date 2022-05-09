@@ -74,7 +74,8 @@ void print_params(struct model_params *params){
 		"-l, --maxscheduler=NUM		 Scheduler length limitation Default:50 Now: %u\n"
 		"-b, --bugdepth=NUM			 bugdepth Default:5 Now: %u\n"
 		"-v, --version=NUM			 c11testerversion Default:0 Now: %u\n"
-		"-e, --maxread=NUM			 read num bounds: Default:30 Now: %u\n",
+		"-e, --maxread=NUM			 read num bounds: Default:30 Now: %u\n"
+		"-s, --seed=NUM			 	 random seed: Default:0 Now: %u\n",
 		params->verbose,
 		params->maxexecutions,
 		params->traceminsize,
@@ -82,7 +83,8 @@ void print_params(struct model_params *params){
 		params->maxscheduler,
 		params->bugdepth,
 		params->version,
-		params->maxread);
+		params->maxread,
+		params->seed);
 }
 
 void createModelIfNotExist() {

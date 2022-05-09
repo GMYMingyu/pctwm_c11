@@ -21,6 +21,8 @@ struct model_params {
 
 	//pctwm params
 	int maxread;
+
+	int seed;
 };
 
 void param_defaults(struct model_params *params);
