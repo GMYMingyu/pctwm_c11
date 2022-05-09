@@ -51,7 +51,7 @@ Scheduler::Scheduler() :
 
 void Scheduler::setParams(struct model_params * _params) {
 		//uint64_t seed = scheduler_get_nanotime();
-		uint64_t seed = 5;
+		uint64_t seed = 10;
 		srand(seed);
 		params = _params;
 		setlowvec(params->bugdepth);
