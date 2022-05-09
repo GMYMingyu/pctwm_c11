@@ -66,6 +66,8 @@ Scheduler::Scheduler() :
 	void Scheduler::setParams(struct model_params * _params) {
 		params = _params;
 		setlowvec(params->bugdepth);
+		uint64_t seed = scheduler_get_nanotime();
+		srand(seed);
 		set_chg_pts_byread(params->bugdepth, params->maxinstr);
 		schelen_limit = 2 * params->maxinstr;
 		if(params->version == 1) {
