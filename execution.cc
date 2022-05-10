@@ -840,7 +840,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	wake_up_sleeping_actions();
 	if(curr->in_count()){
 		instrnum++;
-		model_print("current we have %d instrnums. \n", instrnum);
+		// model_print("current we have %d instrnums. \n", instrnum);
 	}
 
 	SnapVector<ModelAction *> * rf_set = NULL;
