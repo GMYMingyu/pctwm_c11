@@ -464,6 +464,7 @@ void ModelChecker::finishRunExecution(Thread *old)
 
 	/** We finished the final execution.  Print stuff and exit. */
 	model_print("******* Model-checking complete: *******\n");
+	model_print("scheduler length is %d. \n", scheduler->getSchelen());
 	print_stats();
 
 	/* Have the trace analyses dump their output. */
