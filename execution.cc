@@ -1238,7 +1238,7 @@ void ModelExecution::process_thread_action(ModelAction *curr)
 bool ModelExecution::initialize_curr_action(ModelAction **curr)
 {
 	if ((*curr)->is_rmwc() || (*curr)->is_rmw()) {
-		model_print("meet rmwc / rmw ");
+		//model_print("meet rmwc / rmw ");
 		ModelAction *newcurr = process_rmw(*curr);
 		delete *curr;
 
@@ -1449,7 +1449,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			if(curr->is_read()){ // we change the priority at a read operation
 				scheduler->add_external_readnum_thread(curr_threadid);
 			}
-			scheduler->print_external_readnum_thread();
+			//scheduler->print_external_readnum_thread();
 		}
 	}
 
@@ -1486,7 +1486,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 					canprune = process_read(curr, rf_set, true);
 					delete rf_set;
 					scheduler->deleteone_external_readnum_thread(curr_threadid); // delete one read external job on this thread
-					scheduler->print_external_readnum_thread();
+					//scheduler->print_external_readnum_thread();
 				}
 				else{
 					curr->reset_external_flag();
@@ -1584,7 +1584,7 @@ ModelAction * ModelExecution::process_rmw(ModelAction *act) {
 	lastread->process_rmw(act);
 	//model_print("process_rmw: process last_action \n");
 	if (act->is_rmw()) {
-		model_print("start add edge");
+		//model_print("start add edge");
 		mo_graph->addRMWEdge(lastread->get_reads_from(), lastread);
 	}
 	//model_print("process_rmw: successfully process_rmw \n");
