@@ -529,7 +529,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 
 		if(before_flag && act != curr && act->get_tid() == curr->get_tid()){// iterate all actions before the current action
 			//model_print("\n computeUpdate: iteration action type is  %-14s. on thread %d, sequence number is : %d , location: %14p, mo_type is : %7s. \n", 
-					type_str, id_to_int(act->get_tid()), act->get_seq_number(),act->get_location(),  mo_str);
+					//type_str, id_to_int(act->get_tid()), act->get_seq_number(),act->get_location(),  mo_str);
 			// model_print("(Iteration action seq_num: %u. type: %-14s, location: %14p. threadid: %d", 
 			// 		act->get_seq_number(), act->get_type_str(), act->get_location(), act->get_tid());
 			//model_print("value: %" PRIx64 ")\n", act->get_value());
@@ -608,8 +608,8 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate_fence(ModelAction *fe
 	Thread *acq_thr = get_thread(acq_tid);
 	SnapVector<ModelAction *> * acq_localvec = acq_thr->get_local_vec();
 	//model_print("computeUpdate for fence %u on thread %d : the localvec on read action's thread, size: %d.\n ", 
-			fence_acq->get_seq_number(), acq_tid, acq_localvec->size());
-	print_actset(acq_localvec);
+			//fence_acq->get_seq_number(), acq_tid, acq_localvec->size());
+	//print_actset(acq_localvec);
 
 	// the thread of write action - iteration
 	// int wr_tid = curr->get_tid(); // get the current thread id
@@ -635,7 +635,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate_fence(ModelAction *fe
 
 		if(before_flag && act != fence_rel && act->get_tid() == fence_rel->get_tid()){// iterate all actions before the current action
 			//model_print("\n computeUpdate: iteration action type is  %-14s. on thread %d, sequence number is : %d , location: %14p, mo_type is : %7s. \n", 
-					type_str, id_to_int(act->get_tid()), act->get_seq_number(),act->get_location(),  mo_str);
+					//type_str, id_to_int(act->get_tid()), act->get_seq_number(),act->get_location(),  mo_str);
 			// model_print("(Iteration action seq_num: %u. type: %-14s, location: %14p. threadid: %d", 
 			// 		act->get_seq_number(), act->get_type_str(), act->get_location(), act->get_tid());
 			//model_print("value: %" PRIx64 ")\n", act->get_value());
@@ -757,13 +757,13 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 		ModelAction *rf;
 		int index;
 		//model_print("current read action location: %u, threadid : %u \n", 
-						curr->get_location(),id_to_int(curr->get_tid()));
+						//curr->get_location(),id_to_int(curr->get_tid()));
 
 		// step2: get the read action related info
 		int rd_tid = curr->get_tid();
 		Thread *rd_thr = get_thread(rd_tid);
 		//model_print("In process read: current localvec size is %d.\n", rd_thr->get_localvec_size());
-		rd_thr->print_local_vec();
+		//rd_thr->print_local_vec();
 
 		// step3: read externally or internally
 		if(read_external){ // ask to read externally
