@@ -1065,18 +1065,18 @@ bool ModelExecution::process_mutex(ModelAction *curr)
  */
 void ModelExecution::process_write(ModelAction *curr)
 {
-	model_print("\n Process write action. ");
+	//model_print("\n Process write action. ");
 	if(curr->is_seqcst()){
 		SnapVector<ModelAction*> * tmp_bag = updateVec(curr->get_bag(), curr);
 		curr->set_bag(tmp_bag);
-		model_print("set a bag for write_sc. \n");
+		//model_print("set a bag for write_sc. \n");
 	}
 	// we meet a write action -> update the local vec
 	Thread * curr_thread = get_thread(curr);
 	SnapVector<ModelAction*> *thrd_localvec = curr_thread->get_local_vec();
 	curr_thread->set_local_vec(updateVec(thrd_localvec, curr));
 	//curr_thread->update_local_vec(curr);
-	model_print("Updates local vec in thread %d - ", id_to_int(curr_thread->get_id()));
+	//model_print("Updates local vec in thread %d - ", id_to_int(curr_thread->get_id()));
 	curr_thread->print_local_vec();
 	w_modification_order(curr);
 	get_thread(curr)->set_return_value(VALUE_NONE);
@@ -1098,23 +1098,23 @@ void ModelExecution::process_fence(ModelAction *curr)
 	 * fence-seq-cst: MO constraints formed in {r,w}_modification_order
 	 */
 
-	model_print("meet a fence action. \n");
+	//model_print("meet a fence action. \n");
 
 	if (curr->is_acquire()) {
 		curr->get_cv()->merge(get_thread(curr)->get_acq_fence_cv());
 		SnapVector<ModelAction* > * fence_bag = new SnapVector<ModelAction *> ();
 		for(unsigned int i = 0; i < get_num_threads(); i++){
-			model_print("calling the get last fence release. \n");
+			//model_print("calling the get last fence release. \n");
 			ModelAction* last_rel = get_last_fence_release(int_to_id(i)); // get the last fence_release action on each thread
 			if(last_rel != NULL){
-				model_print("Thread %d last release fence is %d",i, last_rel->get_seq_number());
-				const char *acqmo_str = curr->get_mo_str();
-				const char *relmo_str = last_rel->get_mo_str();
-				const char *reltype_str = last_rel->get_type_str();
+				//model_print("Thread %d last release fence is %d",i, last_rel->get_seq_number());
+				// const char *acqmo_str = curr->get_mo_str();
+				// const char *relmo_str = last_rel->get_mo_str();
+				// const char *reltype_str = last_rel->get_type_str();
 
-				model_print("The fence_acq type is: %7s, the fence_rel type is %7s, action type is %7s. ",acqmo_str, relmo_str, reltype_str);
+				//model_print("The fence_acq type is: %7s, the fence_rel type is %7s, action type is %7s. ",acqmo_str, relmo_str, reltype_str);
 				if(curr->could_synchronize_with(last_rel)){
-					model_print("these two fence are synchronized\n");
+					//model_print("these two fence are synchronized\n");
 					SnapVector<ModelAction* > * tmp_bag = computeUpdate_fence(curr, last_rel);
 					fence_bag = maxVec(tmp_bag, fence_bag);
 
@@ -1131,7 +1131,7 @@ void ModelExecution::process_fence(ModelAction *curr)
 		}
 		curr->set_bag(fence_bag);
 		acq_thr->set_local_vec(fence_bag);
-		model_print("\n finish update in process fence. ");
+		//model_print("\n finish update in process fence. ");
 		acq_thr->print_local_vec();
 		
 	}
@@ -2169,7 +2169,7 @@ SnapVector<ModelAction *> *  ModelExecution::build_may_read_from(ModelAction *cu
 	int old_size = 0;
 	if (thrd_lists != NULL)
 		for (i = 0;i < thrd_lists->size();i++) {
-			model_print("search on %d threads. current is the %dth thread.\n", thrd_lists->size(), i);
+			//model_print("search on %d threads. current is the %dth thread.\n", thrd_lists->size(), i);
 			/* Iterate over actions in thread, starting from most recent */
 			simple_action_list_t *list = &(*thrd_lists)[i];
 			sllnode<ModelAction *> * rit;
@@ -2205,7 +2205,7 @@ SnapVector<ModelAction *> *  ModelExecution::build_may_read_from(ModelAction *cu
 					rf_set->push_back(act);
 					search_history++; 
 					if(search_history == history_) {
-						model_print("add %d reads, meet the search bound. \n", rf_set->size() - old_size);
+						//model_print("add %d reads, meet the search bound. \n", rf_set->size() - old_size);
 						old_size = rf_set->size();
 						break; // stop searching when meet the search boud
 					}
@@ -2213,7 +2213,7 @@ SnapVector<ModelAction *> *  ModelExecution::build_may_read_from(ModelAction *cu
 
 				/* Include at most one act per-thread that "happens before" curr */
 				if (act->happens_before(curr)){
-					model_print("meet the hb curr, add %d reads. \n", rf_set->size() - old_size);
+					//model_print("meet the hb curr, add %d reads. \n", rf_set->size() - old_size);
 					old_size = rf_set->size();
 					break;
 				}
@@ -2229,7 +2229,7 @@ SnapVector<ModelAction *> *  ModelExecution::build_may_read_from(ModelAction *cu
 		curr->print();
 		model_print("End printing read_from_past\n");
 	}
-	model_print("build_may_read_from, current history is: %d, rf_set size is : %d \n", history_, rf_set->size());
+	//model_print("build_may_read_from, current history is: %d, rf_set size is : %d \n", history_, rf_set->size());
 	return rf_set;
 }
 
