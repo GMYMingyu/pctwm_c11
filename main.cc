@@ -29,7 +29,7 @@ void param_defaults(struct model_params *params)
 	params->bugdepth = 9;
 	params->version = 1;
 	params->maxinstr = 22;
-	params->history = 1;
+	params->history = 4;
 }
 
 static void print_usage(struct model_params *params)
