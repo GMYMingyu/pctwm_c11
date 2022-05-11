@@ -709,10 +709,10 @@ Thread * Scheduler::select_next_thread()
 					model_print("Reaching livelock! \n");
 					livelock = true;
 				}
-				model_print("scheduler: randomly select thread \n");
+				//model_print("scheduler: randomly select thread \n");
 				thread = execution->getFuzzer()->selectThread(thread_list, avail_threads);
 				
-				model_print("switch to another thread. thread %d \n", id_to_int(thread->get_id()));
+				//model_print("switch to another thread. thread %d \n", id_to_int(thread->get_id()));
 			}
 			else{//(execution->getInstrnum() <= schelen_limit ){
 				int threadpct = find_highest(thread_list, avail_threads);
