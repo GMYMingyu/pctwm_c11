@@ -579,7 +579,7 @@ SnapVector<ModelAction *> *  ModelExecution::computeUpdate(ModelAction *rd, Mode
 
 	rd_thr->set_local_vec(rd_localvec);
 	//model_print("After process read, the thread local vec becomes \t");
-	rd_thr->print_local_vec();
+	//rd_thr->print_local_vec();
 	
 	rd->set_bag(Eres);
 	//model_print("After process read, the action set a bag. \t");
@@ -1077,7 +1077,8 @@ void ModelExecution::process_write(ModelAction *curr)
 	curr_thread->set_local_vec(updateVec(thrd_localvec, curr));
 	//curr_thread->update_local_vec(curr);
 	//model_print("Updates local vec in thread %d - ", id_to_int(curr_thread->get_id()));
-	curr_thread->print_local_vec();
+	
+	//curr_thread->print_local_vec();
 	w_modification_order(curr);
 	get_thread(curr)->set_return_value(VALUE_NONE);
 }
@@ -1132,7 +1133,7 @@ void ModelExecution::process_fence(ModelAction *curr)
 		curr->set_bag(fence_bag);
 		acq_thr->set_local_vec(fence_bag);
 		//model_print("\n finish update in process fence. ");
-		acq_thr->print_local_vec();
+		//acq_thr->print_local_vec();
 		
 	}
 }

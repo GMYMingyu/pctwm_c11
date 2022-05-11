@@ -201,7 +201,7 @@ Scheduler::Scheduler() :
 	}
 
 	int Scheduler::find_chgidx(int currlen){ // rename the parameter to currlen - it may be readnum
-		print_chg();
+		//print_chg();
 		int res = -1;
 		for(uint i = 0; i < chg_pts.size(); i++){
 			if(currlen == chg_pts[i]) res = i;
