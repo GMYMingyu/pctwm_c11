@@ -2442,10 +2442,9 @@ Thread * ModelExecution::action_select_next_thread(const ModelAction *curr, bool
 {	
 	//model_print("now the action select next thread. \n");
 	if(curr->in_count() && change_flag){
-	//if(change_flag){
-		model_print("now change point: select the new highest thread.");
-		scheduler->print_current_avail_threads();
-		model_print("return the highest thread: %d \n", scheduler->get_highest_thread());
+		//model_print("now change point: select the new highest thread.");
+		//scheduler->print_current_avail_threads();
+		//model_print("return the highest thread: %d \n", scheduler->get_highest_thread());
 		return get_thread(int_to_id(scheduler->get_highest_thread()));
 	}
 	/* Do not split atomic RMW */
@@ -2485,9 +2484,9 @@ Thread * ModelExecution::take_step(ModelAction *curr)
 	
 	
 	bool change_flag = curr->checkexternal();
-	if(change_flag){
-		model_print("now we reselect the highest prio thread. \n");
-	}
+	// if(change_flag){
+	// 	model_print("now we reselect the highest prio thread. \n");
+	// }
 
 	//model_print("call the action select next thread.\n");
 	return action_select_next_thread(curr, change_flag);
