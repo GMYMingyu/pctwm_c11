@@ -30,6 +30,7 @@ void param_defaults(struct model_params *params)
 	params->version = 1;
 	params->maxinstr = 19;
 	params->history = 2;
+	params->seed = 0;
 }
 
 static void print_usage(struct model_params *params)
@@ -74,6 +75,8 @@ static void print_usage(struct model_params *params)
 		"-i, --bound of instrnums	 the bound of instrnums\n"
 		"                            Default: %u\n"
 		"-y, --search rf_set	 	 the bound of searching in rf_set\n"
+		"                            Default: %u\n"
+		"-s, --seed				 	 the random seed\n"
 		"                            Default: %u\n",
 		params->verbose,
 		params->maxexecutions,
@@ -83,7 +86,8 @@ static void print_usage(struct model_params *params)
 		params->bugdepth,
 		params->version,
 		params->maxinstr,
-		params->history);
+		params->history,
+		params->seed);
 	model_print("Analysis plugins:\n");
 	for(unsigned int i=0;i<registeredanalysis->size();i++) {
 		TraceAnalysis * analysis=(*registeredanalysis)[i];
@@ -110,7 +114,7 @@ bool install_plugin(char * name) {
 void parse_options(struct model_params *params) {
 	//const char *shortopts = "hrnt:o:x:v:m:f:";
 	// const char *shortopts = "hrnt:o:x:v:m:f:l:b:p:i:y:";
-	const char *shortopts = "hrnt:o:x:v:m:f:b:p:i:y:";
+	const char *shortopts = "hrnt:o:x:v:m:f:b:p:i:y:s:";
 	const struct option longopts[] = {
 		{"help", no_argument, NULL, 'h'},
 		{"removevisible", no_argument, NULL, 'r'},
@@ -125,6 +129,7 @@ void parse_options(struct model_params *params) {
 		{"version", required_argument, NULL, 'p'},
 		{"instrnum", required_argument, NULL, 'i'},
 		{"history", required_argument, NULL, 'y'},
+		{"seed", required_argument, NULL, 's'},
 		{0, 0, 0, 0}	/* Terminator */
 	};
 	int opt, longindex;
@@ -195,6 +200,9 @@ void parse_options(struct model_params *params) {
 			break;
 		case 'r':
 			params->removevisible = true;
+			break;
+		case 's':
+			params->seed = atoi(optarg);
 			break;
 		case 'o':
 		{

@@ -69,6 +69,9 @@ Scheduler::Scheduler() :
 		//uint64_t seed = scheduler_get_nanotime();
 		// uint64_t seed = 3581;
 		// srand(seed);
+		if(params->seed != 0){
+			srand(params->seed);
+		}
 		set_chg_pts_byread(params->bugdepth, params->maxinstr);
 		schelen_limit = 2 * params->maxinstr;
 		if(params->version == 1) {
