@@ -465,7 +465,7 @@ void Scheduler::print_current_avail_threads(){
 			return false;
 			}
 		else{
-			if(external_readnum_thread[threadid] > 0){
+			if(external_readnum_thread[threadid]){
 				external_readnum_thread[threadid] = false;
 				return true;
 			}
