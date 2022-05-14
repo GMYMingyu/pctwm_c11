@@ -704,7 +704,7 @@ Thread * Scheduler::select_next_thread()
 
 		if(usingpct == 1){//pct
 			
-			if( execution->getInstrnum() % schelen_limit == 0 && execution->getInstrnum()!= 0){
+			if((execution->getInstrnum() % schelen_limit == 0 && execution->getInstrnum()!= 0) || (execution->getInstrnum() > 10 * schelen_limit)){
 				if(!livelock){
 					model_print("Reaching livelock! \n");
 					livelock = true;

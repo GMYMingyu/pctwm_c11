@@ -799,7 +799,7 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 			if(curr->is_seqcst()){ // if is read_sc one more step
 				//model_print("for the read_sc, one more step. \n");
 				curr->set_bag(tmpbag);
-				rd_thr->set_local_vec(curr->get_bag());
+				rd_thr->update_local_vec(curr->get_bag());
 			}
 
 			// then process the read
