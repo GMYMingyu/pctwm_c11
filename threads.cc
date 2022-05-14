@@ -613,7 +613,7 @@ bool Thread::is_waiting_on(const Thread *t) const
 
 	ModelAction* Thread::get_same_location_act(ModelAction* act){
 		
-		model_print("thread localvec size: %d \n", local_vec->size());
+		// model_print("thread localvec size: %d \n", local_vec->size());
 		for(uint i = 0; i < local_vec->size(); i++){
 			ModelAction* iteract = (*local_vec)[i];
 			if(act->get_location() == iteract->get_location()){
