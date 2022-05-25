@@ -576,6 +576,7 @@ void ModelChecker::startChecker() {
 	uint64_t seed = get_nanotime();
 	// uint64_t seed = 33;
 	srandom(seed);
+	model_print("the seed is %u", seed);
 
 	snapshot = take_snapshot();
 
