@@ -112,7 +112,8 @@ Scheduler::Scheduler() :
 	//pctwm
 	void Scheduler::set_chg_pts_byread(int bugdepth, int maxinstr){
 		if(bugdepth <= 1){
-			chg_pts.resize(1,  getRandom(maxinstr));
+			chg_pts.resize(0);
+			//chg_pts.resize(1,  getRandom(maxinstr));
 		}
 		else{
 			chg_pts.resize(bugdepth - 1);
