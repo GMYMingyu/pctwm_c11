@@ -85,7 +85,7 @@ Scheduler::Scheduler() :
 
 	void Scheduler::setlowvec(int bugdepth){
 		if(bugdepth > 1){
-			lowvec.resize(bugdepth - 1,-1);
+			lowvec.resize(bugdepth,-1);
 		}
 		else lowvec.resize(1);
 		
