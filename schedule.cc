@@ -76,13 +76,13 @@ void Scheduler::setlowvec(int bugdepth){
 	if(bugdepth > 1){
 		lowvec.resize(bugdepth - 1,-1);
 	}
-	else lowvec.resize(1);
+	else lowvec.resize(0);
 	
 }
 
 void Scheduler::set_chg_pts(int bugdepth, int maxscheduler){
 		if(bugdepth <= 1){
-			chg_pts.resize(1, getRandom(maxscheduler));
+			chg_pts.resize(0);
 		}
 		else{
 			chg_pts.resize(bugdepth - 1);
