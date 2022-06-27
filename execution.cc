@@ -1075,8 +1075,8 @@ void ModelExecution::process_write(ModelAction *curr)
 	Thread * curr_thread = get_thread(curr);
 	SnapVector<ModelAction*> *thrd_localvec = curr_thread->get_local_vec();
 	curr_thread->set_local_vec(updateVec(thrd_localvec, curr));
-	//curr_thread->update_local_vec(curr);
-	//model_print("Updates local vec in thread %d - ", id_to_int(curr_thread->get_id()));
+	curr_thread->update_local_vec(curr);
+	model_print("Write action: Updates local vec in thread %d - ", id_to_int(curr_thread->get_id()));
 	
 	//curr_thread->print_local_vec();
 	w_modification_order(curr);
