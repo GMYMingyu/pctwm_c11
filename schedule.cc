@@ -625,6 +625,12 @@ void Scheduler::add_thread(Thread *t)
 {
 	DEBUG("thread %d\n", id_to_int(t->get_id()));
 	ASSERT(!t->is_model_thread());
+	Thread * main_thread = model->get_thread(int_to_id(1));
+	model_print("init a new thread: 1)get the main thread\n");
+	SnapVector<ModelAction*> *main_localvec = main_thread->get_local_vec();
+	t->set_local_vec(main_localvec);
+	model_print("2) give it the main localvec\n");
+	t->print_local_vec();
 	set_enabled(t, THREAD_ENABLED);
 	highvec_addthread(t);
 }
