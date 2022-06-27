@@ -756,14 +756,14 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 		// step 1 : prepare
 		ModelAction *rf;
 		int index;
-		//model_print("current read action location: %u, threadid : %u \n", 
-						//curr->get_location(),id_to_int(curr->get_tid()));
+		model_print("current read action location: %u, threadid : %u \n", 
+						curr->get_location(),id_to_int(curr->get_tid()));
 
 		// step2: get the read action related info
 		int rd_tid = curr->get_tid();
 		Thread *rd_thr = get_thread(rd_tid);
-		//model_print("In process read: current localvec size is %d.\n", rd_thr->get_localvec_size());
-		//rd_thr->print_local_vec();
+		model_print("In process read: current localvec size is %d.\n", rd_thr->get_localvec_size());
+		rd_thr->print_local_vec();
 
 		// step3: read externally or internally
 		if(read_external){ // ask to read externally
@@ -809,15 +809,15 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 				//model_print("local vec has such write, seqnum:%d \n", rf->get_seq_number());
 				index = fuzzer->find_idx(rf_set, rf);
 				if(index != -1){ // to make sure this variable locally is readable
-					//model_print("localvec has such variable \n");
+					model_print("localvec has such variable \n");
 					rf = (*rf_set)[index];
 					// (*rf_set)[index] = rf_set->back();
 					// rf_set->pop_back();
 				 	// localvec has the same variable
 				}
 				else{
-					//model_print("localvec has one variable. but not in the rf_set \n");
-					//model_print("rf_set size is: %u. \n", rf_set->size());
+					model_print("localvec has one variable. but not in the rf_set \n");
+					model_print("rf_set size is: %u. \n", rf_set->size());
 					index = fuzzer->selectWrite(curr, rf_set);
 					rf = (*rf_set)[index];
 					// (*rf_set)[index] = rf_set->back();
@@ -825,8 +825,8 @@ bool ModelExecution::process_read(ModelAction *curr, SnapVector<ModelAction *> *
 				}
 			}
 			else{// the local vec has no such variable
-				//model_print("localvec has no variable. randomly select from rf_set. \n");
-				//model_print("rf_set size is: %u. \n", rf_set->size());
+				model_print("localvec has no variable. randomly select from rf_set. \n");
+				model_print("rf_set size is: %u. \n", rf_set->size());
 				index = fuzzer->selectWrite(curr, rf_set);
 				rf = (*rf_set)[index];
 				// (*rf_set)[index] = rf_set->back();
@@ -1417,9 +1417,10 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 	uint curr_threadid = id_to_int(curr->get_tid());
 	Thread* curr_thread = get_thread(curr);
 
-	// const char *type_str = curr->get_type_str();
-	// const char *mo_str = curr->get_mo_str();
-	// model_print("\n current action type is  %-14s. on thread %d, sequence number is : %d , mo_type is : %7s. \n", type_str, curr_threadid, curr->get_seq_number(), mo_str);
+	const char *type_str = curr->get_type_str();
+	const char *mo_str = curr->get_mo_str();
+	model_print("\n current action type is  %-14s. on thread %d, sequence number is : %d , mo_type is : %7s. \n", 
+		type_str, curr_threadid, curr->get_seq_number(), mo_str);
 
 
 	bool change_point = false;
@@ -1479,7 +1480,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 			if (curr->is_read() && newly_explored ) { // process read action
 				int read_external_num_on_curr_thread = scheduler->get_external_readnum_thread(curr_threadid);
 				if(read_external_num_on_curr_thread){ // this thread has read external job
-					//model_print("we meet a pending read again have read external job. - read external\n");
+					model_print("we meet a pending read again have read external job. - read external\n");
 					rf_set = build_may_read_from(curr, history_);
 					//canprune = process_read(curr, rf_set);
 					curr->reset_external_flag();
@@ -1490,7 +1491,7 @@ ModelAction * ModelExecution::check_current_action(ModelAction *curr)
 				}
 				else{
 					curr->reset_external_flag();
-					//model_print(" no external read job. - read local \n");
+					model_print(" no external read job. - read local \n");
 					rf_set = build_may_read_from(curr, history_);
 					canprune = process_read(curr, rf_set, false); // read internally
 					delete rf_set;
