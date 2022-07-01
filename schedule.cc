@@ -69,10 +69,11 @@ Scheduler::Scheduler() :
 		//uint64_t seed = scheduler_get_nanotime();
 		// uint64_t seed = 3581;
 		// srand(seed);
-		if(params->seed != 0){
-			srand(params->seed);
-		}
-		set_chg_pts_byread(params->bugdepth, params->maxinstr);
+
+		// if(params->seed != 0){
+		// 	srand(params->seed);
+		// }
+		set_chg_pts_byread(params->bugdepth, params->maxinstr, params->seed);
 		schelen_limit = 2 * params->maxinstr;
 		if(params->version == 1) {
 			model_print("using pct version now. \n");
@@ -110,7 +111,7 @@ Scheduler::Scheduler() :
 	// }
 
 	//pctwm
-	void Scheduler::set_chg_pts_byread(int bugdepth, int maxinstr){
+	void Scheduler::set_chg_pts_byread(int bugdepth, int maxinstr, int seed){
 		if(bugdepth <= 0){
 			chg_pts.resize(0);
 			//chg_pts.resize(1,  getRandom(maxinstr));
@@ -161,14 +162,14 @@ Scheduler::Scheduler() :
 
 
 
-	int Scheduler::getRandom(int range){
+	int Scheduler::getRandom(int range, int seed){
 
 		// uint64_t seed = scheduler_get_nanotime();
 		// seed = seed % 20;
 
 		// srandom(seed);
 				
-		int res =  rand() % range;
+		int res =  (rand() + seed) % range;
 		res = res < 1 ? 1 : res;
 		return res;
 	}

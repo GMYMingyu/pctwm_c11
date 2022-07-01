@@ -71,7 +71,7 @@ public:
 	// }
 
 	//pctwm
-	void set_chg_pts_byread(int bugdepth, int maxinstr);
+	void set_chg_pts_byread(int bugdepth, int maxinstr, int seed);
 
 
 	//pctwm - return bool: true : threadid in highvec(not change prio yet)
@@ -79,7 +79,7 @@ public:
 
 
 
-	int getRandom(int range);
+	int getRandom(int range, int seed);
 
 
 	void print_chg();
