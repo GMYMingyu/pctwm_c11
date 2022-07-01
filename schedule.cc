@@ -119,9 +119,9 @@ Scheduler::Scheduler() :
 		else{
 			chg_pts.resize(bugdepth);
 			for(int i = 0; i < bugdepth; i++){
-				int tmp = getRandom(maxinstr); // [1, MAXSCHEDULER]
+				int tmp = getRandom(maxinstr, seed); // [1, MAXSCHEDULER]
 				while(chg_pts.find(tmp)){
-					tmp = getRandom(maxinstr);
+					tmp = getRandom(maxinstr, seed);
 				}
 				chg_pts[i] = tmp;
 
