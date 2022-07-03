@@ -168,11 +168,12 @@ Scheduler::Scheduler() :
 		// seed = seed % 20;
 
 		// srandom(seed);
+		int res;
 		if(seed != 0){
-			int res =  (rand() / seed) % range;
+			res =  (rand() / seed) % range;
 		}
 		else{
-			int res =  rand() % range;
+			res =  rand() % range;
 		}
 		res = res < 1 ? 1 : res;
 		return res;
