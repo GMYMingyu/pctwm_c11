@@ -68,11 +68,11 @@ static void print_usage(struct model_params *params)
 		"-r, --removevisible         Free visible writes\n"
 		// "-l, --maxscheduler			 Scheduler length prevention\n"
 		// "                            Default: %u\n"
-		"-b, --bugdepth 			 Bugdepth\n"
+		"-d, --bugdepth 			 Bugdepth\n"
 		"                            Default: %u\n"
 		"-p, --version				 0: using original c11tester; 1: using pct\n"
 		"                            Default: %u\n"
-		"-i, --bound of instrnums	 the bound of instrnums\n"
+		"-k, --bound of instrnums	 the bound of instrnums\n"
 		"                            Default: %u\n"
 		"-y, --search rf_set	 	 the bound of searching in rf_set\n"
 		"                            Default: %u\n"
@@ -114,7 +114,7 @@ bool install_plugin(char * name) {
 void parse_options(struct model_params *params) {
 	//const char *shortopts = "hrnt:o:x:v:m:f:";
 	// const char *shortopts = "hrnt:o:x:v:m:f:l:b:p:i:y:";
-	const char *shortopts = "hrnt:o:x:v:m:f:b:p:i:y:s:";
+	const char *shortopts = "hrnt:o:x:v:m:f:d:p:k:y:s:";
 	const struct option longopts[] = {
 		{"help", no_argument, NULL, 'h'},
 		{"removevisible", no_argument, NULL, 'r'},
@@ -125,9 +125,9 @@ void parse_options(struct model_params *params) {
 		{"minsize", required_argument, NULL, 'm'},
 		{"freqfree", required_argument, NULL, 'f'},
 		// {"maxscheduler", required_argument, NULL, 'l'},
-		{"bugdepth", required_argument, NULL, 'b'},
+		{"bugdepth", required_argument, NULL, 'd'},
 		{"version", required_argument, NULL, 'p'},
-		{"instrnum", required_argument, NULL, 'i'},
+		{"instrnum", required_argument, NULL, 'k'},
 		{"history", required_argument, NULL, 'y'},
 		{"seed", required_argument, NULL, 's'},
 		{0, 0, 0, 0}	/* Terminator */
@@ -185,14 +185,14 @@ void parse_options(struct model_params *params) {
 		// case 'l':
 		// 	params->maxscheduler = atoi(optarg);
 		// 	break;
-		case 'b':
+		case 'd':
 			params->bugdepth = atoi(optarg);
 			break;
 		case 'p':
 			params->version = atoi(optarg);
 			break;
 		// pctwm: the max instruction num
-		case 'i':
+		case 'k':
 			params->maxinstr = atoi(optarg);
 			break;
 		case 'y':
