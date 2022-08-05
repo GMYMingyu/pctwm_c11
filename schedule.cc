@@ -60,7 +60,7 @@ void Scheduler::setParams(struct model_params * _params) {
 		// 	model_print("current seed is %d. \n", seed);
 		// 	srand(seed);
 		// }
-		set_chg_pts(params->bugdepth, params->maxscheduler);
+		set_chg_pts(params->bugdepth, params->maxscheduler,params->seed);
 		
 		
 		schelen_limit = 5 * params->maxscheduler;
@@ -80,16 +80,16 @@ void Scheduler::setlowvec(int bugdepth){
 	
 }
 
-void Scheduler::set_chg_pts(int bugdepth, int maxscheduler){
+void Scheduler::set_chg_pts(int bugdepth, int maxscheduler, int seed){
 		if(bugdepth <= 1){
 			chg_pts.resize(0);
 		}
 		else{
 			chg_pts.resize(bugdepth - 1);
 			for(int i = 0; i < bugdepth - 1; i++){
-				int tmp = getRandom(maxscheduler); // [1, MAXSCHEDULER]
+				int tmp = getRandom(maxscheduler, seed); // [1, MAXSCHEDULER]
 				while(chg_pts.find(tmp)){
-					tmp = getRandom(maxscheduler);
+					tmp = getRandom(maxscheduler, seed);
 				}
 				chg_pts[i] = tmp;
 
@@ -109,7 +109,7 @@ void Scheduler::set_chg_pts(int bugdepth, int maxscheduler){
 	}
 
 
-int Scheduler::getRandom(int range){
+int Scheduler::getRandom(int range, int seed){
 	// uint64_t seed = scheduler_get_nanotime();
 	// seed = seed % 20;
 	// model_print("seed: %lu \n", seed);
@@ -121,7 +121,14 @@ int Scheduler::getRandom(int range){
 			
 	// int tmp = random();
 	// model_print("seed: %lu \n", tmp);
-	int res = random() % range;
+	int res;
+	if(seed != 0){
+		long tmp = random() * seed;
+		res = tmp % range;
+	}
+	else{
+		res = random() % range;
+	}
 	res = res < 1 ? 1 : res;
 	return res;
 }

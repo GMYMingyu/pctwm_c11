@@ -58,9 +58,9 @@ public:
 
 	void setlowvec(int bugdepth);
 
-	void set_chg_pts(int bugdepth, int maxscheduler);
+	void set_chg_pts(int bugdepth, int maxscheduler, int seed);
 
-	int getRandom(int range);
+	int getRandom(int range, int seed);
 
 
 	void print_chg();
